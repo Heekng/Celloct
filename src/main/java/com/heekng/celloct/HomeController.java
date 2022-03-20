@@ -15,6 +15,7 @@ public class HomeController {
         if (name != null) {
             model.addAttribute("name", name);
         }
+
         return "home";
     }
 }
