@@ -24,6 +24,6 @@
 - [ ] Entity
 - [ ] Service, Repository
 - [ ] thymeleaf frontend
-- [ ] 서버 CI/CD 배포 자동화
+- [x] 서버 CI/CD 배포 자동화
 - [ ] API Controller
 - [ ] flutter frontend
