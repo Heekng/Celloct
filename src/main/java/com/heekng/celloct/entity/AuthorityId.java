@@ -1,4 +1,4 @@
-package com.heekng.celloct.domain;
+package com.heekng.celloct.entity;
 
 import java.io.Serializable;
 
