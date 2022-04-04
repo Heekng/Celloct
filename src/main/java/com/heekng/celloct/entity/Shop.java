@@ -3,6 +3,8 @@ package com.heekng.celloct.entity;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -13,7 +15,10 @@ public class Shop {
 
     private String phone;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
+    private List<Staff> staffList = new ArrayList<>();
 }

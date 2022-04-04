@@ -22,6 +22,6 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Authority> authorities = new ArrayList<>();
 
-    @OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
-    private Shop shop;
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Shop> shops;
 }

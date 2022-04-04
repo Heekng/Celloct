@@ -9,18 +9,15 @@ import java.util.List;
 
 @Entity
 @Getter
+@IdClass(StaffId.class)
 public class Staff {
 
     @Id
-    @Column(name = "staff_id")
-    private Long id;
-
-    private LocalDateTime employmentDate;
-
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shop_id")
     private Shop shop;
@@ -28,5 +25,5 @@ public class Staff {
     @OneToMany(mappedBy = "staff", cascade = CascadeType.ALL)
     private List<Work> works = new ArrayList<>();
 
-
+    private LocalDateTime employmentDate;
 }
