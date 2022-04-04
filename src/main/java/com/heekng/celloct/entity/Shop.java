@@ -21,4 +21,7 @@ public class Shop {
 
     @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
     private List<Staff> staffList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
+    private List<JoinRequest> joinRequests = new ArrayList<>();
 }

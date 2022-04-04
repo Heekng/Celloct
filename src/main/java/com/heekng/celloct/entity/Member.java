@@ -23,5 +23,8 @@ public class Member {
     private List<Authority> authorities = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<Shop> shops;
+    private List<Shop> shops = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<JoinRequest> joinRequests = new ArrayList<>();
 }
