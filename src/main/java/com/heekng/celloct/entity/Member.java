@@ -41,4 +41,8 @@ public class Member {
         this.shops = shops;
         this.joinRequests = joinRequests;
     }
+
+    public void changePassword(String password) {
+        this.password = password;
+    }
 }
