@@ -1,12 +1,16 @@
 package com.heekng.celloct.entity;
 
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @IdClass(AuthorityId.class)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Authority {
 
     @Id
@@ -18,4 +22,9 @@ public class Authority {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Builder
+    public Authority(Member member, Role role) {
+        this.member = member;
+        this.role = role;
+    }
 }

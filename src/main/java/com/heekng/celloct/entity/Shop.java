@@ -1,6 +1,9 @@
 package com.heekng.celloct.entity;
 
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -8,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Shop {
     @Id
     @Column(name = "shop_id")
@@ -24,4 +28,10 @@ public class Shop {
 
     @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
     private List<JoinRequest> joinRequests = new ArrayList<>();
+
+    @Builder
+    public Shop(String phone, Member member) {
+        this.phone = phone;
+        this.member = member;
+    }
 }
