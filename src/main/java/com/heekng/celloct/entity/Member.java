@@ -32,14 +32,14 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<JoinRequest> joinRequests = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Staff> staffList = new ArrayList<>();
+
     @Builder
-    public Member(String email, String password, String name, List<Authority> authorities, List<Shop> shops, List<JoinRequest> joinRequests) {
+    public Member(String email, String password, String name) {
         this.email = email;
         this.password = password;
         this.name = name;
-        this.authorities = authorities;
-        this.shops = shops;
-        this.joinRequests = joinRequests;
     }
 
     public void changePassword(String password) {
