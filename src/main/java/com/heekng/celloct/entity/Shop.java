@@ -35,4 +35,8 @@ public class Shop {
         this.phone = phone;
         this.member = member;
     }
+
+    public void updatePhone(String phone) {
+        this.phone = phone;
+    }
 }
