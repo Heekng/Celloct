@@ -12,16 +12,17 @@ import java.util.List;
 
 @Entity
 @Getter
-@IdClass(StaffId.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Staff {
 
     @Id
+    @Column(name = "staff_id")
+    private Long id;
+
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shop_id")
     private Shop shop;

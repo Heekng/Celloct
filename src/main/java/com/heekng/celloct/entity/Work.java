@@ -20,10 +20,7 @@ public class Work {
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumns({
-            @JoinColumn(name = "member_id"),
-            @JoinColumn(name = "shop_id")
-    })
+    @JoinColumn(name = "staff_id")
     private Staff staff;
 
     private LocalDateTime startDate;
