@@ -13,7 +13,8 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Shop {
-    @Id
+
+    @Id @GeneratedValue
     @Column(name = "shop_id")
     private Long id;
 

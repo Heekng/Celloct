@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Staff {
 
-    @Id
+    @Id @GeneratedValue
     @Column(name = "staff_id")
     private Long id;
 
