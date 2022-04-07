@@ -12,6 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -82,10 +84,9 @@ class StaffRepositoryTest {
         staffRepository.save(staff);
         //when
         staffRepository.delete(staff);
-        Staff findStaff = staffRepository.findById(staff.getId()).get();
+        Optional<Staff> staffOptional = staffRepository.findById(staff.getId());
         //then
-        assertThat(findStaff).isNull();
-
+        assertThat(staffOptional).isEmpty();
     }
 
 }
