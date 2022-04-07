@@ -11,14 +11,15 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@IdClass(WorkId.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Work {
 
-    @Id
+    @Id @GeneratedValue
+    @Column(name = "work_id")
+    private Long id;
+
     private LocalDate workDate;
 
-    @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "staff_id")
     private Staff staff;
@@ -34,5 +35,10 @@ public class Work {
         this.startDate = startDate;
         this.endDate = endDate;
         this.note = note;
+    }
+
+    public void changeWorkTime(LocalDateTime startDate, LocalDateTime endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 }
