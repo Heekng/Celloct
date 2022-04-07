@@ -19,6 +19,7 @@ public class Shop {
     private Long id;
 
     private String phone;
+    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "member_id")
@@ -31,9 +32,10 @@ public class Shop {
     private List<JoinRequest> joinRequests = new ArrayList<>();
 
     @Builder
-    public Shop(String phone, Member member) {
+    public Shop(String phone, String name, Member member) {
         this.phone = phone;
         this.member = member;
+        this.name = name;
     }
 
     public void updatePhone(String phone) {
