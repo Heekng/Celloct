@@ -17,7 +17,7 @@ public class MemberService {
 
     //회원가입
     @Transactional
-    public Long Join(Member member) {
+    public Long join(Member member) {
         validateDuplicateMember(member);
         memberRepository.save(member);
         return member.getId();
@@ -39,6 +39,10 @@ public class MemberService {
         validateByLoginIdAndPassword(loginId, nowPassword);
         Member findMember = memberRepository.findByLoginId(loginId).get(0);
         memberRepository.delete(findMember);
+    }
+
+    public Member findById(Long memberId) {
+        return memberRepository.findById(memberId).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
     }
 
     private void validateByLoginIdAndPassword(String loginId, String nowPassword) {

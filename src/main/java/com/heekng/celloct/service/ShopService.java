@@ -21,34 +21,75 @@ public class ShopService {
     private final MemberRepository memberRepository;
     private final ManagerRepository managerRepository;
 
+    /**
+     * shop 생성
+     * @param shop
+     * @return
+     */
     @Transactional
-    public Long make(Shop shop, Long memberId) {
+    public Long makeShop(Shop shop) {
         validateDuplicateShop(shop);
         shopRepository.save(shop);
-        Member member = memberRepository.findById(memberId).get();
-        Manager manager = Manager.builder()
-                .shop(shop)
-                .member(member)
-                .build();
-        managerRepository.save(manager);
         return shop.getId();
     }
 
-    public boolean checkName(String name) {
-        List<Shop> shops = shopRepository.findByName(name);
+    /**
+     * shop name 중복확인
+     * @param shopName
+     * @return true(중복되지 않음), false(중복)
+     */
+    public boolean checkName(String shopName) {
+        List<Shop> shops = shopRepository.findByName(shopName);
         return shops.isEmpty();
     }
 
+    /**
+     * shop 전화번호 변경
+     * @param shopId
+     * @param shopPhone
+     */
     @Transactional
-    public void updatePhone(Long id, String phone) {
-        Shop shop = shopRepository.findById(id).get();
-        shop.updatePhone(phone);
+    public void updatePhone(Long shopId, String shopPhone) {
+        Shop shop = shopRepository.findById(shopId).get();
+        shop.updatePhone(shopPhone);
+    }
+
+    /**
+     * shop 삭제
+     * @param shopId
+     */
+    @Transactional
+    public void delete(Long shopId) {
+        Shop shop = shopRepository.findById(shopId).get();
+        shopRepository.delete(shop);
     }
 
     @Transactional
-    public void delete(Long id) {
-        Shop shop = shopRepository.findById(id).get();
-        shopRepository.delete(shop);
+    public Manager addManager(Long shopId, Long memberId) {
+        Shop shop = shopRepository.findById(shopId).orElseThrow(() -> new IllegalStateException("존재하지 않는 매장입니다."));
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
+        validateExistManager(shopId, memberId);
+        Manager manager = Manager.builder()
+                .member(member)
+                .shop(shop)
+                .build();
+        return managerRepository.save(manager);
+    }
+
+    @Transactional
+    public void deleteManager(Long managerId) {
+        managerRepository.deleteById(managerId);
+    }
+
+    public Shop findShop(Long shopId) {
+        return shopRepository.findById(shopId).orElseThrow(() -> new IllegalStateException("존재하지 않는 매장입니다."));
+    }
+
+    private void validateExistManager(Long shopId, Long memberId) {
+        List<Manager> managers = managerRepository.findByMemberIdAndShopId(memberId, shopId);
+        if (!managers.isEmpty()) {
+            throw new IllegalStateException("이미 존재하는 관리자입니다.");
+        }
     }
 
     private void validateDuplicateShop(Shop shop) {
