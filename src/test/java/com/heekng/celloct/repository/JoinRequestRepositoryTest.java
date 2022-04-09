@@ -37,7 +37,7 @@ class JoinRequestRepositoryTest {
 
         Shop shop = Shop.builder()
                 .phone("010-1234-1234")
-                .member(member1)
+                .name("shop1")
                 .build();
         shopRepository.save(shop);
 
@@ -64,7 +64,7 @@ class JoinRequestRepositoryTest {
 
         Shop shop = Shop.builder()
                 .phone("010-1234-1234")
-                .member(member1)
+                .name("shop1")
                 .build();
         shopRepository.save(shop);
 
@@ -92,7 +92,7 @@ class JoinRequestRepositoryTest {
 
         Shop shop = Shop.builder()
                 .phone("010-1234-1234")
-                .member(member1)
+                .name("shop1")
                 .build();
         shopRepository.save(shop);
 
@@ -119,7 +119,7 @@ class JoinRequestRepositoryTest {
 
         Shop shop = Shop.builder()
                 .phone("010-1234-1234")
-                .member(member1)
+                .name("shop1")
                 .build();
         shopRepository.save(shop);
 

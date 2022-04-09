@@ -28,13 +28,13 @@ public class Member {
     private List<Authority> authorities = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<Shop> shops = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<JoinRequest> joinRequests = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Staff> staffList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Manager> managers = new ArrayList<>();
 
     @Builder
     public Member(String loginId, String email, String password, String name) {

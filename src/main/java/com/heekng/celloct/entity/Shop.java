@@ -21,20 +21,18 @@ public class Shop {
     private String phone;
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "member_id")
-    private Member member;
-
     @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
     private List<Staff> staffList = new ArrayList<>();
 
     @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
     private List<JoinRequest> joinRequests = new ArrayList<>();
 
+    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
+    private List<Manager> managers = new ArrayList<>();
+
     @Builder
-    public Shop(String phone, String name, Member member) {
+    public Shop(String phone, String name) {
         this.phone = phone;
-        this.member = member;
         this.name = name;
     }
 

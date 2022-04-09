@@ -43,7 +43,7 @@ class StaffRepositoryTest {
         memberRepository.save(staffMember);
 
         Shop shop = Shop.builder()
-                .member(shopMember)
+                .name("shop1")
                 .build();
         shopRepository.save(shop);
 
@@ -73,7 +73,7 @@ class StaffRepositoryTest {
         memberRepository.save(staffMember);
 
         Shop shop = Shop.builder()
-                .member(shopMember)
+                .name("shop1")
                 .build();
         shopRepository.save(shop);
 
