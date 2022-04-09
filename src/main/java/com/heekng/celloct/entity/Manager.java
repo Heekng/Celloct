@@ -4,7 +4,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.persistence.*;
 
@@ -29,5 +28,17 @@ public class Manager {
     public Manager(Shop shop, Member member) {
         this.shop = shop;
         this.member = member;
+        shop.getManagers().add(this);
+        member.getManagers().add(this);
+    }
+
+    public void addShop(Shop shop) {
+        this.shop = shop;
+        shop.getManagers().add(this);
+    }
+
+    public void addMember(Member member) {
+        this.member = member;
+        member.getManagers().add(this);
     }
 }
