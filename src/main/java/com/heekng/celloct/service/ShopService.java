@@ -1,10 +1,6 @@
 package com.heekng.celloct.service;
 
-import com.heekng.celloct.entity.Manager;
-import com.heekng.celloct.entity.Member;
 import com.heekng.celloct.entity.Shop;
-import com.heekng.celloct.repository.ManagerRepository;
-import com.heekng.celloct.repository.MemberRepository;
 import com.heekng.celloct.repository.ShopRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,8 +14,6 @@ import java.util.List;
 public class ShopService {
 
     private final ShopRepository shopRepository;
-    private final MemberRepository memberRepository;
-    private final ManagerRepository managerRepository;
 
     /**
      * shop 생성
@@ -64,32 +58,22 @@ public class ShopService {
         shopRepository.delete(shop);
     }
 
-    @Transactional
-    public Manager addManager(Long shopId, Long memberId) {
-        Shop shop = shopRepository.findById(shopId).orElseThrow(() -> new IllegalStateException("존재하지 않는 매장입니다."));
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
-        validateExistManager(shopId, memberId);
-        Manager manager = Manager.builder()
-                .member(member)
-                .shop(shop)
-                .build();
-        return managerRepository.save(manager);
-    }
-
-    @Transactional
-    public void deleteManager(Long managerId) {
-        managerRepository.deleteById(managerId);
-    }
-
+    /**
+     * 매장 찾기
+     * @param shopId
+     * @return
+     */
     public Shop findShop(Long shopId) {
         return shopRepository.findById(shopId).orElseThrow(() -> new IllegalStateException("존재하지 않는 매장입니다."));
     }
 
-    private void validateExistManager(Long shopId, Long memberId) {
-        List<Manager> managers = managerRepository.findByMemberIdAndShopId(memberId, shopId);
-        if (!managers.isEmpty()) {
-            throw new IllegalStateException("이미 존재하는 관리자입니다.");
-        }
+    /**
+     * 이름으로 매장 리스트 찾기
+     * @param name
+     * @return
+     */
+    public List<Shop> findListByName(String name) {
+        return shopRepository.findByName(name);
     }
 
     private void validateDuplicateShop(Shop shop) {
