@@ -76,7 +76,6 @@ public class JoinRequestService {
         Staff staff = Staff.builder()
                 .shop(shop)
                 .member(member)
-                .employmentDate(now)
                 .build();
         staffRepository.save(staff);
         return staff.getId();

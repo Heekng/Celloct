@@ -8,4 +8,8 @@ import java.util.List;
 public interface StaffRepository extends JpaRepository<Staff, Long> {
 
     List<Staff> findByMemberIdAndShopId(Long memberId, Long shopId);
+
+    List<Staff> findByShopId(Long shopId);
+
+    List<Staff> findByMemberId(Long memberId);
 }

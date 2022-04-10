@@ -33,9 +33,16 @@ public class Staff {
     private LocalDateTime employmentDate;
 
     @Builder
-    public Staff(Member member, Shop shop, LocalDateTime employmentDate) {
+    public Staff(Member member, Shop shop) {
         this.member = member;
         this.shop = shop;
-        this.employmentDate = employmentDate;
+        this.employmentDate = LocalDateTime.now();
+        shop.getStaffList().add(this);
+        member.getStaffList().add(this);
     }
+
+    public void changeEmploymentDate(LocalDateTime changeEmploymentDate) {
+        this.employmentDate = changeEmploymentDate;
+    }
+
 }
