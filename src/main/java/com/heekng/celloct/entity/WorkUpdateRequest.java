@@ -22,7 +22,7 @@ public class WorkUpdateRequest {
     private LocalDateTime updateStartDate;
     private LocalDateTime updateEndDate;
 
-    @OneToOne(mappedBy = "workUpdateRequest", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "workUpdateRequest")
     private Work work;
 
     @Builder

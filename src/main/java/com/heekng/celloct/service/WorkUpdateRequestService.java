@@ -48,6 +48,7 @@ public class WorkUpdateRequestService {
     public void deleteWorkUpdateRequest(Long workUpdateRequestId) {
         WorkUpdateRequest workUpdateRequest = workUpdateRequestRepository.findById(workUpdateRequestId).orElseThrow(() -> new IllegalStateException("존재하지 않는 근무시간 변경 요청입니다."));
         workUpdateRequest.getWork().deleteWorkUpdateRequest();
+        workUpdateRequestRepository.delete(workUpdateRequest);
     }
 
     /**

@@ -28,7 +28,7 @@ public class Work {
     private LocalDateTime endDate;
     private String note;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "work_update_request_id")
     private WorkUpdateRequest workUpdateRequest;
 
