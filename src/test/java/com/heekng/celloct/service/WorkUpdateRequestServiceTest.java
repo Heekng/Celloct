@@ -156,6 +156,7 @@ class WorkUpdateRequestServiceTest {
         Optional<WorkUpdateRequest> workUpdateRequestOptional = workUpdateRequestRepository.findById(workUpdateRequestId);
         //then
         assertThat(workUpdateRequestOptional).isEmpty();
+
     }
 
 
