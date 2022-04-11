@@ -28,6 +28,10 @@ public class Work {
     private LocalDateTime endDate;
     private String note;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "work_update_request_id")
+    private WorkUpdateRequest workUpdateRequest;
+
     @Builder
     public Work(LocalDate workDate, Staff staff, LocalDateTime startDate, LocalDateTime endDate, String note) {
         this.workDate = workDate;
@@ -40,5 +44,13 @@ public class Work {
     public void changeWorkTime(LocalDateTime startDate, LocalDateTime endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    public void addWorkUpdateRequest(WorkUpdateRequest workUpdateRequest) {
+        this.workUpdateRequest = workUpdateRequest;
+    }
+
+    public void deleteWorkUpdateRequest() {
+        this.workUpdateRequest = null;
     }
 }
