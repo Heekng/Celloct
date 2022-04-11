@@ -6,6 +6,7 @@ import com.heekng.celloct.entity.Staff;
 import com.heekng.celloct.repository.MemberRepository;
 import com.heekng.celloct.repository.ShopRepository;
 import com.heekng.celloct.repository.StaffRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +14,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -27,6 +31,8 @@ class StaffServiceTest {
     ShopRepository shopRepository;
     @Autowired
     StaffRepository staffRepository;
+    @Autowired
+    StaffService staffService;
     @Autowired
     EntityManager em;
 
@@ -64,12 +70,78 @@ class StaffServiceTest {
     }
 
     @Test
+    @DisplayName("직원 추가 테스트")
     void addTest() throws Exception {
         //given
+        Shop shop = Shop.builder()
+                .name("shop1")
+                .build();
+        shopRepository.save(shop);
+
+        Member member = Member.builder()
+                .name("member1")
+                .password("member1234")
+                .loginId("loginId1234")
+                .build();
+        memberRepository.save(member);
 
         //when
+        Long savedStaffId = staffService.addStaff(shop.getId(), member.getId());
+        Staff findStaff = staffRepository.findById(savedStaffId).get();
 
         //then
+        assertThat(findStaff.getMember()).isEqualTo(member);
+        assertThat(findStaff.getShop()).isEqualTo(shop);
+    }
 
+    @Test
+    @DisplayName("가입날짜 변경 테스트")
+    void updateEmploymentDateTest() throws Exception {
+        //given
+        Shop shop = Shop.builder()
+                .name("shop1")
+                .build();
+        shopRepository.save(shop);
+
+        Member member = Member.builder()
+                .name("member1")
+                .password("member1234")
+                .loginId("loginId1234")
+                .build();
+        memberRepository.save(member);
+
+        Long savedStaffId = staffService.addStaff(shop.getId(), member.getId());
+        //when
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime changeDate = now.minusDays(4);
+        staffService.updateEmploymentDate(savedStaffId, changeDate);
+        Staff findStaff = staffRepository.findById(savedStaffId).get();
+
+        //then
+        assertThat(findStaff.getEmploymentDate()).isEqualTo(changeDate);
+    }
+
+    @Test
+    @DisplayName("삭제 테스트")
+    void deleteTest() throws Exception {
+        //given
+        Shop shop = Shop.builder()
+                .name("shop1")
+                .build();
+        shopRepository.save(shop);
+
+        Member member = Member.builder()
+                .name("member1")
+                .password("member1234")
+                .loginId("loginId1234")
+                .build();
+        memberRepository.save(member);
+
+        Long savedStaffId = staffService.addStaff(shop.getId(), member.getId());
+        //when
+        staffService.deleteStaff(savedStaffId);
+        Optional<Staff> staffOptional = staffRepository.findById(savedStaffId);
+        //then
+        assertThat(staffOptional).isEmpty();
     }
 }
