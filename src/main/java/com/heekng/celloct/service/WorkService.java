@@ -1,13 +1,11 @@
 package com.heekng.celloct.service;
 
 import com.heekng.celloct.entity.Work;
-import com.heekng.celloct.entity.WorkUpdateRequest;
 import com.heekng.celloct.repository.WorkRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
