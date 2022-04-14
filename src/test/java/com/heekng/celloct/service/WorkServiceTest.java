@@ -36,6 +36,10 @@ class WorkServiceTest {
     @Autowired
     MemberRepository memberRepository;
 
+    /**
+     * 근무시간 추가
+     * @throws Exception
+     */
     @Test
     void add() throws Exception {
         //given
@@ -74,6 +78,10 @@ class WorkServiceTest {
         assertThat(findWork).isEqualTo(work);
     }
 
+    /**
+     * 근무시간 수정
+     * @throws Exception
+     */
     @Test
     void changeWorkTime() throws Exception {
         //given
@@ -115,6 +123,10 @@ class WorkServiceTest {
         assertThat(work.getEndDate()).isEqualTo(changeEndDate);
     }
 
+    /**
+     * 근무 삭제
+     * @throws Exception
+     */
     @Test
     void deleteWorkTest() throws Exception {
         //given
