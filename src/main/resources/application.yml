@@ -1,4 +1,8 @@
 spring:
+  config:
+    activate:
+      on-profile: oauth
+
   jpa:
     hibernate:
       ddl-auto: create # entity 테스트 상황이므로 create
