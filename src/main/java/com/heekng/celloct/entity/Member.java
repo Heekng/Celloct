@@ -25,8 +25,8 @@ public class Member extends BaseTimeEntity {
     private String email;
     private String picture;
 
-    @OneToMany(mappedBy = "member", cascade = ALL)
-    private List<Authority> authorities = new ArrayList<>();
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @OneToMany(mappedBy = "member", cascade = REMOVE)
     private List<JoinRequest> joinRequests = new ArrayList<>();
@@ -38,10 +38,10 @@ public class Member extends BaseTimeEntity {
     private List<Manager> managers = new ArrayList<>();
 
     @Builder
-    public Member(String email, String name, String picture) {
-        this.email = email;
+    public Member(String name, String email, String picture, Role role) {
         this.name = name;
+        this.email = email;
         this.picture = picture;
+        this.role = role;
     }
-
 }
