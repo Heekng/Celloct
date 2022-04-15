@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.*;
 
 @Entity
@@ -30,7 +31,7 @@ public class Work {
     private LocalDateTime endDate;
     private String note;
 
-    @OneToOne(fetch = LAZY)
+    @OneToOne(fetch = LAZY, cascade = REMOVE)
     @JoinColumn(name = "work_update_request_id")
     private WorkUpdateRequest workUpdateRequest;
 

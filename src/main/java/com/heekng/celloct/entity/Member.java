@@ -26,16 +26,16 @@ public class Member {
     private String password;
     private String name;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = ALL)
     private List<Authority> authorities = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = REMOVE)
     private List<JoinRequest> joinRequests = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = REMOVE)
     private List<Staff> staffList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = REMOVE)
     private List<Manager> managers = new ArrayList<>();
 
     @Builder
