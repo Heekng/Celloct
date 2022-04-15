@@ -20,5 +20,5 @@ public abstract class BaseTimeEntity {
     private LocalDateTime createDate;
 
     @LastModifiedDate
-    private LocalDateTime latModifiedDate;
+    private LocalDateTime lastModifiedDate;
 }
