@@ -1,9 +1,12 @@
 package com.heekng.celloct.service;
 
+import com.heekng.celloct.dto.ManagerDto;
 import com.heekng.celloct.entity.Manager;
 import com.heekng.celloct.entity.Member;
 import com.heekng.celloct.entity.Shop;
+import com.heekng.celloct.repository.ManagerRepository;
 import com.heekng.celloct.repository.MemberRepository;
+import com.heekng.celloct.repository.ShopRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +24,9 @@ class ManagerServiceTest {
     @Autowired
     MemberRepository memberRepository;
     @Autowired
-    ShopService shopService;
+    ShopRepository shopRepository;
+    @Autowired
+    ManagerRepository managerRepository;
     @Autowired
     ManagerService managerService;
     @Autowired
@@ -39,9 +44,13 @@ class ManagerServiceTest {
                 .name("shop1")
                 .phone("010-1234-1234")
                 .build();
-        shopService.makeShop(shop);
+        shopRepository.save(shop);
         //when
-        Manager savedManager = managerService.addManager(shop.getId(), member.getId());
+        ManagerDto.addRequest addRequestDto = ManagerDto.addRequest.builder()
+                .shopId(shop.getId())
+                .memberId(member.getId())
+                .build();
+        Manager savedManager = managerService.addManager(addRequestDto);
 
         //then
         assertThat(member.getManagers()).isNotEmpty();
@@ -61,8 +70,13 @@ class ManagerServiceTest {
                 .name("shop1")
                 .phone("010-1234-1234")
                 .build();
-        shopService.makeShop(shop);
-        Manager savedManager = managerService.addManager(shop.getId(), member.getId());
+        shopRepository.save(shop);
+
+        Manager manager = Manager.builder()
+                .shop(shop)
+                .member(member)
+                .build();
+        Manager savedManager = managerRepository.save(manager);
 
         em.flush();
         em.clear();
@@ -71,7 +85,7 @@ class ManagerServiceTest {
         managerService.deleteManager(savedManager.getId());
         em.flush();
         em.clear();
-        shop = shopService.findShop(shop.getId());
+        shop = shopRepository.findById(shop.getId()).get();
 
         //then
         assertThat(shop.getManagers()).isEmpty();
