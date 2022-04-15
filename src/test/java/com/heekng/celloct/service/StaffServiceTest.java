@@ -1,5 +1,6 @@
 package com.heekng.celloct.service;
 
+import com.heekng.celloct.dto.StaffDto;
 import com.heekng.celloct.entity.Member;
 import com.heekng.celloct.entity.Shop;
 import com.heekng.celloct.entity.Staff;
@@ -83,13 +84,19 @@ class StaffServiceTest {
                 .build();
         memberRepository.save(member);
 
+        em.flush();
+        em.clear();
+
         //when
-        Long savedStaffId = staffService.addStaff(shop.getId(), member.getId());
+        StaffDto.addRequest addRequestDto = StaffDto.addRequest.builder()
+                .memberId(member.getId())
+                .shopId(shop.getId())
+                .build();
+        Long savedStaffId = staffService.addStaff(addRequestDto);
         Staff findStaff = staffRepository.findById(savedStaffId).get();
 
         //then
-        assertThat(findStaff.getMember()).isEqualTo(member);
-        assertThat(findStaff.getShop()).isEqualTo(shop);
+        assertThat(findStaff).isNotNull();
     }
 
     @Test
@@ -106,12 +113,24 @@ class StaffServiceTest {
                 .build();
         memberRepository.save(member);
 
-        Long savedStaffId = staffService.addStaff(shop.getId(), member.getId());
+        Staff staff = Staff.builder()
+                .member(member)
+                .shop(shop)
+                .build();
+        staffRepository.save(staff);
+
+        em.flush();
+        em.clear();
+
         //when
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime changeDate = now.minusDays(4);
-        staffService.updateEmploymentDate(savedStaffId, changeDate);
-        Staff findStaff = staffRepository.findById(savedStaffId).get();
+        StaffDto.updateEmploymentDateRequest updateEmploymentDateRequestDto = StaffDto.updateEmploymentDateRequest.builder()
+                .staffId(staff.getId())
+                .changeEmploymentDate(changeDate)
+                .build();
+        staffService.updateEmploymentDate(updateEmploymentDateRequestDto);
+        Staff findStaff = staffRepository.findById(staff.getId()).get();
 
         //then
         assertThat(findStaff.getEmploymentDate()).isEqualTo(changeDate);
@@ -131,10 +150,18 @@ class StaffServiceTest {
                 .build();
         memberRepository.save(member);
 
-        Long savedStaffId = staffService.addStaff(shop.getId(), member.getId());
+        Staff staff = Staff.builder()
+                .shop(shop)
+                .member(member)
+                .build();
+        staffRepository.save(staff);
+
+        em.flush();
+        em.clear();
+
         //when
-        staffService.deleteStaff(savedStaffId);
-        Optional<Staff> staffOptional = staffRepository.findById(savedStaffId);
+        staffService.deleteStaff(staff.getId());
+        Optional<Staff> staffOptional = staffRepository.findById(staff.getId());
         //then
         assertThat(staffOptional).isEmpty();
     }

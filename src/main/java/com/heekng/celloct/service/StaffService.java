@@ -1,5 +1,6 @@
 package com.heekng.celloct.service;
 
+import com.heekng.celloct.dto.StaffDto;
 import com.heekng.celloct.entity.Member;
 import com.heekng.celloct.entity.Shop;
 import com.heekng.celloct.entity.Staff;
@@ -31,10 +32,10 @@ public class StaffService {
     }
 
     @Transactional
-    public Long addStaff(Long shopId, Long staffMemberId) {
-        validateExistStaff(shopId, staffMemberId);
-        Shop shop = shopRepository.findById(shopId).orElseThrow(() -> new IllegalStateException("존재하지 않는 매장입니다."));
-        Member member = memberRepository.findById(staffMemberId).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
+    public Long addStaff(StaffDto.addRequest addRequestDto) {
+        Shop shop = shopRepository.findById(addRequestDto.getShopId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 매장입니다."));
+        Member member = memberRepository.findById(addRequestDto.getMemberId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
+        validateExistStaff(addRequestDto.getShopId(), addRequestDto.getMemberId());
         Staff staff = Staff.builder()
                 .shop(shop)
                 .member(member)
@@ -44,9 +45,9 @@ public class StaffService {
     }
 
     @Transactional
-    public void updateEmploymentDate(Long staffId, LocalDateTime changeEmploymentDate) {
-        Staff staff = staffRepository.findById(staffId).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
-        staff.changeEmploymentDate(changeEmploymentDate);
+    public void updateEmploymentDate(StaffDto.updateEmploymentDateRequest updateEmploymentDateRequestDto) {
+        Staff staff = staffRepository.findById(updateEmploymentDateRequestDto.getStaffId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
+        staff.changeEmploymentDate(updateEmploymentDateRequestDto.getChangeEmploymentDate());
     }
 
     @Transactional
@@ -54,8 +55,6 @@ public class StaffService {
         Staff staff = staffRepository.findById(staffId).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
         staffRepository.delete(staff);
     }
-
-
 
     private void validateExistStaff(Long shopId, Long staffMemberId) {
         List<Staff> staffList = staffRepository.findByMemberIdAndShopId(staffMemberId, shopId);
