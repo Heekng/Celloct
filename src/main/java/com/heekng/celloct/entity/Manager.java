@@ -18,6 +18,8 @@ public class Manager {
     @Column(name = "manager_id")
     private Long id;
 
+    private String name;
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "shop_id")
     private Shop shop;

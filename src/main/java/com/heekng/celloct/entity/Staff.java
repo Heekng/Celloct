@@ -22,6 +22,9 @@ public class Staff {
     @Column(name = "staff_id")
     private Long id;
 
+    private LocalDateTime employmentDate;
+    private String name;
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -33,7 +36,6 @@ public class Staff {
     @OneToMany(mappedBy = "staff", cascade = REMOVE)
     private List<Work> works = new ArrayList<>();
 
-    private LocalDateTime employmentDate;
 
     @Builder
     public Staff(Member member, Shop shop) {
