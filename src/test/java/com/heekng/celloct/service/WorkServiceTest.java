@@ -50,8 +50,6 @@ class WorkServiceTest {
 
         Member member = Member.builder()
                 .name("member1")
-                .password("member1234")
-                .loginId("loginId1234")
                 .build();
         memberRepository.save(member);
 
@@ -92,8 +90,6 @@ class WorkServiceTest {
 
         Member member = Member.builder()
                 .name("member1")
-                .password("member1234")
-                .loginId("loginId1234")
                 .build();
         memberRepository.save(member);
 
@@ -137,8 +133,6 @@ class WorkServiceTest {
 
         Member member = Member.builder()
                 .name("member1")
-                .password("member1234")
-                .loginId("loginId1234")
                 .build();
         memberRepository.save(member);
 

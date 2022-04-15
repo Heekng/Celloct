@@ -3,6 +3,7 @@ package com.heekng.celloct.service;
 import com.heekng.celloct.entity.Manager;
 import com.heekng.celloct.entity.Member;
 import com.heekng.celloct.entity.Shop;
+import com.heekng.celloct.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ManagerServiceTest {
 
     @Autowired
-    MemberService memberService;
+    MemberRepository memberRepository;
     @Autowired
     ShopService shopService;
     @Autowired
@@ -31,9 +32,8 @@ class ManagerServiceTest {
         //given
         Member member = Member.builder()
                 .name("member1")
-                .password("member1234")
                 .build();
-        memberService.join(member);
+        memberRepository.save(member);
 
         Shop shop = Shop.builder()
                 .name("shop1")
@@ -54,9 +54,8 @@ class ManagerServiceTest {
         //given
         Member member = Member.builder()
                 .name("member1")
-                .password("member1234")
                 .build();
-        memberService.join(member);
+        memberRepository.save(member);
 
         Shop shop = Shop.builder()
                 .name("shop1")

@@ -42,23 +42,6 @@ class MemberRepositoryTest {
     }
 
     @Test
-    @DisplayName("update 테스트")
-    void update() throws Exception {
-        String inputPassword = "testPassword";
-        Member member = Member.builder()
-                .name("member")
-                .build();
-
-        memberRepository.save(member);
-
-        member.changePassword(inputPassword);
-
-        Member findMember = memberRepository.findById(member.getId()).get();
-
-        assertThat(inputPassword).isEqualTo(findMember.getPassword());
-    }
-
-    @Test
     @DisplayName("delete 테스트")
     void delete() throws Exception {
         Member member = Member.builder()

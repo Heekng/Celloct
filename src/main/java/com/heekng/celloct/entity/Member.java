@@ -21,10 +21,9 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
-    private String loginId;
-    private String email;
-    private String password;
     private String name;
+    private String email;
+    private String picture;
 
     @OneToMany(mappedBy = "member", cascade = ALL)
     private List<Authority> authorities = new ArrayList<>();
@@ -39,14 +38,10 @@ public class Member {
     private List<Manager> managers = new ArrayList<>();
 
     @Builder
-    public Member(String loginId, String email, String password, String name) {
-        this.loginId = loginId;
+    public Member(String email, String name, String picture) {
         this.email = email;
-        this.password = password;
         this.name = name;
+        this.picture = picture;
     }
 
-    public void changePassword(String password) {
-        this.password = password;
-    }
 }

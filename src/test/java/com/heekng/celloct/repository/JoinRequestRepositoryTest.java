@@ -31,7 +31,6 @@ class JoinRequestRepositoryTest {
         Member member1 = Member.builder()
                 .name("member1")
                 .email("member1@test.com")
-                .password("member1Password")
                 .build();
         memberRepository.save(member1);
 
@@ -58,7 +57,6 @@ class JoinRequestRepositoryTest {
         Member member1 = Member.builder()
                 .name("member1")
                 .email("member1@test.com")
-                .password("member1Password")
                 .build();
         memberRepository.save(member1);
 
@@ -86,7 +84,6 @@ class JoinRequestRepositoryTest {
         Member member1 = Member.builder()
                 .name("member1")
                 .email("member1@test.com")
-                .password("member1Password")
                 .build();
         memberRepository.save(member1);
 
@@ -113,7 +110,6 @@ class JoinRequestRepositoryTest {
         Member member1 = Member.builder()
                 .name("member1")
                 .email("member1@test.com")
-                .password("member1Password")
                 .build();
         memberRepository.save(member1);
 

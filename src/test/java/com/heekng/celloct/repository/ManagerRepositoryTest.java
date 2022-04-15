@@ -35,7 +35,6 @@ class ManagerRepositoryTest {
         Member member = Member.builder()
                 .name("member1")
                 .email("member1@heekng.com")
-                .password("member1234")
                 .build();
         memberRepository.save(member);
 
@@ -64,7 +63,6 @@ class ManagerRepositoryTest {
         Member member = Member.builder()
                 .name("member1")
                 .email("member1@heekng.com")
-                .password("member1234")
                 .build();
         memberRepository.save(member);
 
