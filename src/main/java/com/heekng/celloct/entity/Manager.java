@@ -12,7 +12,7 @@ import static javax.persistence.FetchType.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Manager {
+public class Manager extends BaseTimeEntity{
 
     @Id @GeneratedValue
     @Column(name = "manager_id")

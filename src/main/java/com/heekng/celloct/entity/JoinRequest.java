@@ -12,7 +12,7 @@ import static javax.persistence.FetchType.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class JoinRequest {
+public class JoinRequest extends BaseTimeEntity{
 
     @Id @GeneratedValue
     @Column(name = "join_request_id")

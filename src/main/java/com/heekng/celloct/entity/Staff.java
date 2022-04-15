@@ -16,7 +16,7 @@ import static javax.persistence.FetchType.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Staff {
+public class Staff extends BaseTimeEntity {
 
     @Id @GeneratedValue
     @Column(name = "staff_id")

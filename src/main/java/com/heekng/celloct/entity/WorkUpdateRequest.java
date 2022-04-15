@@ -14,7 +14,7 @@ import static javax.persistence.FetchType.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class WorkUpdateRequest {
+public class WorkUpdateRequest extends BaseTimeEntity {
 
     @Id @GeneratedValue
     @Column(name = "work_update_request_id")
