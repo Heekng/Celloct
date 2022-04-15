@@ -26,7 +26,6 @@ public class Work {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "staff_id")
     private Staff staff;
-
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private String note;

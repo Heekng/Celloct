@@ -1,5 +1,6 @@
 package com.heekng.celloct.service;
 
+import com.heekng.celloct.dto.WorkUpdateRequestDto;
 import com.heekng.celloct.entity.Work;
 import com.heekng.celloct.entity.WorkUpdateRequest;
 import com.heekng.celloct.repository.WorkRepository;
@@ -22,18 +23,16 @@ public class WorkUpdateRequestService {
 
     /**
      * 근무시간 변경 요청
-     * @param workId
-     * @param updateDate
-     * @param updateStartDate
-     * @param updateEndDate
+     * @param addRequest
+     * @return
      */
-    public Long addWorkUpdateRequest(Long workId, LocalDate updateDate, LocalDateTime updateStartDate, LocalDateTime updateEndDate) {
-        Work work = workRepository.findById(workId).orElseThrow(() -> new IllegalStateException("존재하지 않는 근무입니다."));
-        validateWorkUpdateRequest(workId);
+    public Long addWorkUpdateRequest(WorkUpdateRequestDto.addRequest addRequest) {
+        Work work = workRepository.findById(addRequest.getWorkId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 근무입니다."));
+        validateWorkUpdateRequest(addRequest.getWorkId());
         WorkUpdateRequest workUpdateRequest = WorkUpdateRequest.builder()
-                .updateWorkDate(updateDate)
-                .updateStartDate(updateStartDate)
-                .updateEndDate(updateEndDate)
+                .updateWorkDate(addRequest.getUpdateDate())
+                .updateStartDate(addRequest.getUpdateStartDate())
+                .updateEndDate(addRequest.getUpdateEndDate())
                 .work(work)
                 .build();
         workUpdateRequestRepository.save(workUpdateRequest);
@@ -53,15 +52,12 @@ public class WorkUpdateRequestService {
 
     /**
      * 근무시간 변경 요청 수정
-     * @param workUpdateRequestId
-     * @param updateDate
-     * @param updateStartDate
-     * @param updateEndDate
+     * @param updateRequest
      */
-    public void updateWorkUpdateRequest(Long workUpdateRequestId, LocalDate updateDate, LocalDateTime updateStartDate, LocalDateTime updateEndDate) {
-        WorkUpdateRequest workUpdateRequest = workUpdateRequestRepository.findById(workUpdateRequestId).orElseThrow(() -> new IllegalStateException("존재하지 않는 근무시간 변경 요청입니다."));
-        validateTime(updateStartDate, updateEndDate);
-        workUpdateRequest.updateWorkUpdateRequest(updateDate, updateStartDate, updateEndDate);
+    public void updateWorkUpdateRequest(WorkUpdateRequestDto.updateRequest updateRequest) {
+        WorkUpdateRequest workUpdateRequest = workUpdateRequestRepository.findById(updateRequest.getWorkUpdateRequestId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 근무시간 변경 요청입니다."));
+        validateTime(updateRequest.getUpdateStartDate(), updateRequest.getUpdateEndDate());
+        workUpdateRequest.updateWorkUpdateRequest(updateRequest.getUpdateDate(), updateRequest.getUpdateStartDate(), updateRequest.getUpdateEndDate());
     }
 
     private void validateWorkUpdateRequest(Long workId) {

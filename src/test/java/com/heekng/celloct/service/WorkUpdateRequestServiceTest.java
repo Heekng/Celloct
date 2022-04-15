@@ -1,10 +1,8 @@
 package com.heekng.celloct.service;
 
+import com.heekng.celloct.dto.WorkUpdateRequestDto;
 import com.heekng.celloct.entity.*;
-import com.heekng.celloct.repository.MemberRepository;
-import com.heekng.celloct.repository.ShopRepository;
-import com.heekng.celloct.repository.StaffRepository;
-import com.heekng.celloct.repository.WorkUpdateRequestRepository;
+import com.heekng.celloct.repository.*;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,7 +33,7 @@ class WorkUpdateRequestServiceTest {
     @Autowired
     StaffRepository staffRepository;
     @Autowired
-    WorkService workService;
+    WorkRepository workRepository;
     @Autowired
     EntityManager em;
 
@@ -59,17 +57,26 @@ class WorkUpdateRequestServiceTest {
                 .build();
         staffRepository.save(staff);
 
+        LocalDate workDate = LocalDate.of(2022, 10, 10);
+        LocalDateTime startDate = LocalDateTime.of(2022, 10, 10, 5, 10);
+        LocalDateTime endDate = LocalDateTime.of(2022, 10, 10, 6, 10);
 
         Work work = Work.builder()
-                .workDate(LocalDate.now())
-                .startDate(LocalDateTime.now().minusHours(2))
-                .endDate(LocalDateTime.now().minusHours(1))
+                .workDate(workDate)
+                .startDate(startDate)
+                .endDate(endDate)
                 .staff(staff)
                 .build();
-        workService.addWork(work);
+        workRepository.save(work);
 
-        Long workUpdateRequestId = workUpdateRequestService.addWorkUpdateRequest(work.getId(), work.getWorkDate(), work.getStartDate(), work.getEndDate());
         //when
+        WorkUpdateRequestDto.addRequest addRequest = WorkUpdateRequestDto.addRequest.builder()
+                .workId(work.getId())
+                .updateDate(workDate)
+                .updateStartDate(startDate.minusHours(1))
+                .updateEndDate(endDate.plusHours(1))
+                .build();
+        Long workUpdateRequestId = workUpdateRequestService.addWorkUpdateRequest(addRequest);
         WorkUpdateRequest findWorkUpdateRequest = workUpdateRequestRepository.findById(workUpdateRequestId).get();
 
         //then
@@ -96,23 +103,41 @@ class WorkUpdateRequestServiceTest {
                 .build();
         staffRepository.save(staff);
 
+        LocalDate workDate = LocalDate.of(2022, 10, 10);
+        LocalDateTime startDate = LocalDateTime.of(2022, 10, 10, 5, 10);
+        LocalDateTime endDate = LocalDateTime.of(2022, 10, 10, 6, 10);
+
         Work work = Work.builder()
-                .workDate(LocalDate.now())
-                .startDate(LocalDateTime.now().minusHours(2))
-                .endDate(LocalDateTime.now().minusHours(1))
+                .workDate(workDate)
+                .startDate(startDate)
+                .endDate(endDate)
                 .staff(staff)
                 .build();
-        workService.addWork(work);
+        workRepository.save(work);
 
-        Long workUpdateRequestId = workUpdateRequestService.addWorkUpdateRequest(work.getId(), work.getWorkDate(), work.getStartDate(), work.getEndDate());
+        WorkUpdateRequest workUpdateRequest = WorkUpdateRequest.builder()
+                .work(work)
+                .updateWorkDate(workDate)
+                .updateStartDate(startDate.minusHours(1))
+                .updateEndDate(startDate.plusHours(1))
+                .build();
+        workUpdateRequestRepository.save(workUpdateRequest);
 
-        WorkUpdateRequest findWorkUpdateRequest = workUpdateRequestRepository.findById(workUpdateRequestId).get();
+        em.flush();
+        em.clear();
 
-        LocalDateTime updateStartDate = findWorkUpdateRequest.getUpdateStartDate().minusHours(1);
         //when
-        workUpdateRequestService.updateWorkUpdateRequest(findWorkUpdateRequest.getId(), findWorkUpdateRequest.getUpdateWorkDate(), updateStartDate, findWorkUpdateRequest.getUpdateEndDate());
+        LocalDateTime updateStartDate = workUpdateRequest.getUpdateStartDate().minusHours(1);
+        WorkUpdateRequestDto.updateRequest updateRequest = WorkUpdateRequestDto.updateRequest.builder()
+                .workUpdateRequestId(workUpdateRequest.getId())
+                .updateDate(workUpdateRequest.getUpdateWorkDate())
+                .updateStartDate(updateStartDate)
+                .updateEndDate(workUpdateRequest.getUpdateEndDate())
+                .build();
+
+        workUpdateRequestService.updateWorkUpdateRequest(updateRequest);
         //then
-        assertThat(findWorkUpdateRequest.getUpdateStartDate()).isEqualTo(updateStartDate);
+        assertThat(updateRequest.getUpdateStartDate()).isEqualTo(updateStartDate);
     }
 
     @Test
@@ -135,19 +160,29 @@ class WorkUpdateRequestServiceTest {
                 .build();
         staffRepository.save(staff);
 
+        LocalDate workDate = LocalDate.of(2022, 10, 10);
+        LocalDateTime startDate = LocalDateTime.of(2022, 10, 10, 5, 10);
+        LocalDateTime endDate = LocalDateTime.of(2022, 10, 10, 6, 10);
+
         Work work = Work.builder()
-                .workDate(LocalDate.now())
-                .startDate(LocalDateTime.now().minusHours(2))
-                .endDate(LocalDateTime.now().minusHours(1))
+                .workDate(workDate)
+                .startDate(startDate)
+                .endDate(endDate)
                 .staff(staff)
                 .build();
-        workService.addWork(work);
+        workRepository.save(work);
 
-        Long workUpdateRequestId = workUpdateRequestService.addWorkUpdateRequest(work.getId(), work.getWorkDate(), work.getStartDate(), work.getEndDate());
-        WorkUpdateRequest workUpdateRequest = workUpdateRequestRepository.findById(workUpdateRequestId).get();
+        WorkUpdateRequest workUpdateRequest = WorkUpdateRequest.builder()
+                .work(work)
+                .updateWorkDate(workDate)
+                .updateStartDate(startDate.minusHours(1))
+                .updateEndDate(endDate)
+                .build();
+        workUpdateRequestRepository.save(workUpdateRequest);
+
         //when
-        workUpdateRequestService.deleteWorkUpdateRequest(workUpdateRequestId);
-        Optional<WorkUpdateRequest> workUpdateRequestOptional = workUpdateRequestRepository.findById(workUpdateRequestId);
+        workUpdateRequestService.deleteWorkUpdateRequest(workUpdateRequest.getId());
+        Optional<WorkUpdateRequest> workUpdateRequestOptional = workUpdateRequestRepository.findById(workUpdateRequest.getId());
         //then
         assertThat(workUpdateRequestOptional).isEmpty();
 
