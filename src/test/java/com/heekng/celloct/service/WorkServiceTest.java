@@ -1,5 +1,6 @@
 package com.heekng.celloct.service;
 
+import com.heekng.celloct.dto.WorkDto;
 import com.heekng.celloct.entity.Member;
 import com.heekng.celloct.entity.Shop;
 import com.heekng.celloct.entity.Staff;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -35,6 +37,8 @@ class WorkServiceTest {
     ShopRepository shopRepository;
     @Autowired
     MemberRepository memberRepository;
+    @Autowired
+    EntityManager em;
 
     /**
      * 근무시간 추가
@@ -58,22 +62,25 @@ class WorkServiceTest {
                 .member(member)
                 .build();
         staffRepository.save(staff);
+
+        em.flush();
+        em.clear();
+
+        //when
         LocalDate workDate = LocalDate.of(2020, 5, 5);
         LocalDateTime startDate = LocalDateTime.of(workDate, LocalTime.of(10, 50));
         LocalDateTime endDate = LocalDateTime.of(workDate, LocalTime.of(15, 50));
-        Work work = Work.builder()
-                .staff(staff)
+        WorkDto.AddRequest addRequest = WorkDto.AddRequest.builder()
+                .staffId(staff.getId())
                 .workDate(workDate)
                 .startDate(startDate)
                 .endDate(endDate)
                 .build();
-
-        //when
-        workService.addWork(work);
-        Work findWork = workRepository.findById(work.getId()).get();
+        Long workId = workService.addWork(addRequest);
+        Work findWork = workRepository.findById(workId).get();
 
         //then
-        assertThat(findWork).isEqualTo(work);
+        assertThat(findWork).isNotNull();
     }
 
     /**
@@ -107,16 +114,25 @@ class WorkServiceTest {
                 .startDate(startDate)
                 .endDate(endDate)
                 .build();
-        workService.addWork(work);
+        workRepository.save(work);
+
+        em.flush();
+        em.clear();
 
         //when
         LocalDateTime changeStartDate = startDate.minusHours(1);
         LocalDateTime changeEndDate = endDate.plusHours(1);
-        workService.changeWorkTime(work.getId(), changeStartDate, changeEndDate);
+        WorkDto.ChangeWorkTimeRequest changeWorkTimeRequest = WorkDto.ChangeWorkTimeRequest.builder()
+                .workId(work.getId())
+                .changeStartDate(changeStartDate)
+                .changeEndDate(changeEndDate)
+                .build();
+        workService.changeWorkTime(changeWorkTimeRequest);
+        Work findWork = workRepository.findById(work.getId()).get();
 
         //then
-        assertThat(work.getStartDate()).isEqualTo(changeStartDate);
-        assertThat(work.getEndDate()).isEqualTo(changeEndDate);
+        assertThat(findWork.getStartDate()).isEqualTo(changeStartDate);
+        assertThat(findWork.getEndDate()).isEqualTo(changeEndDate);
     }
 
     /**
@@ -150,7 +166,10 @@ class WorkServiceTest {
                 .startDate(startDate)
                 .endDate(endDate)
                 .build();
-        workService.addWork(work);
+        workRepository.save(work);
+
+        em.flush();
+        em.clear();
 
         //when
         workService.deleteWork(work.getId());
