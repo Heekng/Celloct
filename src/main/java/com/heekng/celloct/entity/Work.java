@@ -30,7 +30,7 @@ public class Work {
     private LocalDateTime endDate;
     private String note;
 
-    @OneToOne
+    @OneToOne(fetch = LAZY)
     @JoinColumn(name = "work_update_request_id")
     private WorkUpdateRequest workUpdateRequest;
 

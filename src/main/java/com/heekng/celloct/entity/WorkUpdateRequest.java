@@ -9,6 +9,8 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import static javax.persistence.FetchType.*;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -22,7 +24,7 @@ public class WorkUpdateRequest {
     private LocalDateTime updateStartDate;
     private LocalDateTime updateEndDate;
 
-    @OneToOne(mappedBy = "workUpdateRequest")
+    @OneToOne(mappedBy = "workUpdateRequest", fetch = LAZY)
     private Work work;
 
     @Builder
