@@ -21,13 +21,13 @@ public class Shop {
     private String phone;
     private String name;
 
-    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "shop")
     private List<Staff> staffList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "shop")
     private List<JoinRequest> joinRequests = new ArrayList<>();
 
-    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "shop")
     private List<Manager> managers = new ArrayList<>();
 
     @Builder
