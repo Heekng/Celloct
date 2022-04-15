@@ -1,5 +1,6 @@
 package com.heekng.celloct.service;
 
+import com.heekng.celloct.dto.JoinRequestDto;
 import com.heekng.celloct.entity.JoinRequest;
 import com.heekng.celloct.entity.Member;
 import com.heekng.celloct.entity.Shop;
@@ -27,10 +28,10 @@ public class JoinRequestService {
     private final StaffRepository staffRepository;
 
     //가입 신청
-    public Long joinRequest(Long memberId, Long shopId) {
-        validateDuplicateStaff(memberId, shopId);
-        Member findMember = memberRepository.findById(memberId).get();
-        Shop findShop = shopRepository.findById(shopId).get();
+    public Long joinRequest(JoinRequestDto.joinRequestDto joinRequestDto) {
+        Member findMember = memberRepository.findById(joinRequestDto.getMemberId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
+        Shop findShop = shopRepository.findById(joinRequestDto.getShopId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 매장입니다."));
+        validateDuplicateStaff(joinRequestDto.getMemberId(), joinRequestDto.getShopId());
         JoinRequest joinRequest = JoinRequest.builder()
                 .shop(findShop)
                 .member(findMember)
@@ -58,17 +59,13 @@ public class JoinRequestService {
 
     //가입신청 취소
     public void cancel(Long joinRequestId) {
-        JoinRequest findJoinRequest = joinRequestRepository.findById(joinRequestId).get();
+        JoinRequest findJoinRequest = joinRequestRepository.findById(joinRequestId).orElseThrow(() -> new IllegalStateException("존재하지 않는 가입신청입니다."));
         joinRequestRepository.delete(findJoinRequest);
     }
 
     //가입신청 승인
     public Long Approval(Long joinRequestId) {
-        Optional<JoinRequest> joinRequestOptional = joinRequestRepository.findById(joinRequestId);
-        if (joinRequestOptional.isEmpty()) {
-            throw new IllegalStateException("존재하지 않는 가입신청입니다.");
-        }
-        JoinRequest findJoinRequest = joinRequestOptional.get();
+        JoinRequest findJoinRequest = joinRequestRepository.findById(joinRequestId).orElseThrow(() -> new IllegalStateException("존재하지 않는 가입신청입니다."));
         Member member = findJoinRequest.getMember();
         Shop shop = findJoinRequest.getShop();
         validateDuplicateStaff(member.getId(), shop.getId());
