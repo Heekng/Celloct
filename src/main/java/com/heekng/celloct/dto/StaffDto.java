@@ -3,6 +3,7 @@ package com.heekng.celloct.dto;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class StaffDto {
@@ -24,10 +25,10 @@ public class StaffDto {
     public static class updateEmploymentDateRequest {
 
         private Long staffId;
-        private LocalDateTime changeEmploymentDate;
+        private LocalDate changeEmploymentDate;
 
         @Builder
-        public updateEmploymentDateRequest(Long staffId, LocalDateTime changeEmploymentDate) {
+        public updateEmploymentDateRequest(Long staffId, LocalDate changeEmploymentDate) {
             this.staffId = staffId;
             this.changeEmploymentDate = changeEmploymentDate;
         }

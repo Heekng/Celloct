@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -123,8 +124,8 @@ class StaffServiceTest {
         em.clear();
 
         //when
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime changeDate = now.minusDays(4);
+        LocalDate now = LocalDate.now();
+        LocalDate changeDate = now.minusDays(4);
         StaffDto.updateEmploymentDateRequest updateEmploymentDateRequestDto = StaffDto.updateEmploymentDateRequest.builder()
                 .staffId(staff.getId())
                 .changeEmploymentDate(changeDate)

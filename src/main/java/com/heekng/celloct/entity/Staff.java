@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public class Staff extends BaseTimeEntity {
     @Column(name = "staff_id")
     private Long id;
 
-    private LocalDateTime employmentDate;
+    private LocalDate employmentDate;
     private String name;
 
     @ManyToOne(fetch = LAZY)
@@ -38,15 +39,16 @@ public class Staff extends BaseTimeEntity {
 
 
     @Builder
-    public Staff(Member member, Shop shop) {
+    public Staff(Member member, Shop shop, String name) {
         this.member = member;
         this.shop = shop;
-        this.employmentDate = LocalDateTime.now();
+        this.employmentDate = LocalDate.now();
+        this.name = name;
         shop.getStaffList().add(this);
         member.getStaffList().add(this);
     }
 
-    public void changeEmploymentDate(LocalDateTime changeEmploymentDate) {
+    public void changeEmploymentDate(LocalDate changeEmploymentDate) {
         this.employmentDate = changeEmploymentDate;
     }
 

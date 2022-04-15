@@ -29,9 +29,10 @@ public class Manager extends BaseTimeEntity{
     private Member member;
 
     @Builder
-    public Manager(Shop shop, Member member) {
+    public Manager(Shop shop, Member member, String name) {
         this.shop = shop;
         this.member = member;
+        this.name = name;
         shop.getManagers().add(this);
         member.getManagers().add(this);
     }
