@@ -1,5 +1,6 @@
 package com.heekng.celloct.service;
 
+import com.heekng.celloct.dto.ManagerDto;
 import com.heekng.celloct.entity.Manager;
 import com.heekng.celloct.entity.Member;
 import com.heekng.celloct.entity.Shop;
@@ -22,10 +23,10 @@ public class ManagerService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public Manager addManager(Long shopId, Long managerMemberId) {
-        Shop shop = shopRepository.findById(shopId).orElseThrow(() -> new IllegalStateException("존재하지 않는 매장입니다."));
-        Member member = memberRepository.findById(managerMemberId).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
-        validateExistManager(shopId, managerMemberId);
+    public Manager addManager(ManagerDto.addRequest addRequestDto) {
+        Shop shop = shopRepository.findById(addRequestDto.getShopId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 매장입니다."));
+        Member member = memberRepository.findById(addRequestDto.getMemberId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
+        validateExistManager(addRequestDto.getShopId(), addRequestDto.getMemberId());
         Manager manager = Manager.builder()
                 .member(member)
                 .shop(shop)
