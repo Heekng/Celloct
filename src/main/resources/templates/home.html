@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:replace="fragments/header :: header">
+    <title>Hello</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader"></div>
+<div class="container">
+    <!--매장 가입, 내 매장, -->
+    <div class="row">
+        <div class="col-12 py-4 text-center">
+            <p class="display-3">안녕하세요.</p>
+            <h3>
+                <small class="text-muted">매장을 쉽게 관리할 수 있는 </small>
+                CELLOCT
+                <small class="text-muted">입니다.</small>
+            </h3>
+        </div>
+    </div>
+    <div class="row row justify-content-center">
+        <div class="col-md-8 py-2">
+            <div class="card" th:onclick="|location.href='@{/}'|">
+                <div class="card-body">
+                    <h5 class="card-title">나의 매장</h5>
+                    <p class="card-text">내가 관리하는 매장 또는 가입된 매장을 확인합니다.</p>
+                    <a class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-6 col-md-4 py-2">
+            <div class="card" th:onclick="|location.href='@{/}'|">
+                <div class="card-body">
+                    <h5 class="card-title">매장 가입</h5>
+                    <p class="card-text">Celloct를 이용하기 위해 매장에 가입하세요.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 py-2">
+            <div class="card" th:onclick="|location.href='@{/}'|">
+                <div class="card-body">
+                    <h5 class="card-title">매장 생성</h5>
+                    <p class="card-text">직원을 관리하기 위해 매장을 만듭니다.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!-- /container -->
+</body>
+</html>
