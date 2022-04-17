@@ -1,5 +1,6 @@
 package com.heekng.celloct.entity;
 
+import com.heekng.celloct.dto.ShopDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -47,7 +47,7 @@ class ShopTest {
         em.persist(shop);
 
         //when
-        shop.updatePhone(updatePhone);
+        shop.update(updatePhone, null);
         Shop findShop = em.find(Shop.class, shop.getId());
         //then
         assertThat(findShop.getPhone()).isEqualTo(updatePhone);

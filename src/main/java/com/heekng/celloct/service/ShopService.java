@@ -1,5 +1,6 @@
 package com.heekng.celloct.service;
 
+import com.heekng.celloct.dto.ShopDto;
 import com.heekng.celloct.entity.Shop;
 import com.heekng.celloct.repository.ShopRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,8 @@ public class ShopService {
      * @return
      */
     @Transactional
-    public Long makeShop(Shop shop) {
+    public Long makeShop(ShopDto.createRequest createRequest) {
+        Shop shop = createRequest.toEntity();
         validateDuplicateShop(shop);
         shopRepository.save(shop);
         return shop.getId();
@@ -39,13 +41,11 @@ public class ShopService {
 
     /**
      * shop 전화번호 변경
-     * @param shopId
-     * @param shopPhone
      */
     @Transactional
-    public void updatePhone(Long shopId, String shopPhone) {
-        Shop shop = shopRepository.findById(shopId).get();
-        shop.updatePhone(shopPhone);
+    public void updatePhone(ShopDto.updateRequest updateRequest) {
+        Shop shop = shopRepository.findById(updateRequest.getId()).get();
+        shop.update(updateRequest.getPhone(), updateRequest.getInfo());
     }
 
     /**

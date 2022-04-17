@@ -22,6 +22,7 @@ public class Shop extends BaseTimeEntity {
 
     private String phone;
     private String name;
+    private String info;
 
     @OneToMany(mappedBy = "shop", cascade = REMOVE)
     private List<Staff> staffList = new ArrayList<>();
@@ -33,12 +34,14 @@ public class Shop extends BaseTimeEntity {
     private List<Manager> managers = new ArrayList<>();
 
     @Builder
-    public Shop(String phone, String name) {
+    public Shop(String phone, String name, String info) {
         this.phone = phone;
         this.name = name;
+        this.info = info;
     }
 
-    public void updatePhone(String phone) {
+    public void update(String phone, String info) {
         this.phone = phone;
+        this.info = info;
     }
 }
