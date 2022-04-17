@@ -18,7 +18,11 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model) {
-        log.info("test");
+        return "home";
+    }
+
+    @GetMapping("/index")
+    public String index(Model model) {
         SessionMember sessionMember = (SessionMember) httpSession.getAttribute("member");
 
         if (sessionMember != null) {
