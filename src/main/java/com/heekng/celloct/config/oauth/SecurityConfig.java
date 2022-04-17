@@ -21,7 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .authorizeRequests() //URL별 권한 관리
                         .antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**").permitAll()
-                        .antMatchers("/api/v1/**").hasRole(Role.USER.name())
+//                        .antMatchers("/store/**").hasRole(Role.USER.name())
                         .anyRequest().authenticated() //이외의 요청은 인증된 사용자면 모두 허용한다.
                 .and()
                     .logout()

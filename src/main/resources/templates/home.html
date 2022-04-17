@@ -7,7 +7,6 @@
 <body>
 <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
 <div class="container">
-    <!--매장 가입, 내 매장, -->
     <div class="row">
         <div class="col-12 py-4 text-center">
             <p class="display-3">안녕하세요.</p>
@@ -18,7 +17,7 @@
             </h3>
         </div>
     </div>
-    <div class="row row justify-content-center">
+    <div class="row justify-content-center">
         <div class="col-md-8 py-2">
             <div class="card" th:onclick="|location.href='@{/}'|">
                 <div class="card-body">
@@ -40,7 +39,7 @@
             </div>
         </div>
         <div class="col-6 col-md-4 py-2">
-            <div class="card" th:onclick="|location.href='@{/}'|">
+            <div class="card" th:onclick="|location.href='@{/store/create}'|">
                 <div class="card-body">
                     <h5 class="card-title">매장 생성</h5>
                     <p class="card-text">직원을 관리하기 위해 매장을 만듭니다.</p>
