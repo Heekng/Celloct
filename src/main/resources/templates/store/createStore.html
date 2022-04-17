@@ -17,17 +17,18 @@
     </div>
     <div class="row justify-content-center">
         <div class="col-xl-6 col-lg-8  py-2">
-            <form>
-                <div class="form-floating mb-3">
-                    <input id="name" type="text" class="form-control" placeholder=" "/>
+            <form name="joinStoreForm" th:action="@{/start/create}" th:method="post" th:object="${shop}">
+                <div class="form-floating input-group mb-3">
+                    <input th:field="*{name}" type="text" class="form-control" placeholder="매장 이름"/>
                     <label for="name">매장 이름</label>
+                    <button type="button" class="btn btn-primary" onclick="checkName()">중복 확인</button>
                 </div>
                 <div class="form-floating mb-3">
-                    <input id="phone" type="text" class="form-control" placeholder=" "/>
+                    <input th:field="*{phone}" type="text" class="form-control" placeholder=" "/>
                     <label for="phone">매장 연락처</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input id="info" type="text" class="form-control" placeholder=" "/>
+                    <input th:field="*{info}" type="text" class="form-control" placeholder=" "/>
                     <label for="info">매장 설명</label>
                 </div>
                 <div class="d-grid">
@@ -37,5 +38,25 @@
         </div>
     </div>
 </div> <!-- /container -->
+<script th:inline="javascript">
+    async function checkName() {
+        let name = document.joinStoreForm.name.value;
+
+        const url = "/shop/name/exist?name=" + name;
+        const option = {
+            method: "get"
+        }
+        await fetch(url, option)
+            .then((result) => {
+                return result.json();
+            }).then((result) => {
+                if (result) {
+                    console.log("이미 존재하는 매장명입니다.");
+                } else {
+                    console.log("존재하지 않는 매장명입니다.");
+                }
+            });
+    }
+</script>
 </body>
 </html>

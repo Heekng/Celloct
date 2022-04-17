@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -34,9 +35,9 @@ public class ShopService {
      * @param shopName
      * @return true(중복되지 않음), false(중복)
      */
-    public boolean checkName(String shopName) {
-        List<Shop> shops = shopRepository.findByName(shopName);
-        return shops.isEmpty();
+    public boolean existName(String shopName) {
+        Optional<Shop> shops = shopRepository.findByName(shopName);
+        return shops.isPresent();
     }
 
     /**
@@ -72,13 +73,13 @@ public class ShopService {
      * @param name
      * @return
      */
-    public List<Shop> findListByName(String name) {
+    public Optional<Shop> findListByName(String name) {
         return shopRepository.findByName(name);
     }
 
     private void validateDuplicateShop(Shop shop) {
-        List<Shop> shops = shopRepository.findByName(shop.getName());
-        if (!shops.isEmpty()) {
+        Optional<Shop> shops = shopRepository.findByName(shop.getName());
+        if (shops.isPresent()) {
             throw new IllegalStateException("이미 존재하는 매장입니다.");
         }
     }
