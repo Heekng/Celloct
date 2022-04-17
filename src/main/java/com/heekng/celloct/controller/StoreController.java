@@ -15,4 +15,10 @@ public class StoreController {
         log.info("createStore");
         return "/store/createStore";
     }
+
+    @GetMapping("/join")
+    public String joinStore() {
+        log.info("joinStore");
+        return "/store/joinStore";
+    }
 }
