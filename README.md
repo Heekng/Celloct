@@ -20,7 +20,7 @@
 
 ## 개발 과정
 
-- [x] DB(ERD)
+- [x] DB(ERD) -> https://www.erdcloud.com/d/MypHjcCYBskmfucBw
 - [x] Entity (임시)
 - [x] Service, Repository (임시)
 - [x] security, OAuth2
