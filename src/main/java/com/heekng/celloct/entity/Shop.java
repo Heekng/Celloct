@@ -44,4 +44,8 @@ public class Shop extends BaseTimeEntity {
         this.phone = phone;
         this.info = info;
     }
+
+    public void addManager(Manager manager) {
+        this.managers.add(manager);
+    }
 }
