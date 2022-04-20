@@ -22,7 +22,7 @@ public class ShopController {
     public String createStore(Model model) {
         log.info("createShop");
         model.addAttribute("shop", new ShopDto.createRequest());
-        return "createShop";
+        return "shop/createShop";
     }
 
     @ResponseBody
@@ -34,6 +34,6 @@ public class ShopController {
     @GetMapping("/join")
     public String joinShop() {
         log.info("joinShop");
-        return "joinShop";
+        return "shop/joinShop";
     }
 }
