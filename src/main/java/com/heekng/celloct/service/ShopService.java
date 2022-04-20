@@ -1,7 +1,11 @@
 package com.heekng.celloct.service;
 
 import com.heekng.celloct.dto.ShopDto;
+import com.heekng.celloct.entity.Manager;
+import com.heekng.celloct.entity.Member;
 import com.heekng.celloct.entity.Shop;
+import com.heekng.celloct.repository.ManagerRepository;
+import com.heekng.celloct.repository.MemberRepository;
 import com.heekng.celloct.repository.ShopRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,17 +20,27 @@ import java.util.Optional;
 public class ShopService {
 
     private final ShopRepository shopRepository;
+    private final MemberRepository memberRepository;
 
     /**
-     * shop 생성
-     * @param shop
-     * @return
+     * shop 생성 및 매니저 등록
      */
     @Transactional
-    public Long makeShop(ShopDto.createRequest createRequest) {
+    public Long makeShop(ShopDto.createRequest createRequest, Long memberId) {
         Shop shop = createRequest.toEntity();
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
+        String managerName = createRequest.getManagerName().equals("") ? member.getName() : createRequest.getName();
         validateDuplicateShop(shop);
+
+        Manager manager = Manager.builder()
+                .member(member)
+                .shop(shop)
+                .name(managerName)
+                .build();
+        shop.addManager(manager);
+
         shopRepository.save(shop);
+
         return shop.getId();
     }
 
