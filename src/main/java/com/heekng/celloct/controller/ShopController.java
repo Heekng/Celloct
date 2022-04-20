@@ -22,7 +22,7 @@ public class ShopController {
     public String createStore(Model model) {
         log.info("createShop");
         model.addAttribute("shop", new ShopDto.createRequest());
-        return "/store/createStore";
+        return "createShop";
     }
 
     @ResponseBody
