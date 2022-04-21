@@ -2,6 +2,7 @@ package com.heekng.celloct.controller;
 
 import com.heekng.celloct.config.oauth.dto.SessionMember;
 import com.heekng.celloct.dto.ShopDto;
+import com.heekng.celloct.entity.Shop;
 import com.heekng.celloct.service.ShopService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,7 @@ public class ShopController {
         redirectAttributes.addAttribute("shopId", shopId);
         return "redirect:/shop/{shopId}";
     }
+
     @ResponseBody
     @GetMapping("/name/exist")
     public boolean existName(String name) {
@@ -45,5 +47,12 @@ public class ShopController {
     public String joinShop() {
         log.info("joinShop");
         return "shop/joinShop";
+    }
+
+    @GetMapping("/{shopId}")
+    public String shopDetail(@PathVariable Long shopId, Model model) {
+        Shop shop = shopService.findShop(shopId);
+        model.addAttribute("shop", shop);
+        return "shop/shopDetail";
     }
 }
