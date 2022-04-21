@@ -50,5 +50,23 @@ public class ShopDto {
         }
     }
 
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class ListResponse {
+        private Long id;
+        private String name;
+        private String info;
+        private Integer staffCount;
+
+        @Builder
+        public ListResponse(Shop shop) {
+            this.id = shop.getId();
+            this.name = shop.getName();
+            this.info = shop.getInfo();
+            this.staffCount = shop.getStaffList().size();
+        }
+    }
+
 
 }

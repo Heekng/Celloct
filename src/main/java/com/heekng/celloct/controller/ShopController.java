@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @Slf4j
@@ -47,6 +48,12 @@ public class ShopController {
     public String joinShop() {
         log.info("joinShop");
         return "shop/joinShop";
+    }
+
+    @ResponseBody
+    @GetMapping("/list")
+    public List<ShopDto.ListResponse> shopList(@RequestParam(name = "shopName") String shopName) {
+        return shopService.findListResponseListByNameContaining(shopName);
     }
 
     @GetMapping("/{shopId}")

@@ -4,7 +4,6 @@ import com.heekng.celloct.dto.ShopDto;
 import com.heekng.celloct.entity.Manager;
 import com.heekng.celloct.entity.Member;
 import com.heekng.celloct.entity.Shop;
-import com.heekng.celloct.repository.ManagerRepository;
 import com.heekng.celloct.repository.MemberRepository;
 import com.heekng.celloct.repository.ShopRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -89,6 +89,12 @@ public class ShopService {
      */
     public Optional<Shop> findListByName(String name) {
         return shopRepository.findByName(name);
+    }
+
+    public List<ShopDto.ListResponse> findListResponseListByNameContaining(String name) {
+        return shopRepository.findListByNameContaining(name)
+                .stream().map(ShopDto.ListResponse::new)
+                .collect(Collectors.toList());
     }
 
     private void validateDuplicateShop(Shop shop) {
