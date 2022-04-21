@@ -13,8 +13,11 @@ spring:
       ddl-auto: create # entity 테스트 상황이므로 create
     properties:
       hibernate:
-        format_sql: true # 쿼리 확인
+        format_sql: true # 보기좋게 쿼리 남김
+#        show_sql: true # 한줄로 쿼리 보여준다.
 
 logging:
   level:
-    org.hibernate.SQL: debug # 임시로 로그 남김
+    org:
+      hibernate:
+        SQL: debug # 임시로 로그 남김
