@@ -10,7 +10,8 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create # entity 테스트 상황이므로 create
+      ddl-auto: none
+    #      ddl-auto: create # entity 테스트 상황이므로 create
     properties:
       hibernate:
         format_sql: true # 보기좋게 쿼리 남김
