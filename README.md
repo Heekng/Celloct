@@ -1,4 +1,4 @@
-# Celloct
+# Celloct [![Build Status](https://app.travis-ci.com/Heekng/Celloct.svg?token=WRCyztUpsDvwjVcyMsdU&branch=main)](https://app.travis-ci.com/Heekng/Celloct)
 
 `Celloct`는 직원 근무시간 관리 및 재고관리 시스템이 없는 소상공인을 위한 프로젝트입니다.
 
