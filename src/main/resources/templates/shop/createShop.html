@@ -22,9 +22,6 @@
                     <input th:field="*{name}" type="text" class="form-control" placeholder=" " onkeyup="shopNameChange()" required/>
                     <label for="name">매장 이름</label>
                     <button type="button" class="btn btn-primary" onclick="checkName()">중복 확인</button>
-                    <div class="invalid-feedback">
-                        매장 이름은 필수입니다.
-                    </div>
                 </div>
                 <div id="nameAlertPlaceholder"></div>
                 <div class="form-floating mb-3">
@@ -65,6 +62,11 @@
 
     async function checkName() {
         let name = document.joinStoreForm.name.value;
+        if (name.trim() === "") {
+            nameAlert("매장명은 공백으로 이뤄질 수 없습니다.", "danger");
+            createShop.isCheckShopName = false;
+            return false;
+        }
 
         const url = "/shop/name/exist?name=" + name;
         const option = {
