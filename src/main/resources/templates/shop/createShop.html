@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:replace="fragments/header :: header">
+    <title>Hello</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader"></div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 py-4 text-center">
+            <p class="display-4">매장 등록</p>
+            <h3>
+                <small class="text-muted">매장 정보를 입력하여 매장을 등록합니다.</small>
+            </h3>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-xl-6 col-lg-8 py-2">
+            <form name="joinStoreForm" class="needs-validation" th:action="@{/shop/create}" method="post" th:object="${shop}" novalidate>
+                <div class="form-floating input-group mb-3">
+                    <input th:field="*{name}" type="text" class="form-control" placeholder=" " onkeyup="shopNameChange()" required/>
+                    <label for="name">매장 이름</label>
+                    <button type="button" class="btn btn-primary" onclick="checkName()">중복 확인</button>
+                </div>
+                <div id="nameAlertPlaceholder"></div>
+                <div class="form-floating mb-3">
+                    <input th:field="*{phone}" type="text" class="form-control" placeholder=" " required/>
+                    <label for="phone">매장 연락처</label>
+                    <div class="invalid-feedback">
+                        매장 연락처는 필수입니다.
+                    </div>
+                </div>
+                <div class="form-floating mb-3">
+                    <input th:field="*{info}" type="text" class="form-control" placeholder=" " required/>
+                    <label for="info">매장 설명</label>
+                    <div class="invalid-feedback">
+                        매장 설명은 필수입니다.
+                    </div>
+                </div>
+                <div class="form-floating mb-3">
+                    <input th:field="*{managerName}" type="text" class="form-control" placeholder=" "/>
+                    <label for="info">매니저 이름 (미입력시 기존 이름)</label>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary btn-lg">등록</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> <!-- /container -->
+<script th:inline="javascript">
+    const createShop = {
+        isCheckShopName: false
+    }
+
+    function shopNameChange() {
+        let name = document.joinStoreForm.name.value;
+        nameAlert("매장명 중복확인이 필요합니다.", "warning");
+        createShop.isCheckShopName = false;
+    }
+
+    async function checkName() {
+        let name = document.joinStoreForm.name.value;
+        if (name.trim() === "") {
+            nameAlert("매장명은 공백으로 이뤄질 수 없습니다.", "danger");
+            createShop.isCheckShopName = false;
+            return false;
+        }
+
+        const url = "/shop/name/exist?name=" + name;
+        const option = {
+            method: "get"
+        }
+        await fetch(url, option)
+            .then((result) => {
+                return result.json();
+            }).then((result) => {
+                if (result) {
+                    nameAlert("이미 존재하는 매장명입니다.", "danger");
+                    createShop.isCheckShopName = false;
+                } else {
+                    nameAlert("매장명 중복확인이 완료되었습니다.", "success");
+                    createShop.isCheckShopName = true;
+                }
+            });
+    }
+
+    function nameAlert(message, type) {
+        let alertPlaceholder = document.getElementById("nameAlertPlaceholder");
+        alertPlaceholder.innerHTML = "";
+
+        let wrapper = document.createElement('liveAlertPlaceholder')
+        wrapper.innerHTML = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
+
+        alertPlaceholder.append(wrapper);
+    }
+
+    (function () {
+        let form = document.joinStoreForm;
+
+        form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+
+            if (!createShop.isCheckShopName) {
+                nameAlert("매장명 중복확인이 필요합니다.", "warning");
+                event.preventDefault()
+                event.stopPropagation()
+            }
+
+            let managerName = document.getElementById("managerName");
+            managerName.value = managerName.value.trim();
+
+            form.classList.add('was-validated');
+        }, false)
+    })();
+
+
+</script>
+</body>
+</html>

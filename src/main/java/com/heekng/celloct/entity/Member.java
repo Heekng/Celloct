@@ -9,40 +9,44 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.CascadeType.*;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member {
+public class Member extends BaseTimeEntity {
 
     @Id
     @GeneratedValue
     @Column(name = "member_id")
     private Long id;
 
-    private String email;
-    private String password;
     private String name;
+    private String email;
+    private String picture;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<Authority> authorities = new ArrayList<>();
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<Shop> shops = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "member", cascade = REMOVE)
     private List<JoinRequest> joinRequests = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "member", cascade = REMOVE)
     private List<Staff> staffList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = REMOVE)
+    private List<Manager> managers = new ArrayList<>();
+
     @Builder
-    public Member(String email, String password, String name) {
-        this.email = email;
-        this.password = password;
+    public Member(String name, String email, String picture, Role role) {
         this.name = name;
+        this.email = email;
+        this.picture = picture;
+        this.role = role;
     }
 
-    public void changePassword(String password) {
-        this.password = password;
+    public Member updatePicture(String picture) {
+        this.picture = picture;
+        return this;
     }
 }

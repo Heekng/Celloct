@@ -31,13 +31,12 @@ class JoinRequestRepositoryTest {
         Member member1 = Member.builder()
                 .name("member1")
                 .email("member1@test.com")
-                .password("member1Password")
                 .build();
         memberRepository.save(member1);
 
         Shop shop = Shop.builder()
                 .phone("010-1234-1234")
-                .member(member1)
+                .name("shop1")
                 .build();
         shopRepository.save(shop);
 
@@ -58,13 +57,12 @@ class JoinRequestRepositoryTest {
         Member member1 = Member.builder()
                 .name("member1")
                 .email("member1@test.com")
-                .password("member1Password")
                 .build();
         memberRepository.save(member1);
 
         Shop shop = Shop.builder()
                 .phone("010-1234-1234")
-                .member(member1)
+                .name("shop1")
                 .build();
         shopRepository.save(shop);
 
@@ -86,13 +84,12 @@ class JoinRequestRepositoryTest {
         Member member1 = Member.builder()
                 .name("member1")
                 .email("member1@test.com")
-                .password("member1Password")
                 .build();
         memberRepository.save(member1);
 
         Shop shop = Shop.builder()
                 .phone("010-1234-1234")
-                .member(member1)
+                .name("shop1")
                 .build();
         shopRepository.save(shop);
 
@@ -113,13 +110,12 @@ class JoinRequestRepositoryTest {
         Member member1 = Member.builder()
                 .name("member1")
                 .email("member1@test.com")
-                .password("member1Password")
                 .build();
         memberRepository.save(member1);
 
         Shop shop = Shop.builder()
                 .phone("010-1234-1234")
-                .member(member1)
+                .name("shop1")
                 .build();
         shopRepository.save(shop);
 

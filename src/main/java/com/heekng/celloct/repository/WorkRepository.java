@@ -1,8 +1,11 @@
 package com.heekng.celloct.repository;
 
 import com.heekng.celloct.entity.Work;
-import com.heekng.celloct.entity.WorkId;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface WorkRepository extends JpaRepository<Work, WorkId> {
+import java.time.LocalDate;
+import java.util.List;
+
+public interface WorkRepository extends JpaRepository<Work, Long> {
+    List<Work> findByWorkDateAndStaffId(LocalDate workDate, Long staffId);
 }

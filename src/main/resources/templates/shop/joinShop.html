@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:replace="fragments/header :: header">
+    <title>Hello</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader"></div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 py-4 text-center">
+            <p class="display-4">매장 가입</p>
+            <h3>
+                <small class="text-muted">매장을 검색하고 가입신청합니다.</small>
+            </h3>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-xl-6 col-lg-8 py-2">
+            <div class="form-floating mb-3 input-group">
+                <input id="name" type="text" class="form-control" placeholder=" "/>
+                <label for="name">매장명</label>
+                <button type="button" class="btn btn-primary px-4" onclick="findShop()">검색</button>
+            </div>
+            <div class="alert alert-secondary" role="alert" id="div_noShop_alert" style="display: none;">
+                검색된 매장이 없습니다.
+            </div>
+            <div>
+                <ol class="list-group list-group-numbered" id="ol_shopList">
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div class="fw-bold">매장명</div>
+                            매장 설명
+                        </div>
+                        <span class="badge bg-primary rounded-pill">가입자 <span>14</span></span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div class="fw-bold">매장명</div>
+                            매장 설명
+                        </div>
+                        <span class="badge bg-primary rounded-pill">가입자 <span>14</span></span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div class="fw-bold">매장명</div>
+                            매장 설명
+                        </div>
+                        <span class="badge bg-primary rounded-pill">가입자 <span>14</span></span>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div> <!-- /container -->
+<script th:inline="javascript">
+    async function findShop() {
+        let inputName = document.querySelector("#name");
+
+        const url = "/shop/list?shopName=" + inputName.value;
+        const option = {
+            method: "get"
+        }
+        await fetch(url, option)
+            .then((result) => {
+                return result.json();
+            }).then((shopList) => {
+                let ol_shopList = document.querySelector("#ol_shopList");
+                ol_shopList.innerHTML = "";
+                let div_noShop_alert = document.querySelector("#div_noShop_alert");
+                div_noShop_alert.style.display = "none";
+                if (shopList.length > 0) {
+                    let df = document.createDocumentFragment();
+                    for (const shop of shopList) {
+                        let li = document.createElement("li");
+                        li.className = "list-group-item d-flex justify-content-between align-items-start";
+                        let div = document.createElement("div");
+                        div.className="ms-2 me-auto"
+                        let div2 = document.createElement("div");
+                        div2.className = "fw-bold";
+                        div2.append(shop.name);
+                        div.append(div2);
+                        div.append(shop.info);
+                        li.append(div);
+                        let span = document.createElement("span");
+                        span.className = "badge bg-primary rounded-pill";
+                        let span2 = document.createElement("span");
+                        span2.append(shop.staffCount);
+                        span.append("가입자 ");
+                        span.append(span2);
+                        li.append(span);
+                        df.append(li);
+                    }
+                    ol_shopList.append(df);
+                } else {
+                    div_noShop_alert.style.display = "";
+                }
+            });
+    }
+</script>
+</body>
+</html>

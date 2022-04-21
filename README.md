@@ -20,9 +20,10 @@
 
 ## 개발 과정
 
-- [ ] DB(ERD)
-- [ ] Entity
-- [ ] Service, Repository
+- [x] DB(ERD) -> https://www.erdcloud.com/d/MypHjcCYBskmfucBw
+- [x] Entity (임시)
+- [x] Service, Repository (임시)
+- [x] security, OAuth2
 - [ ] thymeleaf frontend
 - [x] 서버 CI/CD 배포 자동화
 - [ ] API Controller

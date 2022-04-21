@@ -9,23 +9,30 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import static javax.persistence.CascadeType.*;
+import static javax.persistence.FetchType.*;
+
 @Entity
 @Getter
-@IdClass(WorkId.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Work {
+public class Work extends BaseTimeEntity {
 
-    @Id
+    @Id @GeneratedValue
+    @Column(name = "work_id")
+    private Long id;
+
     private LocalDate workDate;
 
-    @Id
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "staff_id")
     private Staff staff;
-
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private String note;
+
+    @OneToOne(fetch = LAZY, cascade = REMOVE)
+    @JoinColumn(name = "work_update_request_id")
+    private WorkUpdateRequest workUpdateRequest;
 
     @Builder
     public Work(LocalDate workDate, Staff staff, LocalDateTime startDate, LocalDateTime endDate, String note) {
@@ -34,5 +41,18 @@ public class Work {
         this.startDate = startDate;
         this.endDate = endDate;
         this.note = note;
+    }
+
+    public void changeWorkTime(LocalDateTime startDate, LocalDateTime endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    public void addWorkUpdateRequest(WorkUpdateRequest workUpdateRequest) {
+        this.workUpdateRequest = workUpdateRequest;
+    }
+
+    public void deleteWorkUpdateRequest() {
+        this.workUpdateRequest = null;
     }
 }

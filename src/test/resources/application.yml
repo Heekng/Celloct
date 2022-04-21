@@ -1,0 +1,21 @@
+spring:
+
+  jpa:
+    hibernate:
+      ddl-auto: create # entity 테스트 상황이므로 create
+    properties:
+      hibernate:
+        format_sql: true # 쿼리 확인
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: test
+            client-secret: test
+            scope: profile,email
+
+logging:
+  level:
+    org.hibernate.SQL: debug # 임시로 로그 남김
