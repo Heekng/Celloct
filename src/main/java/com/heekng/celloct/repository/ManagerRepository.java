@@ -4,8 +4,11 @@ import com.heekng.celloct.entity.Manager;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ManagerRepository extends JpaRepository<Manager, Long> {
 
-    List<Manager> findByMemberIdAndShopId(Long memberId, Long shopId);
+    Optional<Manager> findByMemberIdAndShopId(Long memberId, Long shopId);
+
+    List<Manager> findByMemberId(Long memberId);
 }

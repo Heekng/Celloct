@@ -68,7 +68,6 @@ public class ShopDto {
         }
     }
 
-
     @Getter
     @Setter
     @NoArgsConstructor
@@ -85,6 +84,21 @@ public class ShopDto {
             this.name = shop.getName();
             this.info = shop.getInfo();
         }
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class HomeShopResponse {
+        private Long id;
+        private String name;
+
+        @Builder
+        public HomeShopResponse(Shop shop) {
+            this.id = shop.getId();
+            this.name = shop.getName();
+        }
+
     }
 
 }

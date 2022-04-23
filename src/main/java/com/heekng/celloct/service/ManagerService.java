@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -39,9 +40,13 @@ public class ManagerService {
         managerRepository.deleteById(managerId);
     }
 
+    public List<Manager> findByMemberId(Long memberId) {
+        return managerRepository.findByMemberId(memberId);
+    }
+
     private void validateExistManager(Long shopId, Long memberId) {
-        List<Manager> managers = managerRepository.findByMemberIdAndShopId(memberId, shopId);
-        if (!managers.isEmpty()) {
+        Optional<Manager> managers = managerRepository.findByMemberIdAndShopId(memberId, shopId);
+        if (managers.isPresent()) {
             throw new IllegalStateException("이미 존재하는 관리자입니다.");
         }
     }
