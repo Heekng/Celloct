@@ -18,12 +18,26 @@
         </div>
     </div>
     <div class="row justify-content-center">
-        <div class="col-md-8 py-2">
+        <div class="col-6 col-md-4 py-2">
             <div class="card" th:onclick="|location.href='@{/}'|">
                 <div class="card-body">
-                    <h5 class="card-title">나의 매장</h5>
-                    <p class="card-text">내가 관리하는 매장 또는 가입된 매장을 확인합니다.</p>
-                    <a class="btn btn-primary">Go somewhere</a>
+                    <h5 class="card-title">내 가입 매장</h5>
+                    <p class="card-text">내가 가입한 매장을 확인합니다.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 py-2">
+            <div class="card"><!-- th:onclick="|location.href='@{/manager}'|"-->
+                <div class="card-body">
+                    <h5 class="card-title">매장 관리</h5>
+                    <p class="card-text">내가 관리하는 매장을 확인합니다.</p>
+                    <select id="select_manageShop" name="select_manageShop" class="form-select mb-2" aria-label="my manage shop">
+                        <option th:if="${manageShops != null}" th:each="shop : ${manageShops}" th:text="${shop.name}" th:value="${shop.id}"></option>
+                        <option th:if="${manageShops != null && #lists.size(manageShops) == 0}" value="-1">가입한 매장이 없습니다.</option>
+                        <option th:if="${manageShops == null}" value="-1">로그인이 필요합니다.</option>
+                    </select>
+                    <button id="button_manageShop" class="btn btn-primary w-100" onclick="goManageShop();">매장 관리</button>
                 </div>
             </div>
         </div>
@@ -49,5 +63,21 @@
         </div>
     </div>
 </div> <!-- /container -->
+<script th:inline="javascript">
+    window.onload = () => {
+        if ([[${manageShops == null}]]) {
+            document.querySelector("#button_manageShop").setAttribute("disabled", true);
+        }
+
+    };
+    function goManageShop() {
+        let manageShopValue = document.querySelector("#select_manageShop").value;
+        if (manageShopValue < 1) {
+            alert("매장을 확인해주세요.");
+            return false;
+        }
+        location.href = "/shop/" + manageShopValue;
+    }
+</script>
 </body>
 </html>
