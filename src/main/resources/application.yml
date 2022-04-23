@@ -1,12 +1,8 @@
 spring:
   profiles:
-    active: oauth
-
-  datasource:
-    url: jdbc:h2:tcp://localhost/~/celloct
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+    group:
+      "local": "oauth"
+      "real": "oauth,real"
 
   jpa:
     hibernate:
