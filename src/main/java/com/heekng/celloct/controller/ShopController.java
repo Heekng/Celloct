@@ -26,12 +26,12 @@ public class ShopController {
     @GetMapping("/create")
     public String createStore(Model model) {
         log.info("createShop");
-        model.addAttribute("shop", new ShopDto.createRequest());
+        model.addAttribute("shop", new ShopDto.CreateRequest());
         return "shop/createShop";
     }
 
     @PostMapping("/create")
-    public String createStoreRequest(ShopDto.createRequest createRequest, RedirectAttributes redirectAttributes) {
+    public String createStoreRequest(ShopDto.CreateRequest createRequest, RedirectAttributes redirectAttributes) {
         SessionMember sessionMember = (SessionMember) httpSession.getAttribute("member");
         Long shopId = shopService.makeShop(createRequest, sessionMember.getId());
         redirectAttributes.addAttribute("shopId", shopId);
@@ -59,7 +59,7 @@ public class ShopController {
     @GetMapping("/{shopId}")
     public String shopDetail(@PathVariable Long shopId, Model model) {
         Shop shop = shopService.findShop(shopId);
-        model.addAttribute("shop", shop);
+        model.addAttribute("shop", new ShopDto.ShopDetailResponse(shop));
         return "shop/shopDetail";
     }
 }

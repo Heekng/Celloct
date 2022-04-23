@@ -26,7 +26,7 @@ public class ShopService {
      * shop 생성 및 매니저 등록
      */
     @Transactional
-    public Long makeShop(ShopDto.createRequest createRequest, Long memberId) {
+    public Long makeShop(ShopDto.CreateRequest createRequest, Long memberId) {
         Shop shop = createRequest.toEntity();
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
         String managerName = createRequest.getManagerName().equals("") ? member.getName() : createRequest.getName();
@@ -58,7 +58,7 @@ public class ShopService {
      * shop 전화번호 변경
      */
     @Transactional
-    public void updatePhone(ShopDto.updateRequest updateRequest) {
+    public void updatePhone(ShopDto.UpdateRequest updateRequest) {
         Shop shop = shopRepository.findById(updateRequest.getId()).get();
         shop.update(updateRequest.getPhone(), updateRequest.getInfo());
     }

@@ -8,7 +8,8 @@ import java.util.List;
 public interface JoinRequestRepository extends JpaRepository<JoinRequest, Long> {
 
     List<JoinRequest> findByShopId(Long shopId);
-
     List<JoinRequest> findByMemberId(Long memberId);
+
+    List<JoinRequest> findByMemberIdAndShopId(Long memberId, Long shopId);
 
 }

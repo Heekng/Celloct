@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -28,9 +27,11 @@ public class JoinRequestService {
     private final StaffRepository staffRepository;
 
     //가입 신청
-    public Long joinRequest(JoinRequestDto.joinRequestDto joinRequestDto) {
+    @Transactional
+    public Long joinRequest(JoinRequestDto.joinRequest joinRequestDto) {
         Member findMember = memberRepository.findById(joinRequestDto.getMemberId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
         Shop findShop = shopRepository.findById(joinRequestDto.getShopId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 매장입니다."));
+        validateDuplicateJoinRequest(joinRequestDto.getMemberId(), joinRequestDto.getShopId());
         validateDuplicateStaff(joinRequestDto.getMemberId(), joinRequestDto.getShopId());
         JoinRequest joinRequest = JoinRequest.builder()
                 .shop(findShop)
@@ -38,6 +39,13 @@ public class JoinRequestService {
                 .build();
         JoinRequest savedJoinRequest = joinRequestRepository.save(joinRequest);
         return savedJoinRequest.getId();
+    }
+
+    private void validateDuplicateJoinRequest(Long memberId, Long shopId) {
+        List<JoinRequest> findJoinRequests = joinRequestRepository.findByMemberIdAndShopId(memberId, shopId);
+        if (!findJoinRequests.isEmpty()) {
+            throw new IllegalStateException("이미 가입신청한 매장입니다.");
+        }
     }
 
     private void validateDuplicateStaff(Long memberId, Long shopId) {

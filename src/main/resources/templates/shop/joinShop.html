@@ -27,27 +27,16 @@
             </div>
             <div>
                 <ol class="list-group list-group-numbered" id="ol_shopList">
-                    <li class="list-group-item d-flex justify-content-between align-items-start">
-                        <div class="ms-2 me-auto">
-                            <div class="fw-bold">매장명</div>
-                            매장 설명
-                        </div>
-                        <span class="badge bg-primary rounded-pill">가입자 <span>14</span></span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-start">
-                        <div class="ms-2 me-auto">
-                            <div class="fw-bold">매장명</div>
-                            매장 설명
-                        </div>
-                        <span class="badge bg-primary rounded-pill">가입자 <span>14</span></span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-start">
-                        <div class="ms-2 me-auto">
-                            <div class="fw-bold">매장명</div>
-                            매장 설명
-                        </div>
-                        <span class="badge bg-primary rounded-pill">가입자 <span>14</span></span>
-                    </li>
+<!--                    <li class="list-group-item d-flex justify-content-between align-items-start">-->
+<!--                        <div class="ms-2 me-auto">-->
+<!--                            <div class="fw-bold">-->
+<!--                                매장명-->
+<!--                                <span class="badge bg-primary rounded-pill ms-2">가입자 14</span>-->
+<!--                            </div>-->
+<!--                            매장 설명-->
+<!--                        </div>-->
+<!--                        <a class="btn btn-primary my-auto">가입신청</a>-->
+<!--                    </li>-->
                 </ol>
             </div>
         </div>
@@ -74,21 +63,28 @@
                     for (const shop of shopList) {
                         let li = document.createElement("li");
                         li.className = "list-group-item d-flex justify-content-between align-items-start";
+
                         let div = document.createElement("div");
                         div.className="ms-2 me-auto"
+
                         let div2 = document.createElement("div");
                         div2.className = "fw-bold";
                         div2.append(shop.name);
+
+                        let span = document.createElement("span");
+                        span.className = "badge bg-primary rounded-pill ms-2";
+                        span.append("가입자 " + shop.staffCount);
+                        div2.append(span);
                         div.append(div2);
                         div.append(shop.info);
                         li.append(div);
-                        let span = document.createElement("span");
-                        span.className = "badge bg-primary rounded-pill";
-                        let span2 = document.createElement("span");
-                        span2.append(shop.staffCount);
-                        span.append("가입자 ");
-                        span.append(span2);
-                        li.append(span);
+
+                        let button = document.createElement("button");
+                        button.className = "btn btn-primary my-auto";
+                        button.innerText = "가입신청";
+                        button.setAttribute("onclick", "joinRequest(" + shop.id + ");")
+                        li.append(button);
+
                         df.append(li);
                     }
                     ol_shopList.append(df);
@@ -96,6 +92,28 @@
                     div_noShop_alert.style.display = "";
                 }
             });
+    }
+
+    async function joinRequest(shopId) {
+        const url = "/joinRequest";
+        const option = {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                "shopId": shopId
+            })
+        }
+        await fetch(url, option)
+            .then((response) => {return response.json()})
+            .then((response) => {
+                if (response) {
+                    alert("가입신청이 완료되었습니다.\n관리자에게 문의하세요.");
+                } else {
+                    alert("이미 가입하였거나 가입신청된 매장입니다.");
+                }
+            })
     }
 </script>
 </body>

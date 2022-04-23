@@ -1,18 +1,21 @@
 package com.heekng.celloct.dto;
 
-import com.heekng.celloct.entity.JoinRequest;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 public class JoinRequestDto {
 
     @Getter
-    public static class joinRequestDto {
+    @Setter
+    @NoArgsConstructor
+    public static class joinRequest {
         private Long memberId;
         private Long shopId;
 
         @Builder
-        public joinRequestDto(Long memberId, Long shopId) {
+        public joinRequest(Long memberId, Long shopId) {
             this.memberId = memberId;
             this.shopId = shopId;
         }

@@ -37,7 +37,7 @@ class ShopServiceTest {
                 .build();
         memberRepository.save(member);
 
-        ShopDto.createRequest createRequest = ShopDto.createRequest.builder()
+        ShopDto.CreateRequest createRequest = ShopDto.CreateRequest.builder()
                 .name("shop1")
                 .phone("010-1234-1234")
                 .managerName("")

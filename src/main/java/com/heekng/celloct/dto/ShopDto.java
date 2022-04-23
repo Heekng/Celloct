@@ -11,14 +11,14 @@ public class ShopDto {
     @Getter
     @Setter
     @NoArgsConstructor
-    public static class createRequest {
+    public static class CreateRequest {
         private String name;
         private String phone;
         private String info;
         private String managerName;
 
         @Builder
-        public createRequest(String name, String phone, String info, String managerName) {
+        public CreateRequest(String name, String phone, String info, String managerName) {
             this.name = name;
             this.phone = phone;
             this.info = info;
@@ -37,13 +37,13 @@ public class ShopDto {
     @Getter
     @Setter
     @NoArgsConstructor
-    public static class updateRequest {
+    public static class UpdateRequest {
         private Long id;
         private String phone;
         private String info;
 
         @Builder
-        public updateRequest(Long id, String phone, String info) {
+        public UpdateRequest(Long id, String phone, String info) {
             this.id = id;
             this.phone = phone;
             this.info = info;
@@ -68,5 +68,23 @@ public class ShopDto {
         }
     }
 
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class ShopDetailResponse {
+        private Long id;
+        private String phone;
+        private String name;
+        private String info;
+
+        @Builder
+        public ShopDetailResponse(Shop shop) {
+            this.id = shop.getId();
+            this.phone = shop.getPhone();
+            this.name = shop.getName();
+            this.info = shop.getInfo();
+        }
+    }
 
 }
