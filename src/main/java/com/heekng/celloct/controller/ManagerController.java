@@ -29,14 +29,26 @@ public class ManagerController {
 
 
     @GetMapping("/{shopId}")
-    public String manageShopList(@PathVariable("shopId") Long shopId, Model model) {
+    public String manageShopHome(@PathVariable("shopId") Long shopId, Model model) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
         Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
         if (managerOptional.isEmpty()) {
-            return "/";
+            return "redirect:/";
         }
         Shop shop = shopService.findShop(shopId);
         model.addAttribute("shop", new ShopDto.ShopDetailResponse(shop));
         return "manager/manageShopHome";
+    }
+
+    @GetMapping("/{shopId}/update")
+    public String updateShop(@PathVariable("shopId") Long shopId, Model model) {
+        SessionMember member = (SessionMember) httpSession.getAttribute("member");
+        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (managerOptional.isEmpty()) {
+            return "redirect:/";
+        }
+        Shop shop = shopService.findShop(shopId);
+        model.addAttribute("shop", new ShopDto.ShopDetailResponse(shop));
+        return "manager/manageShopHomeUpdate";
     }
 }
