@@ -55,10 +55,10 @@ public class ShopService {
     }
 
     /**
-     * shop 전화번호 변경
+     * shop 정보 변경
      */
     @Transactional
-    public void updatePhone(ShopDto.UpdateRequest updateRequest) {
+    public void updateShop(ShopDto.UpdateRequest updateRequest) {
         Shop shop = shopRepository.findById(updateRequest.getId()).get();
         shop.update(updateRequest.getPhone(), updateRequest.getInfo());
     }

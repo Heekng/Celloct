@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
@@ -50,5 +51,18 @@ public class ManagerController {
         Shop shop = shopService.findShop(shopId);
         model.addAttribute("shop", new ShopDto.ShopDetailResponse(shop));
         return "manager/manageShopHomeUpdate";
+    }
+
+    @PostMapping("/{shopId}/update")
+    public String updateShopRequest(@PathVariable("shopId") Long shopId, ShopDto.UpdateRequest updateRequest, Model model) {
+        log.info("updateShopRequest");
+        SessionMember member = (SessionMember) httpSession.getAttribute("member");
+        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (managerOptional.isEmpty()) {
+            return "redirect:/";
+        }
+        updateRequest.setId(shopId);
+        shopService.updateShop(updateRequest);
+        return "redirect:/manage/" + shopId;
     }
 }
