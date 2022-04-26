@@ -28,7 +28,7 @@
                     <a class="nav-link" href="#">근무시간</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">가입 요청</a>
+                    <a class="nav-link" th:href="@{/manage/{shopId}/joinRequest(shopId=${shop.id})}">가입 요청</a>
                 </li>
             </ul>
         </div>

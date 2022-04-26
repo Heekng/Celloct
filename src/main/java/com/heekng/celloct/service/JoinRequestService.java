@@ -60,11 +60,6 @@ public class JoinRequestService {
         return joinRequestRepository.findByMemberId(memberId);
     }
 
-    //가입신청 조회(매장)
-    public List<JoinRequest> findByShopId(Long shopId) {
-        return joinRequestRepository.findByShopId(shopId);
-    }
-
     //가입신청 취소
     public void cancel(Long joinRequestId) {
         JoinRequest findJoinRequest = joinRequestRepository.findById(joinRequestId).orElseThrow(() -> new IllegalStateException("존재하지 않는 가입신청입니다."));
