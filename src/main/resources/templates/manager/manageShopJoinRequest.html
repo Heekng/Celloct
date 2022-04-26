@@ -19,7 +19,7 @@
         <div class="col-xl-6 col-lg-8 py-2">
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page">매장 홈</a>
+                    <a class="nav-link" th:href="@{/manage/{shopId}(shopId=${shop.id})}">매장 홈</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">직원</a>
@@ -28,7 +28,7 @@
                     <a class="nav-link" href="#">근무시간</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">가입 요청</a>
+                    <a class="nav-link active" th:href="@{/manage/{shopId}/joinRequest(shopId=${shop.id})}">가입 요청</a>
                 </li>
             </ul>
         </div>
@@ -50,8 +50,8 @@
                     <td th:text="${joinRequestStat.count}"></td>
                     <td th:text="${joinRequest.memberName}"></td>
                     <td th:text="${#temporals.format(joinRequest.createDate, 'yyyy년MM월dd일 HH시mm분')}"></td>
-                    <td><button type="button" class="btn btn-primary" th:onclick="|joinApproval(${joinRequest.joinRequestId})|">승인</button></td>
-                    <td><button type="button" class="btn btn-primary" th:onclick="|joinRefusal(${joinRequest.joinRequestId})|">미승인</button></td>
+                    <td th:id="|approval${joinRequest.joinRequestId}|"><button type="button" class="btn btn-primary" th:onclick="|joinApproval(${joinRequest.joinRequestId})|">승인</button></td>
+                    <td th:id="|refusal${joinRequest.joinRequestId}|"><button type="button" class="btn btn-primary" th:onclick="|joinRefusal(${joinRequest.joinRequestId})|">미승인</button></td>
                 </tr>
                 </tbody>
             </table>
@@ -65,8 +65,32 @@
 </div> <!-- /container -->
 <script th:inline="javascript">
 
-    function joinApproval(joinRequestId) {
-        console.log(joinRequestId);
+    async function joinApproval(joinRequestId) {
+
+        const url = "/manage/"+[[${shop.id}]]+"/joinRequest/approval";
+        const option = {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                "joinRequestId": joinRequestId
+            })
+        }
+
+        await fetch(url, option)
+            .then((result) => {
+                return result.json();
+            }).then((result) => {
+                if (result) {
+                    let td_approval = document.querySelector("#approval" + joinRequestId);
+                    let td_refusal = document.querySelector("#refusal" + joinRequestId);
+                    td_approval.innerHTML = '처리완료';
+                    td_refusal.innerHTML = '처리완료';
+                } else {
+                    alert("오류가 발생했습니다.\n잠시 후 다시 시도해주세요.");
+                }
+            });
     }
 
     function joinRefusal(joinRequestId) {

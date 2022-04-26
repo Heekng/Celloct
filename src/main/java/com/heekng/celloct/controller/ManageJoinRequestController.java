@@ -2,10 +2,14 @@ package com.heekng.celloct.controller;
 
 import com.heekng.celloct.config.oauth.dto.SessionMember;
 import com.heekng.celloct.dto.JoinRequestDto;
+import com.heekng.celloct.dto.ShopDto;
 import com.heekng.celloct.entity.Manager;
+import com.heekng.celloct.entity.Shop;
 import com.heekng.celloct.repository.JoinRequestRepository;
 import com.heekng.celloct.repository.ManagerRepository;
+import com.heekng.celloct.repository.ShopRepository;
 import com.heekng.celloct.service.JoinRequestService;
+import com.heekng.celloct.service.ShopService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -27,6 +31,7 @@ public class ManageJoinRequestController {
     private final ManagerRepository managerRepository;
     private final JoinRequestRepository joinRequestRepository;
     private final JoinRequestService joinRequestService;
+    private final ShopService shopService;
 
     @GetMapping("/{shopId}/joinRequest")
     public String joinRequest(@PathVariable("shopId") Long shopId, Model model) {
@@ -40,7 +45,8 @@ public class ManageJoinRequestController {
                 .stream().map(JoinRequestDto.ManagerShopJoinRequestResponse::new)
                 .collect(Collectors.toList());
         model.addAttribute("joinRequests", joinRequestResponses);
-        model.addAttribute("shopId", shopId);
+        Shop shop = shopService.findShop(shopId);
+        model.addAttribute("shop", new ShopDto.ShopDetailResponse(shop));
 
         return "manager/manageShopJoinRequest";
     }

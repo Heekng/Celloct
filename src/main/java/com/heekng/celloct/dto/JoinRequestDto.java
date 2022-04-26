@@ -41,4 +41,17 @@ public class JoinRequestDto {
             this.createDate = joinRequest.getCreateDate();
         }
     }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class ApprovalRefusalRequest {
+        private Long joinRequestId;
+
+        @Builder
+        public ApprovalRefusalRequest(Long joinRequestId) {
+            this.joinRequestId = joinRequestId;
+        }
+    }
+
 }

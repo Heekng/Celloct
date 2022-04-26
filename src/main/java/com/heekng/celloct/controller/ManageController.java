@@ -72,20 +72,5 @@ public class ManageController {
         return "redirect:/manage/" + shopId;
     }
 
-    @GetMapping("/{shopId}/joinRequest")
-    public String joinRequest(@PathVariable("shopId") Long shopId, Model model) {
-        log.info("joinRequest");
-        SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (managerOptional.isEmpty()) {
-            return "redirect:/";
-        }
 
-        List<JoinRequestDto.ManagerShopJoinRequestResponse> joinRequestResponses = joinRequestRepository.findWithMemberByShopId(shopId)
-                .stream().map(JoinRequestDto.ManagerShopJoinRequestResponse::new)
-                .collect(Collectors.toList());
-        model.addAttribute("joinRequests", joinRequestResponses);
-
-        return "manager/manageShopJoinRequest";
-    }
 }
