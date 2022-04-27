@@ -54,4 +54,32 @@ public class ManageStaffController {
 
         return "manager/shopStaff";
     }
+
+    @GetMapping("/{shopId}/manager/{managerId}")
+    public String managerDetail(@PathVariable("shopId") Long shopId, @PathVariable("managerId") Long managerId, Model model) {
+        SessionMember member = (SessionMember) httpSession.getAttribute("member");
+        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (managerOptional.isEmpty()) {
+            return "redirect:/";
+        }
+
+        Manager findManager = managerRepository.findWithMemberById(managerId);
+        model.addAttribute("manager", new ManagerDto.withMemberResponse(findManager));
+
+        Shop shop = shopService.findShop(shopId);
+        model.addAttribute("shop", new ShopDto.ShopDetailResponse(shop));
+
+        return "manager/managerDetail";
+    }
+
+    @GetMapping("/{shopId}/staff/{staffId}")
+    public String staffDetail(@PathVariable("shopId") Long shopId, @PathVariable("staffId") Long staffId, Model model) {
+        SessionMember member = (SessionMember) httpSession.getAttribute("member");
+        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (managerOptional.isEmpty()) {
+            return "redirect:/";
+        }
+
+        return "";
+    }
 }

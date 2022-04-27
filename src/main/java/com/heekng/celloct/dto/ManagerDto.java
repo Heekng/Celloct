@@ -23,14 +23,34 @@ public class ManagerDto {
     @Getter
     @Setter
     public static class managerResponse {
-        private Long managerId;
+        private Long id;
         private String name;
 
         @Builder
         public managerResponse(Manager manager) {
-            this.managerId = manager.getId();
+            this.id = manager.getId();
             this.name = manager.getName();
         }
     }
+
+    @Getter
+    @Setter
+    public static class withMemberResponse {
+        private Long managerId;
+        private String managerName;
+        private Long memberId;
+        private String memberName;
+        private String email;
+
+        @Builder
+        public withMemberResponse(Manager manager) {
+            this.managerId = manager.getId();
+            this.managerName = manager.getName();
+            this.memberId = manager.getMember().getId();
+            this.memberName = manager.getMember().getName();
+            this.email = manager.getMember().getEmail();
+        }
+    }
+
 
 }

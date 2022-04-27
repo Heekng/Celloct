@@ -39,12 +39,12 @@ public class StaffDto {
     @Getter
     @Setter
     public static class staffResponse {
-        private Long staffId;
+        private Long id;
         private String name;
 
         @Builder
         public staffResponse(Staff staff) {
-            this.staffId = staff.getId();
+            this.id = staff.getId();
             this.name = staff.getName();
         }
     }

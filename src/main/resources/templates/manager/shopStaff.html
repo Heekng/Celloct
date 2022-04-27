@@ -47,12 +47,12 @@
                 <tr th:each="manager : ${managers}">
                     <td th:text="${manager.name}"></td>
                     <td>관리자</td>
-                    <td><button type="button" class="btn btn-primary" th:href="@{#}">상세보기</button></td>
+                    <td><a class="btn btn-primary" th:href="@{/manage/{shopId}/manager/{managerId}(shopId=${shop.id}, managerId=${manager.id})}">상세보기</a></td>
                 </tr>
                 <tr th:each="staff : ${staffs}">
                     <td th:text="${staff.name}"></td>
                     <td>직원</td>
-                    <td><button type="button" class="btn btn-primary" th:href="@{#}">상세보기</button></td>
+                    <td><a class="btn btn-primary" th:href="@{/manage/{shopId}/staff/{managerId}(shopId=${shop.id}, managerId=${staff.id})}">상세보기</a></td>
                 </tr>
                 </tbody>
             </table>
@@ -60,36 +60,6 @@
     </div>
 </div> <!-- /container -->
 <script th:inline="javascript">
-
-    async function joinApproval(joinRequestId) {
-
-        const url = "/manage/"+[[${shop.id}]]+"/joinRequest/approval";
-        const option = {
-            method: "post",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                "joinRequestId": joinRequestId
-            })
-        }
-
-        await fetch(url, option)
-            .then((result) => {
-                return result.json();
-            }).then((result) => {
-                if (result === true) {
-                    let td_approval = document.querySelector("#approval" + joinRequestId);
-                    let td_refusal = document.querySelector("#refusal" + joinRequestId);
-                    td_approval.innerHTML = '처리완료';
-                    td_refusal.innerHTML = '처리완료';
-                } else {
-                    alert("오류가 발생했습니다.\n잠시 후 다시 시도해주세요.");
-                }
-            });
-    }
-
-
 
 </script>
 </body>
