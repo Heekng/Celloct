@@ -22,13 +22,13 @@
                     <a class="nav-link" th:href="@{/manage/{shopId}(shopId=${shop.id})}">매장 홈</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/manage/{shopId}/staff(shopId=${shop.id})}">직원</a>
+                    <a class="nav-link active" th:href="@{/manage/{shopId}/staff(shopId=${shop.id})}">직원</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">근무시간</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" th:href="@{/manage/{shopId}/joinRequest(shopId=${shop.id})}">가입 신청</a>
+                    <a class="nav-link" th:href="@{/manage/{shopId}/joinRequest(shopId=${shop.id})}">가입 신청</a>
                 </li>
             </ul>
         </div>
@@ -38,23 +38,21 @@
             <table class="table table-striped table-hover table-bordered text-center">
                 <thead>
                 <tr>
-                    <th>#</th>
-                    <th>신청자 이름</th>
-                    <th>신청 날짜</th>
-                    <th>승인</th>
-                    <th>미승인</th>
+                    <th>직원명</th>
+                    <th>권한</th>
+                    <th>상세보기</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="joinRequest : ${joinRequests}">
-                    <td th:text="${joinRequestStat.count}"></td>
-                    <td th:text="${joinRequest.memberName}"></td>
-                    <td th:text="${#temporals.format(joinRequest.createDate, 'yyyy년MM월dd일 HH시mm분')}"></td>
-                    <td th:id="|approval${joinRequest.joinRequestId}|"><button type="button" class="btn btn-primary" th:onclick="|joinApproval(${joinRequest.joinRequestId})|">승인</button></td>
-                    <td th:id="|refusal${joinRequest.joinRequestId}|"><button type="button" class="btn btn-primary" th:onclick="|joinRefusal(${joinRequest.joinRequestId})|">미승인</button></td>
+                <tr th:each="manager : ${managers}">
+                    <td th:text="${manager.name}"></td>
+                    <td>관리자</td>
+                    <td><button type="button" class="btn btn-primary" th:href="@{#}">상세보기</button></td>
                 </tr>
-                <tr th:if="${#lists.size(joinRequests) == 0}">
-                    <td colspan="5">가입신청이 존재하지 않습니다.</td>
+                <tr th:each="staff : ${staffs}">
+                    <td th:text="${staff.name}"></td>
+                    <td>직원</td>
+                    <td><button type="button" class="btn btn-primary" th:href="@{#}">상세보기</button></td>
                 </tr>
                 </tbody>
             </table>
@@ -91,34 +89,6 @@
             });
     }
 
-    async function joinRefusal(joinRequestId) {
-
-        const url = "/manage/"+[[${shop.id}]]+"/joinRequest/refusal";
-        const option = {
-            method: "post",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                "joinRequestId": joinRequestId
-            })
-        }
-
-        await fetch(url, option)
-            .then((result) => {
-                return result.json();
-            }).then((result) => {
-                if (result === true) {
-                    let td_approval = document.querySelector("#approval" + joinRequestId);
-                    let td_refusal = document.querySelector("#refusal" + joinRequestId);
-                    td_approval.innerHTML = '처리완료';
-                    td_refusal.innerHTML = '처리완료';
-                } else {
-                    alert("오류가 발생했습니다.\n잠시 후 다시 시도해주세요.");
-                }
-            });
-
-    }
 
 
 </script>

@@ -1,7 +1,9 @@
 package com.heekng.celloct.dto;
 
+import com.heekng.celloct.entity.Staff;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -33,6 +35,20 @@ public class StaffDto {
             this.changeEmploymentDate = changeEmploymentDate;
         }
     }
+
+    @Getter
+    @Setter
+    public static class staffResponse {
+        private Long staffId;
+        private String name;
+
+        @Builder
+        public staffResponse(Staff staff) {
+            this.staffId = staff.getId();
+            this.name = staff.getName();
+        }
+    }
+
 
 
 }

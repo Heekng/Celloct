@@ -11,4 +11,6 @@ public interface ManagerRepository extends JpaRepository<Manager, Long> {
     Optional<Manager> findByMemberIdAndShopId(Long memberId, Long shopId);
 
     List<Manager> findByMemberId(Long memberId);
+
+    List<Manager> findListByShopId(Long shopId);
 }
