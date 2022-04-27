@@ -48,7 +48,7 @@ public class ManageJoinRequestController {
         Shop shop = shopService.findShop(shopId);
         model.addAttribute("shop", new ShopDto.ShopDetailResponse(shop));
 
-        return "manager/manageShopJoinRequest";
+        return "manager/shopJoinRequest";
     }
 
     @PostMapping("/{shopId}/joinRequest/approval")

@@ -36,7 +36,7 @@ public class ManageController {
 
 
     @GetMapping("/{shopId}")
-    public String manageShopHome(@PathVariable("shopId") Long shopId, Model model) {
+    public String shopHome(@PathVariable("shopId") Long shopId, Model model) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
         Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
         if (managerOptional.isEmpty()) {
@@ -44,7 +44,7 @@ public class ManageController {
         }
         Shop shop = shopService.findShop(shopId);
         model.addAttribute("shop", new ShopDto.ShopDetailResponse(shop));
-        return "manager/manageShopHome";
+        return "manager/shopHome";
     }
 
     @GetMapping("/{shopId}/update")
@@ -56,7 +56,7 @@ public class ManageController {
         }
         Shop shop = shopService.findShop(shopId);
         model.addAttribute("shop", new ShopDto.ShopDetailResponse(shop));
-        return "manager/manageShopHomeUpdate";
+        return "manager/shopHomeUpdate";
     }
 
     @PostMapping("/{shopId}/update")
