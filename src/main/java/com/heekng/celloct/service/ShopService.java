@@ -29,7 +29,7 @@ public class ShopService {
     public Long makeShop(ShopDto.CreateRequest createRequest, Long memberId) {
         Shop shop = createRequest.toEntity();
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
-        String managerName = createRequest.getManagerName().equals("") ? member.getName() : createRequest.getName();
+        String managerName = createRequest.getManagerName().equals("") ? member.getName() : createRequest.getManagerName();
         validateDuplicateShop(shop);
 
         Manager manager = Manager.builder()
