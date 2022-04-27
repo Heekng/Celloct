@@ -35,7 +35,7 @@ public class ShopController {
         SessionMember sessionMember = (SessionMember) httpSession.getAttribute("member");
         Long shopId = shopService.makeShop(createRequest, sessionMember.getId());
         redirectAttributes.addAttribute("shopId", shopId);
-        return "redirect:/shop/{shopId}";
+        return "redirect:/manage/{shopId}";
     }
 
     @ResponseBody
