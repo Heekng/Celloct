@@ -64,4 +64,18 @@ public class ManageJoinRequestController {
 
         return true;
     }
+
+    @PostMapping("/{shopId}/joinRequest/refusal")
+    @ResponseBody
+    public Boolean refusal(@RequestBody JoinRequestDto.ApprovalRefusalRequest approvalRequest, @PathVariable("shopId") Long shopId) {
+        SessionMember member = (SessionMember) httpSession.getAttribute("member");
+        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (managerOptional.isEmpty()) {
+            return false;
+        }
+
+        joinRequestService.refusal(approvalRequest);
+
+        return true;
+    }
 }

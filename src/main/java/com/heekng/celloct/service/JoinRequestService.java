@@ -83,4 +83,10 @@ public class JoinRequestService {
         joinRequestRepository.delete(findJoinRequest);
         return staff.getId();
     }
+
+    @Transactional
+    public void refusal(JoinRequestDto.ApprovalRefusalRequest refusalDto) {
+        JoinRequest findJoinRequest = joinRequestRepository.findById(refusalDto.getJoinRequestId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 가입신청입니다."));
+        joinRequestRepository.delete(findJoinRequest);
+    }
 }

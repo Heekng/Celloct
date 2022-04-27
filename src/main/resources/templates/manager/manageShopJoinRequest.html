@@ -28,7 +28,7 @@
                     <a class="nav-link" href="#">근무시간</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" th:href="@{/manage/{shopId}/joinRequest(shopId=${shop.id})}">가입 요청</a>
+                    <a class="nav-link active" th:href="@{/manage/{shopId}/joinRequest(shopId=${shop.id})}">가입 신청</a>
                 </li>
             </ul>
         </div>
@@ -53,13 +53,11 @@
                     <td th:id="|approval${joinRequest.joinRequestId}|"><button type="button" class="btn btn-primary" th:onclick="|joinApproval(${joinRequest.joinRequestId})|">승인</button></td>
                     <td th:id="|refusal${joinRequest.joinRequestId}|"><button type="button" class="btn btn-primary" th:onclick="|joinRefusal(${joinRequest.joinRequestId})|">미승인</button></td>
                 </tr>
+                <tr th:if="${#lists.size(joinRequests) == 0}">
+                    <td colspan="5">가입신청이 존재하지 않습니다.</td>
+                </tr>
                 </tbody>
             </table>
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="col-xl-6 col-lg-8 py-2">
-<!--            <button class="btn btn-lg btn-primary d-block mx-auto" th:onclick="|location.href='@{/manage/{shopId}/update(shopId=${shop.id})}'|">매장정보 수정</button>-->
         </div>
     </div>
 </div> <!-- /container -->
@@ -82,7 +80,7 @@
             .then((result) => {
                 return result.json();
             }).then((result) => {
-                if (result) {
+                if (result === true) {
                     let td_approval = document.querySelector("#approval" + joinRequestId);
                     let td_refusal = document.querySelector("#refusal" + joinRequestId);
                     td_approval.innerHTML = '처리완료';
@@ -93,8 +91,33 @@
             });
     }
 
-    function joinRefusal(joinRequestId) {
-        console.log(joinRequestId);
+    async function joinRefusal(joinRequestId) {
+
+        const url = "/manage/"+[[${shop.id}]]+"/joinRequest/refusal";
+        const option = {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                "joinRequestId": joinRequestId
+            })
+        }
+
+        await fetch(url, option)
+            .then((result) => {
+                return result.json();
+            }).then((result) => {
+                if (result === true) {
+                    let td_approval = document.querySelector("#approval" + joinRequestId);
+                    let td_refusal = document.querySelector("#refusal" + joinRequestId);
+                    td_approval.innerHTML = '처리완료';
+                    td_refusal.innerHTML = '처리완료';
+                } else {
+                    alert("오류가 발생했습니다.\n잠시 후 다시 시도해주세요.");
+                }
+            });
+
     }
 
 
