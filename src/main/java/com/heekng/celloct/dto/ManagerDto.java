@@ -52,5 +52,13 @@ public class ManagerDto {
         }
     }
 
+    @Getter
+    @Setter
+    public static class updateRequest {
+        private Long id;
+        private String name;
+    }
+
+
 
 }

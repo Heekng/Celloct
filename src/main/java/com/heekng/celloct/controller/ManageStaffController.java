@@ -9,15 +9,15 @@ import com.heekng.celloct.entity.Shop;
 import com.heekng.celloct.entity.Staff;
 import com.heekng.celloct.repository.ManagerRepository;
 import com.heekng.celloct.repository.StaffRepository;
+import com.heekng.celloct.service.ManagerService;
 import com.heekng.celloct.service.ShopService;
 import com.heekng.celloct.service.StaffService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -35,6 +35,7 @@ public class ManageStaffController {
     private final ShopService shopService;
     private final StaffRepository staffRepository;
     private final ManagerRepository managerRepository;
+    private final ManagerService managerService;
 
     @GetMapping("/{shopId}/staff")
     public String staffList(@PathVariable("shopId") Long shopId, Model model) {
@@ -70,6 +71,40 @@ public class ManageStaffController {
         model.addAttribute("shop", new ShopDto.ShopDetailResponse(shop));
 
         return "manager/managerDetail";
+    }
+
+    @GetMapping("/{shopId}/manager/{managerId}/update")
+    public String managerDetailUpdate(@PathVariable("shopId") Long shopId, @PathVariable("managerId") Long managerId, Model model) {
+        SessionMember member = (SessionMember) httpSession.getAttribute("member");
+        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (managerOptional.isEmpty()) {
+            return "redirect:/";
+        }
+
+        Manager findManager = managerRepository.findWithMemberById(managerId);
+        model.addAttribute("manager", new ManagerDto.withMemberResponse(findManager));
+
+        Shop shop = shopService.findShop(shopId);
+        model.addAttribute("shop", new ShopDto.ShopDetailResponse(shop));
+
+        return "manager/managerDetailUpdate";
+    }
+
+    @PostMapping("/{shopId}/manager/{managerId}/update")
+    public String doManagerDetailUpdate(ManagerDto.updateRequest updateRequest, @PathVariable("shopId") Long shopId, @PathVariable("managerId") Long managerId, Model model, RedirectAttributes redirectAttributes) {
+        SessionMember member = (SessionMember) httpSession.getAttribute("member");
+        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (managerOptional.isEmpty()) {
+            return "redirect:/";
+        }
+
+        updateRequest.setId(managerId);
+        managerService.updateManager(updateRequest);
+
+        redirectAttributes.addAttribute("managerId", managerId);
+        redirectAttributes.addAttribute("shopId", shopId);
+
+        return "redirect:/manage/{shopId}/manager/{managerId}";
     }
 
     @GetMapping("/{shopId}/staff/{staffId}")

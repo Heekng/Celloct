@@ -50,7 +50,7 @@
             </div>
 
             <div class="text-center">
-                <button class="btn btn-lg btn-outline-primary" th:onclick="|location.href='@{}'|">관리자정보 변경</button>
+                <button class="btn btn-lg btn-outline-primary" th:onclick="|location.href='@{/manage/{shopId}/manager/{managerId}/update(shopId=${shop.id}, managerId=${manager.managerId})}'|">관리자정보 수정</button>
                 <button class="btn btn-lg btn-outline-primary" th:onclick="|location.href='@{/manage/{shopId}/update(shopId=${shop.id})}'|">삭제</button>
             </div>
 

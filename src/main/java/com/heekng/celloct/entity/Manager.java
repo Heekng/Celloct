@@ -37,6 +37,10 @@ public class Manager extends BaseTimeEntity{
         member.getManagers().add(this);
     }
 
+    public void updateInfo(String name) {
+        this.name = name;
+    }
+
     public void addShop(Shop shop) {
         this.shop = shop;
         shop.getManagers().add(this);

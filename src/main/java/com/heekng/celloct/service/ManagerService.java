@@ -40,6 +40,12 @@ public class ManagerService {
         managerRepository.deleteById(managerId);
     }
 
+    @Transactional
+    public void updateManager(ManagerDto.updateRequest updateRequest) {
+        Manager manager = managerRepository.findById(updateRequest.getId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 관리자입니다."));
+        manager.updateInfo(updateRequest.getName());
+    }
+
     public List<Manager> findByMemberId(Long memberId) {
         return managerRepository.findByMemberId(memberId);
     }
