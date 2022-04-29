@@ -51,12 +51,18 @@
 
     async function deleteManager() {
         let managerId = [[${manager.managerId}]];
-
+        let managerMemberId = [[${manager.memberId}]];
+        let memberId = [[${session.member.id}]];
         if (!confirm("관리자를 삭제하면 해당 관리자의 모든 정보를 조회할 수 없습니다.\n삭제하시겠습니까?")) {
             return false;
         }
 
-        const url = "/manage/"+[[${shop.id}]]+"/manager/"+managerId+"/delete";
+        if (managerMemberId === memberId) {
+            alert("본인을 삭제할 수 없습니다.");
+            return false;
+        }
+
+        const url = "/manage/" + [[${shop.id}]] + "/manager/" + managerId + "/delete";
         const option = {
             method: "post",
         }

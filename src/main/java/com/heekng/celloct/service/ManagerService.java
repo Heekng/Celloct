@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -39,6 +40,9 @@ public class ManagerService {
     public void deleteManager(ManagerDto.DeleteRequest deleteRequest) {
         Manager manager = managerRepository.findByShopIdAndId(deleteRequest.getShopId(), deleteRequest.getManagerId())
                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 관리자입니다."));
+        if (Objects.equals(manager.getMember().getId(), deleteRequest.getMemberId())) {
+            throw new IllegalStateException("본인을 삭제할 수 없습니다.");
+        }
         managerRepository.delete(manager);
     }
 

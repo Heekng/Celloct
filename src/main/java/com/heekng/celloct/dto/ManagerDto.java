@@ -63,11 +63,13 @@ public class ManagerDto {
     public static class DeleteRequest {
         private Long managerId;
         private Long shopId;
+        private Long memberId;
 
         @Builder
-        public DeleteRequest(Long managerId, Long shopId) {
+        public DeleteRequest(Long managerId, Long shopId, Long memberId) {
             this.managerId = managerId;
             this.shopId = shopId;
+            this.memberId = memberId;
         }
     }
 

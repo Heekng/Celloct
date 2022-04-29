@@ -119,6 +119,7 @@ public class ManageStaffController {
         ManagerDto.DeleteRequest deleteRequest = ManagerDto.DeleteRequest.builder()
                 .managerId(managerId)
                 .shopId(shopId)
+                .memberId(member.getId())
                 .build();
         try {
             managerService.deleteManager(deleteRequest);
