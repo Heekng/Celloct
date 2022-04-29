@@ -49,6 +49,27 @@ public class StaffDto {
         }
     }
 
+    @Getter
+    @Setter
+    public static class WithMemberResponse {
+        private Long staffId;
+        private String staffName;
+        private Long memberId;
+        private String memberName;
+        private String email;
+
+        @Builder
+        public WithMemberResponse(Staff staff) {
+            this.staffId = staff.getId();
+            this.staffName = staff.getName();
+            this.memberId = staff.getMember().getId();
+            this.memberName = staff.getMember().getName();
+            this.email = staff.getMember().getEmail();
+        }
+    }
+
+
+
 
 
 }

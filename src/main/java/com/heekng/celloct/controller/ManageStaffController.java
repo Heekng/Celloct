@@ -115,6 +115,12 @@ public class ManageStaffController {
             return "redirect:/";
         }
 
-        return "";
+        Staff findStaff = staffRepository.findWithMemberById(staffId);
+        model.addAttribute("staff", new StaffDto.WithMemberResponse(findStaff));
+
+        Shop shop = shopService.findShop(shopId);
+        model.addAttribute("shop", new ShopDto.ShopDetailResponse(shop));
+
+        return "manager/staffDetail";
     }
 }

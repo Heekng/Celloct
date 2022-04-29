@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:replace="fragments/header :: header">
+    <title>Hello</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader"></div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 py-4 text-center">
+            <p class="display-4">매장 관리</p>
+            <h3>
+                <small class="text-muted">매장을 관리합니다.</small>
+            </h3>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-xl-6 col-lg-8 py-2">
+            <ul class="nav nav-tabs mb-3">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/manage/{shopId}(shopId=${shop.id})}">매장 홈</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/manage/{shopId}/staff(shopId=${shop.id})}">직원</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">근무시간</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/manage/{shopId}/joinRequest(shopId=${shop.id})}">가입 신청</a>
+                </li>
+            </ul>
+
+            <div class="mb-3">
+                <a class="btn btn-outline-primary" th:href="@{/manage/{shopId}/staff(shopId=${shop.id})}">목록으로</a>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="name" class="col-sm-3 col-form-label">직원명</label>
+                <div class="col-sm-9">
+                    <input th:field="${staff.staffName}" type="text" readonly class="form-control">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="email" class="col-sm-3 col-form-label">이메일</label>
+                <div class="col-sm-9">
+                    <input th:field="${staff.email}" type="text" readonly class="form-control">
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button class="btn btn-lg btn-outline-primary" th:onclick="|location.href='@{/manage/{shopId}/staff/{staffId}/update(shopId=${shop.id}, staffId=${staff.staffId})}'|">직원정보 수정</button>
+                <button class="btn btn-lg btn-outline-primary" th:onclick="|location.href='@{/manage/{shopId}/update(shopId=${shop.id})}'|">삭제</button>
+            </div>
+
+        </div>
+    </div>
+</div> <!-- /container -->
+<script th:inline="javascript">
+
+</script>
+</body>
+</html>
