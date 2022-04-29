@@ -82,7 +82,11 @@ class ManagerServiceTest {
         em.clear();
 
         //when
-        managerService.deleteManager(savedManager.getId());
+        ManagerDto.DeleteRequest deleteRequest = ManagerDto.DeleteRequest.builder()
+                .managerId(manager.getId())
+                .shopId(shop.getId())
+                .build();
+        managerService.deleteManager(deleteRequest);
         em.flush();
         em.clear();
         shop = shopRepository.findById(shop.getId()).get();
