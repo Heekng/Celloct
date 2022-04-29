@@ -33,7 +33,7 @@
             </ul>
 
             <div class="mb-3">
-                <a class="btn btn-outline-primary" th:href="@{/manage/{shopId}/staff(shopId=${shop.id})}">목록</a>
+                <a class="btn btn-outline-primary" th:href="@{/manage/{shopId}/staff(shopId=${shop.id})}">목록으로</a>
             </div>
             <form name="managerUpdateForm" class="needs-validation" th:action="@{/manage/{shopId}/manager/{managerId}/update(shopId=${shop.id}, managerId=${manager.managerId})}" method="post" novalidate>
                 <div class="mb-3 row">
