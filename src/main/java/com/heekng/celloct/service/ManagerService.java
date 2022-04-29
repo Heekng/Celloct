@@ -36,8 +36,10 @@ public class ManagerService {
     }
 
     @Transactional
-    public void deleteManager(Long managerId) {
-        managerRepository.deleteById(managerId);
+    public void deleteManager(ManagerDto.DeleteRequest deleteRequest) {
+        Manager manager = managerRepository.findByShopIdAndId(deleteRequest.getShopId(), deleteRequest.getManagerId())
+                .orElseThrow(() -> new IllegalStateException("존재하지 않는 관리자입니다."));
+        managerRepository.delete(manager);
     }
 
     @Transactional

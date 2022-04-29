@@ -38,7 +38,7 @@
 
             <div class="text-center">
                 <button class="btn btn-lg btn-outline-primary" th:onclick="|location.href='@{/manage/{shopId}/manager/{managerId}/update(shopId=${shop.id}, managerId=${manager.managerId})}'|">관리자정보 수정</button>
-                <button class="btn btn-lg btn-outline-primary" th:onclick="|location.href='@{/manage/{shopId}/update(shopId=${shop.id})}'|">삭제</button>
+                <button class="btn btn-lg btn-outline-primary" onclick="deleteManager();">삭제</button>
             </div>
 
         </div>
@@ -47,6 +47,31 @@
 <script th:inline="javascript">
     window.onload = () => {
         document.querySelector("#a-staff").classList.add("active");
+    }
+
+    async function deleteManager() {
+        let managerId = [[${manager.managerId}]];
+
+        if (!confirm("관리자를 삭제하면 해당 관리자의 모든 정보를 조회할 수 없습니다.\n삭제하시겠습니까?")) {
+            return false;
+        }
+
+        const url = "/manage/"+[[${shop.id}]]+"/manager/"+managerId+"/delete";
+        const option = {
+            method: "post",
+        }
+
+        await fetch(url, option)
+            .then((result) => {
+                return result.json();
+            }).then((result) => {
+                if (result === true) {
+                    alert("관리자 삭제가 완료되었습니다.");
+                    location.href = "/manage/" + [[shop.shopId]] + "/staff";
+                } else {
+                    alert("잠시 후 다시 시도해주세요.");
+                }
+            });
     }
 </script>
 </body>

@@ -3,7 +3,6 @@ package com.heekng.celloct.dto;
 import com.heekng.celloct.entity.Manager;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 public class ManagerDto {
@@ -58,6 +57,20 @@ public class ManagerDto {
         private Long id;
         private String name;
     }
+
+    @Getter
+    @Setter
+    public static class DeleteRequest {
+        private Long managerId;
+        private Long shopId;
+
+        @Builder
+        public DeleteRequest(Long managerId, Long shopId) {
+            this.managerId = managerId;
+            this.shopId = shopId;
+        }
+    }
+
 
 
 

@@ -107,6 +107,28 @@ public class ManageStaffController {
         return "redirect:/manage/{shopId}/manager/{managerId}";
     }
 
+    @PostMapping("/{shopId}/manager/{managerId}/delete")
+    @ResponseBody
+    public Boolean managerDelete(@PathVariable("shopId") Long shopId, @PathVariable("managerId") Long managerId, Model model) {
+        SessionMember member = (SessionMember) httpSession.getAttribute("member");
+        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (managerOptional.isEmpty()) {
+            return false;
+        }
+
+        ManagerDto.DeleteRequest deleteRequest = ManagerDto.DeleteRequest.builder()
+                .managerId(managerId)
+                .shopId(shopId)
+                .build();
+        try {
+            managerService.deleteManager(deleteRequest);
+        } catch (Exception e) {
+            return false;
+        }
+
+        return true;
+    }
+
     @GetMapping("/{shopId}/staff/{staffId}")
     public String staffDetail(@PathVariable("shopId") Long shopId, @PathVariable("staffId") Long staffId, Model model) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
