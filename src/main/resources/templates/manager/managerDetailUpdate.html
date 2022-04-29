@@ -66,6 +66,11 @@
                 event.preventDefault()
                 event.stopPropagation()
             }
+            if (document.querySelector("#name").value.trim() === "") {
+                event.preventDefault()
+                event.stopPropagation()
+                alert("관리자명은 공백일 수 없습니다.");
+            }
 
             form.classList.add('was-validated');
         }, false)
