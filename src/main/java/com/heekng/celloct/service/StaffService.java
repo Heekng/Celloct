@@ -23,10 +23,6 @@ public class StaffService {
     private final ShopRepository shopRepository;
     private final MemberRepository memberRepository;
 
-    public List<Staff> findByShopId(Long shopId) {
-        return staffRepository.findByShopId(shopId);
-    }
-
     public List<Staff> findByMemberId(Long memberId) {
         return staffRepository.findByMemberId(memberId);
     }

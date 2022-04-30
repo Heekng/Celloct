@@ -17,20 +17,7 @@
     </div>
     <div class="row justify-content-center">
         <div class="col-xl-6 col-lg-8 py-2">
-            <ul class="nav nav-tabs">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page">매장 홈</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">직원</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">근무시간</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">가입 요청</a>
-                </li>
-            </ul>
+            <ul th:replace="fragments/managerNav :: ulNav"></ul>
         </div>
     </div>
     <div class="row justify-content-center">
@@ -48,16 +35,23 @@
                 </div>
             </div>
             <div class="mb-3 row">
-                <label for="info" class="col-sm-3 col-form-label">매장 정보</label>
+                <label for="info" class="col-sm-3 col-form-label">매장 설명</label>
                 <div class="col-sm-9">
                     <input th:field="*{info}" type="text" readonly class="form-control">
                 </div>
             </div>
         </div>
     </div>
+    <div class="row justify-content-center">
+        <div class="col-xl-6 col-lg-8 py-2">
+            <button class="btn btn-lg btn-primary d-block mx-auto" th:onclick="|location.href='@{/manage/{shopId}/update(shopId=${shop.id})}'|">매장정보 수정</button>
+        </div>
+    </div>
 </div> <!-- /container -->
 <script th:inline="javascript">
-
+    window.onload = () => {
+        document.querySelector("#a-home").classList.add("active");
+    }
 </script>
 </body>
 </html>

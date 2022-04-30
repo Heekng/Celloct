@@ -60,29 +60,33 @@ public class JoinRequestService {
         return joinRequestRepository.findByMemberId(memberId);
     }
 
-    //가입신청 조회(매장)
-    public List<JoinRequest> findByShopId(Long shopId) {
-        return joinRequestRepository.findByShopId(shopId);
-    }
-
     //가입신청 취소
+    @Transactional
     public void cancel(Long joinRequestId) {
         JoinRequest findJoinRequest = joinRequestRepository.findById(joinRequestId).orElseThrow(() -> new IllegalStateException("존재하지 않는 가입신청입니다."));
         joinRequestRepository.delete(findJoinRequest);
     }
 
     //가입신청 승인
-    public Long Approval(Long joinRequestId) {
-        JoinRequest findJoinRequest = joinRequestRepository.findById(joinRequestId).orElseThrow(() -> new IllegalStateException("존재하지 않는 가입신청입니다."));
+    @Transactional
+    public Long approval(JoinRequestDto.ApprovalRefusalRequest approvalDto) {
+        JoinRequest findJoinRequest = joinRequestRepository.findById(approvalDto.getJoinRequestId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 가입신청입니다."));
         Member member = findJoinRequest.getMember();
         Shop shop = findJoinRequest.getShop();
         validateDuplicateStaff(member.getId(), shop.getId());
-        LocalDateTime now = LocalDateTime.now();
         Staff staff = Staff.builder()
                 .shop(shop)
                 .member(member)
+                .name(member.getName())
                 .build();
         staffRepository.save(staff);
+        joinRequestRepository.delete(findJoinRequest);
         return staff.getId();
+    }
+
+    @Transactional
+    public void refusal(JoinRequestDto.ApprovalRefusalRequest refusalDto) {
+        JoinRequest findJoinRequest = joinRequestRepository.findById(refusalDto.getJoinRequestId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 가입신청입니다."));
+        joinRequestRepository.delete(findJoinRequest);
     }
 }

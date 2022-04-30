@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:replace="fragments/header :: header">
+    <title>Hello</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader"></div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 py-4 text-center">
+            <p class="display-4">매장 관리</p>
+            <h3>
+                <small class="text-muted">매장을 관리합니다.</small>
+            </h3>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-xl-6 col-lg-8 py-2">
+            <ul th:replace="fragments/managerNav :: ulNav"></ul>
+
+            <div class="mb-3">
+                <a class="btn btn-outline-primary" th:href="@{/manage/{shopId}/staff(shopId=${shop.id})}">목록으로</a>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="name" class="col-sm-3 col-form-label">관리자명</label>
+                <div class="col-sm-9">
+                    <input th:field="${manager.managerName}" type="text" readonly class="form-control">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="email" class="col-sm-3 col-form-label">이메일</label>
+                <div class="col-sm-9">
+                    <input th:field="${manager.email}" type="text" readonly class="form-control">
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button class="btn btn-lg btn-outline-primary" th:onclick="|location.href='@{/manage/{shopId}/manager/{managerId}/update(shopId=${shop.id}, managerId=${manager.managerId})}'|">관리자정보 수정</button>
+                <button class="btn btn-lg btn-outline-primary" onclick="deleteManager();">삭제</button>
+            </div>
+
+        </div>
+    </div>
+</div> <!-- /container -->
+<script th:inline="javascript">
+    window.onload = () => {
+        document.querySelector("#a-staff").classList.add("active");
+    }
+
+    async function deleteManager() {
+        let managerId = [[${manager.managerId}]];
+        let managerMemberId = [[${manager.memberId}]];
+        let memberId = [[${session.member.id}]];
+        if (!confirm("관리자를 삭제하면 해당 관리자의 모든 정보를 조회할 수 없습니다.\n삭제하시겠습니까?")) {
+            return false;
+        }
+
+        if (managerMemberId === memberId) {
+            alert("본인을 삭제할 수 없습니다.");
+            return false;
+        }
+
+        const url = "/manage/" + [[${shop.id}]] + "/manager/" + managerId + "/delete";
+        const option = {
+            method: "post",
+        }
+
+        await fetch(url, option)
+            .then((result) => {
+                return result.json();
+            }).then((result) => {
+                if (result === true) {
+                    alert("관리자 삭제가 완료되었습니다.");
+                    location.href = "/manage/" + [[shop.shopId]] + "/staff";
+                } else {
+                    alert("잠시 후 다시 시도해주세요.");
+                }
+            });
+    }
+</script>
+</body>
+</html>
