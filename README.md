@@ -29,9 +29,11 @@
 - [x] security, OAuth2
   - Google 로그인 구현 완료
   - Kakao 로그인 도입 예정
-- [x] thymeleaf frontend
-- [x] 서버 CI/CD 배포 자동화
 - [ ] Controller
+- [x] thymeleaf frontend
+- [ ] 서버 CI/CD 무중단 배포 자동화
+  - [x] 배포 자동화
+  - [ ] 무중단 배포
 
 ## 현재 상태
 
