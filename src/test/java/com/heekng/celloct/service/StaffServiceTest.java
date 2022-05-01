@@ -1,9 +1,11 @@
 package com.heekng.celloct.service;
 
 import com.heekng.celloct.dto.StaffDto;
+import com.heekng.celloct.entity.Manager;
 import com.heekng.celloct.entity.Member;
 import com.heekng.celloct.entity.Shop;
 import com.heekng.celloct.entity.Staff;
+import com.heekng.celloct.repository.ManagerRepository;
 import com.heekng.celloct.repository.MemberRepository;
 import com.heekng.celloct.repository.ShopRepository;
 import com.heekng.celloct.repository.StaffRepository;
@@ -33,6 +35,8 @@ class StaffServiceTest {
     ShopRepository shopRepository;
     @Autowired
     StaffRepository staffRepository;
+    @Autowired
+    ManagerRepository managerRepository;
     @Autowired
     StaffService staffService;
     @Autowired
@@ -146,6 +150,18 @@ class StaffServiceTest {
                 .build();
         shopRepository.save(shop);
 
+        Member managerMember = Member.builder()
+                .name("managerMember")
+                .build();
+        memberRepository.save(managerMember);
+
+        Manager manager = Manager.builder()
+                .name("managerMember")
+                .shop(shop)
+                .member(managerMember)
+                .build();
+        managerRepository.save(manager);
+
         Member member = Member.builder()
                 .name("member1")
                 .build();
@@ -161,7 +177,12 @@ class StaffServiceTest {
         em.clear();
 
         //when
-        staffService.deleteStaff(staff.getId());
+        StaffDto.DeleteRequest deleteStaff = StaffDto.DeleteRequest.builder()
+                .memberId(managerMember.getId())
+                .staffId(staff.getId())
+                .shopId(shop.getId())
+                .build();
+        staffService.deleteStaff(deleteStaff);
         Optional<Staff> staffOptional = staffRepository.findById(staff.getId());
         //then
         assertThat(staffOptional).isEmpty();
