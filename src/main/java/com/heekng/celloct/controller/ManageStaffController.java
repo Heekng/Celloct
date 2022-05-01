@@ -121,11 +121,7 @@ public class ManageStaffController {
                 .shopId(shopId)
                 .memberId(member.getId())
                 .build();
-        try {
-            managerService.deleteManager(deleteRequest);
-        } catch (Exception e) {
-            return false;
-        }
+        managerService.deleteManager(deleteRequest);
 
         return true;
     }
@@ -145,5 +141,24 @@ public class ManageStaffController {
         model.addAttribute("shop", new ShopDto.ShopDetailResponse(shop));
 
         return "manager/staffDetail";
+    }
+
+    @PostMapping("/{shopId}/staff/{staffId}/delete")
+    @ResponseBody
+    public Boolean staffDelete(@PathVariable("shopId") Long shopId, @PathVariable("staffId") Long staffId, Model model) {
+        SessionMember member = (SessionMember) httpSession.getAttribute("member");
+        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (managerOptional.isEmpty()) {
+            return false;
+        }
+
+        StaffDto.DeleteRequest deleteRequest = StaffDto.DeleteRequest.builder()
+                .staffId(staffId)
+                .shopId(shopId)
+                .memberId(member.getId())
+                .build();
+        staffService.deleteStaff(deleteRequest);
+
+        return true;
     }
 }

@@ -73,7 +73,7 @@
             }).then((result) => {
                 if (result === true) {
                     alert("관리자 삭제가 완료되었습니다.");
-                    location.href = "/manage/" + [[shop.shopId]] + "/staff";
+                    location.href = "/manage/" + [[${shop.id}]] + "/staff";
                 } else {
                     alert("잠시 후 다시 시도해주세요.");
                 }

@@ -1,9 +1,11 @@
 package com.heekng.celloct.service;
 
 import com.heekng.celloct.dto.StaffDto;
+import com.heekng.celloct.entity.Manager;
 import com.heekng.celloct.entity.Member;
 import com.heekng.celloct.entity.Shop;
 import com.heekng.celloct.entity.Staff;
+import com.heekng.celloct.repository.ManagerRepository;
 import com.heekng.celloct.repository.MemberRepository;
 import com.heekng.celloct.repository.ShopRepository;
 import com.heekng.celloct.repository.StaffRepository;
@@ -22,6 +24,7 @@ public class StaffService {
     private final StaffRepository staffRepository;
     private final ShopRepository shopRepository;
     private final MemberRepository memberRepository;
+    private final ManagerRepository managerRepository;
 
     public List<Staff> findByMemberId(Long memberId) {
         return staffRepository.findByMemberId(memberId);
@@ -47,8 +50,9 @@ public class StaffService {
     }
 
     @Transactional
-    public void deleteStaff(Long staffId) {
-        Staff staff = staffRepository.findById(staffId).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
+    public void deleteStaff(StaffDto.DeleteRequest deleteRequest) {
+        Manager manager = managerRepository.findByMemberIdAndShopId(deleteRequest.getMemberId(), deleteRequest.getShopId()).orElseThrow(() -> new IllegalStateException("해당 매장의 관리자가 아닙니다."));
+        Staff staff = staffRepository.findById(deleteRequest.getStaffId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
         staffRepository.delete(staff);
     }
 

@@ -68,6 +68,20 @@ public class StaffDto {
         }
     }
 
+    @Getter
+    @Setter
+    public static class DeleteRequest {
+        private Long staffId;
+        private Long shopId;
+        private Long memberId;
+
+        @Builder
+        public DeleteRequest(Long staffId, Long shopId, Long memberId) {
+            this.staffId = staffId;
+            this.shopId = shopId;
+            this.memberId = memberId;
+        }
+    }
 
 
 
