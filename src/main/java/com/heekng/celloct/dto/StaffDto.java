@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class StaffDto {
 
@@ -68,6 +67,29 @@ public class StaffDto {
         }
     }
 
+    @Getter
+    @Setter
+    public static class DeleteRequest {
+        private Long staffId;
+        private Long shopId;
+        private Long memberId;
+
+        @Builder
+        public DeleteRequest(Long staffId, Long shopId, Long memberId) {
+            this.staffId = staffId;
+            this.shopId = shopId;
+            this.memberId = memberId;
+        }
+    }
+
+    @Getter
+    @Setter
+    public static class UpdateRequest {
+        private Long staffId;
+        private String name;
+        private Long shopId;
+        private Long memberId;
+    }
 
 
 
