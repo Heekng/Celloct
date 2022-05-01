@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:replace="fragments/header :: header">
+    <title>Hello</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader"></div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 py-4 text-center">
+            <p class="display-4">매장 관리</p>
+            <h3>
+                <small class="text-muted">매장을 관리합니다.</small>
+            </h3>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-xl-6 col-lg-8 py-2">
+            <ul th:replace="fragments/managerNav :: ulNav"></ul>
+
+            <div class="mb-3">
+                <a class="btn btn-outline-primary" th:href="@{/manage/{shopId}/staff(shopId=${shop.id})}">목록으로</a>
+            </div>
+            <form name="staffUpdateForm" class="needs-validation" th:action="@{/manage/{shopId}/staff/{staffId}/update(shopId=${shop.id}, staffId=${staff.staffId})}" method="post" novalidate>
+                <div class="mb-3 row">
+                    <label for="name" class="col-sm-3 col-form-label">직원명</label>
+                    <div class="col-sm-9">
+                        <input id="name" name="name" th:value="${staff.staffName}" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="email" class="col-sm-3 col-form-label">이메일</label>
+                    <div class="col-sm-9">
+                        <input id="email" name="email" th:value="${staff.email}" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-lg btn-outline-primary" type="submit">수정 완료</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div> <!-- /container -->
+<script th:inline="javascript">
+    window.onload = () => {
+        document.querySelector("#a-staff").classList.add("active");
+    }
+
+    (function () {
+        let form = document.staffUpdateForm;
+
+        form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            if (document.querySelector("#name").value.trim() === "") {
+                event.preventDefault()
+                event.stopPropagation()
+                alert("직원명은 공백일 수 없습니다.");
+            }
+
+            form.classList.add('was-validated');
+        }, false)
+    })();
+</script>
+</body>
+</html>

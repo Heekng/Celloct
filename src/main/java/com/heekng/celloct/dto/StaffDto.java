@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class StaffDto {
 
@@ -81,6 +80,15 @@ public class StaffDto {
             this.shopId = shopId;
             this.memberId = memberId;
         }
+    }
+
+    @Getter
+    @Setter
+    public static class UpdateRequest {
+        private Long staffId;
+        private String name;
+        private Long shopId;
+        private Long memberId;
     }
 
 

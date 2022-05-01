@@ -161,4 +161,40 @@ public class ManageStaffController {
 
         return true;
     }
+
+    @GetMapping("/{shopId}/staff/{staffId}/update")
+    public String staffDetailUpdate(@PathVariable("shopId") Long shopId, @PathVariable("staffId") Long staffId, Model model) {
+        SessionMember member = (SessionMember) httpSession.getAttribute("member");
+        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (managerOptional.isEmpty()) {
+            return "redirect:/";
+        }
+
+        Staff findStaff = staffRepository.findWithMemberById(staffId);
+        model.addAttribute("staff", new StaffDto.WithMemberResponse(findStaff));
+
+        Shop shop = shopService.findShop(shopId);
+        model.addAttribute("shop", new ShopDto.ShopDetailResponse(shop));
+
+        return "manager/staffDetailUpdate";
+    }
+
+    @PostMapping("/{shopId}/staff/{staffId}/update")
+    public String doStaffDetailUpdate(StaffDto.UpdateRequest updateRequest, @PathVariable("shopId") Long shopId, @PathVariable("staffId") Long staffId, Model model, RedirectAttributes redirectAttributes) {
+        SessionMember member = (SessionMember) httpSession.getAttribute("member");
+        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (managerOptional.isEmpty()) {
+            return "redirect:/";
+        }
+
+        updateRequest.setStaffId(staffId);
+        updateRequest.setShopId(shopId);
+        updateRequest.setMemberId(member.getId());
+        staffService.updateStaff(updateRequest);
+
+        redirectAttributes.addAttribute("staffId", staffId);
+        redirectAttributes.addAttribute("shopId", shopId);
+
+        return "redirect:/manage/{shopId}/staff/{staffId}";
+    }
 }

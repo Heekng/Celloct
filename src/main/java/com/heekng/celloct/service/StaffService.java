@@ -1,5 +1,6 @@
 package com.heekng.celloct.service;
 
+import com.heekng.celloct.dto.ManagerDto;
 import com.heekng.celloct.dto.StaffDto;
 import com.heekng.celloct.entity.Manager;
 import com.heekng.celloct.entity.Member;
@@ -61,5 +62,12 @@ public class StaffService {
         if (!staffList.isEmpty()) {
             throw new IllegalStateException("이미 존재하는 직원입니다.");
         }
+    }
+
+    @Transactional
+    public void updateStaff(StaffDto.UpdateRequest updateRequest) {
+        Manager manager = managerRepository.findByMemberIdAndShopId(updateRequest.getMemberId(), updateRequest.getShopId()).orElseThrow(() -> new IllegalStateException("해당 매장의 관리자가 아닙니다."));
+        Staff findStaff = staffRepository.findByShopIdAndId(updateRequest.getShopId(), updateRequest.getStaffId()).orElseThrow(() -> new IllegalStateException("해당 매장에 등록된 직원이 아닙니다."));
+        findStaff.updateInfo(updateRequest.getName());
     }
 }

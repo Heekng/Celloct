@@ -52,4 +52,8 @@ public class Staff extends BaseTimeEntity {
         this.employmentDate = changeEmploymentDate;
     }
 
+    public void updateInfo(String name) {
+        this.name = name;
+    }
+
 }
