@@ -21,17 +21,22 @@ public class Work extends BaseTimeEntity {
     @Column(name = "work_id")
     private Long id;
 
+    @Column(nullable = false)
     private LocalDate workDate;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "staff_id")
+    @JoinColumn(name = "staff_id", nullable = false)
     private Staff staff;
+
+    @Column(nullable = false)
     private LocalDateTime startDate;
+
+    @Column(nullable = false)
     private LocalDateTime endDate;
     private String note;
 
     @OneToOne(fetch = LAZY, cascade = REMOVE)
-    @JoinColumn(name = "work_update_request_id")
+    @JoinColumn(name = "work_update_request_id", nullable = false)
     private WorkUpdateRequest workUpdateRequest;
 
     @Builder

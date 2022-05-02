@@ -21,6 +21,7 @@ public class Shop extends BaseTimeEntity {
     private Long id;
 
     private String phone;
+    @Column(unique = true, nullable = false)
     private String name;
     private String info;
 
