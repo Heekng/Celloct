@@ -46,6 +46,7 @@ class MemberRepositoryTest {
     void delete() throws Exception {
         Member member = Member.builder()
                 .name("member")
+                .email("member@gmail.com")
                 .build();
 
         memberRepository.save(member);
@@ -64,10 +65,12 @@ class MemberRepositoryTest {
     void read() throws Exception {
         Member member1 = Member.builder()
                 .name("member1")
+                .email("member1@gmail.com")
                 .build();
 
         Member member2 = Member.builder()
                 .name("member2")
+                .email("member2@gmail.com")
                 .build();
 
         memberRepository.save(member1);

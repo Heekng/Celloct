@@ -54,10 +54,12 @@ class WorkServiceTest {
 
         Member member = Member.builder()
                 .name("member1")
+                .email("test@gmail.com")
                 .build();
         memberRepository.save(member);
 
         Staff staff = Staff.builder()
+                .name("staff1")
                 .shop(shop)
                 .member(member)
                 .build();
@@ -97,10 +99,12 @@ class WorkServiceTest {
 
         Member member = Member.builder()
                 .name("member1")
+                .email("test@gmail.com")
                 .build();
         memberRepository.save(member);
 
         Staff staff = Staff.builder()
+                .name("staff1")
                 .shop(shop)
                 .member(member)
                 .build();
@@ -149,10 +153,12 @@ class WorkServiceTest {
 
         Member member = Member.builder()
                 .name("member1")
+                .email("test@gmail.com")
                 .build();
         memberRepository.save(member);
 
         Staff staff = Staff.builder()
+                .name("staff1")
                 .shop(shop)
                 .member(member)
                 .build();

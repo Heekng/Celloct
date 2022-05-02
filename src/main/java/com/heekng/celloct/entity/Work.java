@@ -36,7 +36,7 @@ public class Work extends BaseTimeEntity {
     private String note;
 
     @OneToOne(fetch = LAZY, cascade = REMOVE)
-    @JoinColumn(name = "work_update_request_id", nullable = false)
+    @JoinColumn(name = "work_update_request_id")
     private WorkUpdateRequest workUpdateRequest;
 
     @Builder
