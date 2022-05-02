@@ -89,6 +89,7 @@ public class StaffDto {
         private String name;
         private Long shopId;
         private Long memberId;
+        private String staffEmploymentDate;
     }
 
     @Getter

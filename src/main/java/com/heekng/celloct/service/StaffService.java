@@ -67,7 +67,6 @@ public class StaffService {
 
     @Transactional
     public void updateStaff(StaffDto.UpdateRequest updateRequest) {
-        Manager manager = managerRepository.findByMemberIdAndShopId(updateRequest.getMemberId(), updateRequest.getShopId()).orElseThrow(() -> new IllegalStateException("해당 매장의 관리자가 아닙니다."));
         Staff findStaff = staffRepository.findByShopIdAndId(updateRequest.getShopId(), updateRequest.getStaffId()).orElseThrow(() -> new IllegalStateException("해당 매장에 등록된 직원이 아닙니다."));
         findStaff.updateInfo(updateRequest.getName());
     }
