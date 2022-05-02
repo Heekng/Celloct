@@ -13,6 +13,9 @@ public interface ManagerRepository extends JpaRepository<Manager, Long> {
 
     List<Manager> findByMemberId(Long memberId);
 
+    @EntityGraph(attributePaths = {"shop"})
+    List<Manager> findWithShopByMemberId(Long memberId);
+
     List<Manager> findListByShopId(Long shopId);
 
     @EntityGraph(attributePaths = {"member"})

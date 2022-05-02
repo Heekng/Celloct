@@ -19,4 +19,7 @@ public interface StaffRepository extends JpaRepository<Staff, Long> {
     Staff findWithMemberById(Long id);
 
     Optional<Staff> findByShopIdAndId(Long shopId, Long id);
+
+    @EntityGraph(attributePaths = {"shop"})
+    List<Staff> findWithShopByMemberId(Long memberId);
 }
