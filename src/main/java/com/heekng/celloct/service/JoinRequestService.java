@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -49,8 +50,8 @@ public class JoinRequestService {
     }
 
     private void validateDuplicateStaff(Long memberId, Long shopId) {
-        List<Staff> byMemberIdAndShopId = staffRepository.findByMemberIdAndShopId(memberId, shopId);
-        if(!byMemberIdAndShopId.isEmpty()) {
+        Optional<Staff> byMemberIdAndShopId = staffRepository.findByMemberIdAndShopId(memberId, shopId);
+        if(byMemberIdAndShopId.isPresent()) {
             throw new IllegalStateException("이미 가입된 회원입니다.");
         }
     }

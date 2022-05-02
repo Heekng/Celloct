@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -58,8 +59,8 @@ public class StaffService {
     }
 
     private void validateExistStaff(Long shopId, Long staffMemberId) {
-        List<Staff> staffList = staffRepository.findByMemberIdAndShopId(staffMemberId, shopId);
-        if (!staffList.isEmpty()) {
+        Optional<Staff> staffList = staffRepository.findByMemberIdAndShopId(staffMemberId, shopId);
+        if (staffList.isPresent()) {
             throw new IllegalStateException("이미 존재하는 직원입니다.");
         }
     }

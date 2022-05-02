@@ -91,7 +91,20 @@ public class StaffDto {
         private Long memberId;
     }
 
+    @Getter
+    @Setter
+    public static class StaffDetailResponse {
+        private Long id;
+        private String name;
+        private LocalDate employmentDate;
 
+        @Builder
+        public StaffDetailResponse(Staff staff) {
+            this.id = staff.getId();
+            this.name = staff.getName();
+            this.employmentDate = staff.getEmploymentDate();
+        }
+    }
 
 
 }
