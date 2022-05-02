@@ -20,8 +20,13 @@ public class WorkUpdateRequest extends BaseTimeEntity {
     @Column(name = "work_update_request_id")
     private Long id;
 
+    @Column(nullable = false)
     private LocalDate updateWorkDate;
+
+    @Column(nullable = false)
     private LocalDateTime updateStartDate;
+
+    @Column(nullable = false)
     private LocalDateTime updateEndDate;
 
     @OneToOne(mappedBy = "workUpdateRequest", fetch = LAZY)

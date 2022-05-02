@@ -56,25 +56,31 @@ class ShopServiceTest {
         //given
         Member member1 = Member.builder()
                 .name("member1")
+                .email("member1@gmail.com")
                 .build();
         Member member2 = Member.builder()
                 .name("member2")
+                .email("member2@gmail.com")
                 .build();
         Member member3 = Member.builder()
                 .name("member3")
+                .email("member3@gmail.com")
                 .build();
         Shop shop = Shop.builder()
                 .name("shop1")
                 .build();
         Staff staff1 = Staff.builder()
+                .name("staff1")
                 .member(member1)
                 .shop(shop)
                 .build();
         Staff staff2 = Staff.builder()
+                .name("staff2")
                 .member(member2)
                 .shop(shop)
                 .build();
         Staff staff3 = Staff.builder()
+                .name("staff3")
                 .member(member3)
                 .shop(shop)
                 .build();

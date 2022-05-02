@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:replace="fragments/header :: header">
+    <title>Hello</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader"></div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 py-4 text-center">
+            <p class="display-4">매장 정보</p>
+            <h3>
+                <small class="text-muted">가입한 매장입니다.</small>
+            </h3>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-xl-6 col-lg-8 py-2">
+            <ul th:replace="fragments/staffNav :: ulNav"></ul>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-xl-6 col-lg-8 py-2">
+            <h3>매장 정보</h3>
+            <div class="mb-3 row">
+                <label for="shopName" class="col-sm-3 col-form-label">매장명</label>
+                <div class="col-sm-9">
+                    <input id="shopName" name="shopName" th:value="${shop.name}" type="text" readonly class="form-control">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="shopPhone" class="col-sm-3 col-form-label">매장 연락처</label>
+                <div class="col-sm-9">
+                    <input id="shopPhone" name="shopPhone" th:value="${shop.phone}" type="text" readonly class="form-control">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="shopInfo" class="col-sm-3 col-form-label">매장 설명</label>
+                <div class="col-sm-9">
+                    <input id="shopInfo" name="shopInfo" th:value="${shop.info}" type="text" readonly class="form-control">
+                </div>
+            </div>
+            <h3>내 등록 정보</h3>
+            <div class="mb-3 row">
+                <label for="staffName" class="col-sm-3 col-form-label">직원명</label>
+                <div class="col-sm-9">
+                    <input id="staffName" name="staffName" th:value="${staff.name}" type="text" readonly class="form-control">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="staffEmploymentDate" class="col-sm-3 col-form-label">매장 가입일</label>
+                <div class="col-sm-9">
+                    <input id="staffEmploymentDate" name="staffEmploymentDate" th:value="${staff.employmentDate}" type="text" readonly class="form-control">
+                </div>
+            </div>
+            <div class="text-center">
+                <button class="btn btn-lg btn-outline-primary" th:onclick="|location.href='@{/staff/{shopId}/update(shopId=${shop.id})}'|">내 등록정보 수정</button>
+            </div>
+        </div>
+    </div>
+</div> <!-- /container -->
+<script th:inline="javascript">
+    window.onload = () => {
+        document.querySelector("#a-home").classList.add("active");
+    }
+</script>
+</body>
+</html>

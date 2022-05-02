@@ -89,12 +89,27 @@ public class ShopDto {
     @Getter
     @Setter
     @NoArgsConstructor
-    public static class HomeShopResponse {
+    public static class HomeShopManagerResponse {
         private Long id;
         private String name;
 
         @Builder
-        public HomeShopResponse(Shop shop) {
+        public HomeShopManagerResponse(Shop shop) {
+            this.id = shop.getId();
+            this.name = shop.getName();
+        }
+
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class HomeShopStaffResponse {
+        private Long id;
+        private String name;
+
+        @Builder
+        public HomeShopStaffResponse(Shop shop) {
             this.id = shop.getId();
             this.name = shop.getName();
         }

@@ -37,6 +37,7 @@ class ManagerServiceTest {
         //given
         Member member = Member.builder()
                 .name("member1")
+                .email("test@gmail.com")
                 .build();
         memberRepository.save(member);
 
@@ -63,6 +64,7 @@ class ManagerServiceTest {
         //given
         Member member = Member.builder()
                 .name("member1")
+                .email("test@gmail.com")
                 .build();
         memberRepository.save(member);
 
@@ -75,6 +77,7 @@ class ManagerServiceTest {
         Manager manager = Manager.builder()
                 .shop(shop)
                 .member(member)
+                .name("manager1")
                 .build();
         Manager savedManager = managerRepository.save(manager);
 

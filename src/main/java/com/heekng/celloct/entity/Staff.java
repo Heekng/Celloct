@@ -23,15 +23,18 @@ public class Staff extends BaseTimeEntity {
     @Column(name = "staff_id")
     private Long id;
 
+    @Column(nullable = false)
     private LocalDate employmentDate;
+
+    @Column(nullable = false, unique = true)
     private String name;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "shop_id")
+    @JoinColumn(name = "shop_id", nullable = false)
     private Shop shop;
 
     @OneToMany(mappedBy = "staff", cascade = REMOVE)

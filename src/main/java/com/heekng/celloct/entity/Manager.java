@@ -18,14 +18,15 @@ public class Manager extends BaseTimeEntity{
     @Column(name = "manager_id")
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "shop_id")
+    @JoinColumn(name = "shop_id", nullable = false)
     private Shop shop;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
     @Builder

@@ -51,6 +51,7 @@ class StaffServiceTest {
     void test() throws Exception {
         Member member = Member.builder()
                 .name("member1")
+                .email("test@gmail.com")
                 .build();
         memberRepository.save(member);
         Shop shop = Shop.builder()
@@ -59,6 +60,7 @@ class StaffServiceTest {
         shopRepository.save(shop);
 
         Staff staff = Staff.builder()
+                .name("staff1")
                 .shop(shop)
                 .member(member)
                 .build();
@@ -86,6 +88,7 @@ class StaffServiceTest {
 
         Member member = Member.builder()
                 .name("member1")
+                .email("test@gmail.com")
                 .build();
         memberRepository.save(member);
 
@@ -115,10 +118,12 @@ class StaffServiceTest {
 
         Member member = Member.builder()
                 .name("member1")
+                .email("test@gmail.com")
                 .build();
         memberRepository.save(member);
 
         Staff staff = Staff.builder()
+                .name("staff1")
                 .member(member)
                 .shop(shop)
                 .build();
@@ -152,6 +157,7 @@ class StaffServiceTest {
 
         Member managerMember = Member.builder()
                 .name("managerMember")
+                .email("manager1@gmail.com")
                 .build();
         memberRepository.save(managerMember);
 
@@ -164,10 +170,12 @@ class StaffServiceTest {
 
         Member member = Member.builder()
                 .name("member1")
+                .email("member1@gmail.com")
                 .build();
         memberRepository.save(member);
 
         Staff staff = Staff.builder()
+                .name("staff1")
                 .shop(shop)
                 .member(member)
                 .build();

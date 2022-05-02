@@ -189,7 +189,6 @@ public class ManageStaffController {
 
         updateRequest.setStaffId(staffId);
         updateRequest.setShopId(shopId);
-        updateRequest.setMemberId(member.getId());
         staffService.updateStaff(updateRequest);
 
         redirectAttributes.addAttribute("staffId", staffId);
