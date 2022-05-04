@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:replace="fragments/header :: header">
+    <title>Hello</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader"></div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 py-4 text-center">
+            <p class="display-4">근무시간 입력</p>
+            <h3>
+                <small class="text-muted">근무시간을 입력합니다.</small>
+            </h3>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-xl-6 col-lg-8 py-2">
+            <ul th:replace="fragments/staffNav :: ulNav"></ul>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-xl-6 col-lg-8 py-2">
+            <div class="mb-3 row">
+                <label for="workDate" class="col-sm-3 col-form-label">날짜</label>
+                <div class="col-sm-9">
+                    <input id="workDate" name="workDate" type="date" class="form-control">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="workStartTime" class="col-sm-3 col-form-label">시작 일시</label>
+                <div class="col-sm-9">
+                    <input id="workStartTime" name="workStartTime" type="datetime-local" class="form-control">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="workEndTime" class="col-sm-3 col-form-label">종료 일시</label>
+                <div class="col-sm-9">
+                    <input id="workEndTime" name="workEndTime" th:value="${shop.info}" type="datetime-local" class="form-control">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="note" class="col-sm-3 col-form-label">메모</label>
+                <div class="col-sm-9">
+                    <input id="note" name="note" type="text" class="form-control">
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="button" class="btn btn-lg btn-outline-primary">등록</button>
+            </div>
+        </div>
+    </div>
+</div> <!-- /container -->
+<script th:inline="javascript">
+    window.onload = () => {
+        document.querySelector("#a-addWorkTime").classList.add("active");
+    }
+</script>
+</body>
+</html>
