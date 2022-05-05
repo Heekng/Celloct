@@ -73,10 +73,11 @@ class WorkServiceTest {
         LocalDateTime startDate = LocalDateTime.of(workDate, LocalTime.of(10, 50));
         LocalDateTime endDate = LocalDateTime.of(workDate, LocalTime.of(15, 50));
         WorkDto.AddRequest addRequest = WorkDto.AddRequest.builder()
-                .staffId(staff.getId())
                 .workDate(workDate)
                 .startDate(startDate)
                 .endDate(endDate)
+                .memberId(member.getId())
+                .shopId(shop.getId())
                 .build();
         Long workId = workService.addWork(addRequest);
         Work findWork = workRepository.findById(workId).get();

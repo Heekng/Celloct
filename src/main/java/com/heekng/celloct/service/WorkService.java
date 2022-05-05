@@ -23,8 +23,8 @@ public class WorkService {
 
     @Transactional
     public Long addWork(WorkDto.AddRequest addRequest) {
-        Staff staff = staffRepository.findById(addRequest.getStaffId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 직원입니다."));
-        validateDuplicateWork(addRequest.getWorkDate(), addRequest.getStaffId());
+        Staff staff = staffRepository.findByMemberIdAndShopId(addRequest.getMemberId(), addRequest.getShopId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
+        validateDuplicateWork(addRequest.getWorkDate(), staff.getId());
         Work work = Work.builder()
                 .staff(staff)
                 .workDate(addRequest.getWorkDate())
@@ -47,6 +47,16 @@ public class WorkService {
     public void deleteWork(Long workId) {
         Work work = workRepository.findById(workId).orElseThrow(() -> new IllegalStateException("존재하지 않는 근무입니다."));
         workRepository.delete(work);
+    }
+
+    public Boolean validateExist(WorkDto.CheckExistRequest checkExistRequest) {
+        Staff staff = staffRepository.findByMemberIdAndShopId(checkExistRequest.getMemberId(), checkExistRequest.getShopId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
+        try {
+            validateDuplicateWork(checkExistRequest.getWorkDate(), staff.getId());
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     /**
