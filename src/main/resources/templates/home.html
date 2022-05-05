@@ -28,7 +28,7 @@
                         <option th:if="${staffShops != null && #lists.size(staffShops) == 0}" value="-1">가입한 매장이 없습니다.</option>
                         <option th:if="${staffShops == null}" value="-1">로그인이 필요합니다.</option>
                     </select>
-                    <button class="btn btn-primary w-100" onclick="goStaffShop()">매장 보기</button>
+                    <button id="button_staffShop" class="btn btn-primary w-100" onclick="goStaffShop()">매장 보기</button>
                 </div>
             </div>
         </div>
@@ -72,9 +72,11 @@
     window.onload = () => {
         if ([[${manageShops == null}]]) {
             document.querySelector("#button_manageShop").setAttribute("disabled", true);
+            document.querySelector("#select_manageShop").setAttribute("disabled", true);
         }
         if ([[${staffShops == null}]]) {
             document.querySelector("#button_staffShop").setAttribute("disabled", true);
+            document.querySelector("#select_staffShop").setAttribute("disabled", true);
         }
 
     };
