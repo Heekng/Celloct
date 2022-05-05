@@ -18,13 +18,61 @@
     <div class="row justify-content-center">
         <div class="col-xl-6 col-lg-8 py-2">
             <ul th:replace="fragments/managerNav :: ulNav"></ul>
-
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-xl-6 col-lg-8 py-2">
+            <div class="input-group">
+                <label class="input-group-text" for="select_staff">직원명</label>
+                <select id="select_staff" class="form-select">
+                    <option th:each="staff : ${staffs}" th:value="${staff.id}" th:text="${staff.name}"></option>
+                </select>
+                <button type="button" class="btn btn-lg btn-primary" onclick="searchWorks()">조회</button>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-xl-6 col-lg-8 py-2">
+            <table class="table table-striped table-hover table-bordered text-center">
+                <thead>
+                <tr>
+                    <th>근무일</th>
+                    <th>시작일시</th>
+                    <th>종료일시</th>
+                    <th>상세보기</th>
+                </tr>
+                </thead>
+                <tbody id="tbody-work">
+                </tbody>
+            </table>
         </div>
     </div>
 </div> <!-- /container -->
 <script th:inline="javascript">
     window.onload = () => {
         document.querySelector("#a-workTime").classList.add("active");
+    }
+
+    async function searchWorks() {
+        let shopId = [[${shop.id}]];
+        let staffId = document.querySelector("#select_staff").value;
+        let today = new Date();
+        const year = today.getFullYear();
+        const month = ('0' + (today.getMonth() + 1)).slice(-2);
+        const day = ('0' + today.getDate()).slice(-2);
+        const dateString = year + "-" + month + "-" + day;
+
+        const url = "/manage/" + shopId + "/workTimes/" + staffId + "/" + year + "/" + month;
+        const option = {
+            method: "get"
+        }
+
+        await fetch(url, option)
+            .then((result) => {
+                return result.json();
+            }).then((result) => {
+                console.log(result)
+            });
     }
 </script>
 </body>

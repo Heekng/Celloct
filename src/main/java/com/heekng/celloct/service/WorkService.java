@@ -49,6 +49,13 @@ public class WorkService {
         workRepository.delete(work);
     }
 
+    public List<Work> findWorkByFindWorkRequest(WorkDto.FindWorkRequest findWorkRequest) {
+        Staff staff = staffRepository.findByShopIdAndId(findWorkRequest.getShopId(), findWorkRequest.getStaffId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
+        LocalDate startDate = LocalDate.of(findWorkRequest.getYear(), findWorkRequest.getMonth(), 1);
+        LocalDate endDate = startDate.plusMonths(1).minusDays(1);
+        return workRepository.findByWorkTimeWorkDateBetweenAndStaffId(startDate, endDate, staff.getId());
+    }
+
     public Boolean validateExist(WorkDto.CheckExistRequest checkExistRequest) {
         Staff staff = staffRepository.findByMemberIdAndShopId(checkExistRequest.getMemberId(), checkExistRequest.getShopId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
         try {
@@ -57,10 +64,6 @@ public class WorkService {
             return false;
         }
         return true;
-    }
-
-    public void findWorkByMemberIdAndYearMonth(WorkDto.FindWorkRequest findWorkRequest) {
-
     }
 
     /**
