@@ -7,5 +7,5 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface WorkRepository extends JpaRepository<Work, Long> {
-    List<Work> findByWorkDateAndStaffId(LocalDate workDate, Long staffId);
+    List<Work> findByWorkTimeWorkDateAndStaffId(LocalDate workDate, Long staffId);
 }
