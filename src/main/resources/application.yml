@@ -5,8 +5,6 @@ spring:
       "real": "oauth,real"
 
   jpa:
-    hibernate:
-      ddl-auto: none
     #      ddl-auto: create # entity 테스트 상황이므로 create
     properties:
       hibernate:
