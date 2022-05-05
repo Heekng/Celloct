@@ -35,7 +35,7 @@ public class Work extends BaseTimeEntity {
     private LocalDateTime endDate;
     private String note;
 
-    @OneToOne(fetch = LAZY, cascade = REMOVE)
+    @OneToOne(mappedBy = "work", fetch = LAZY, cascade = REMOVE)
     @JoinColumn(name = "work_update_request_id")
     private WorkUpdateRequest workUpdateRequest;
 

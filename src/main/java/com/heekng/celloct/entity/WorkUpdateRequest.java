@@ -29,7 +29,8 @@ public class WorkUpdateRequest extends BaseTimeEntity {
     @Column(nullable = false)
     private LocalDateTime updateEndDate;
 
-    @OneToOne(mappedBy = "workUpdateRequest", fetch = LAZY)
+    @OneToOne(fetch = LAZY)
+    @JoinColumn(name = "work_id", nullable = false)
     private Work work;
 
     @Builder
