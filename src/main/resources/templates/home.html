@@ -28,7 +28,7 @@
                         <option th:if="${staffShops != null && #lists.size(staffShops) == 0}" value="-1">가입한 매장이 없습니다.</option>
                         <option th:if="${staffShops == null}" value="-1">로그인이 필요합니다.</option>
                     </select>
-                    <button class="btn btn-primary" onclick="goStaffShop()">매장 보기</button>
+                    <button class="btn btn-primary w-100" onclick="goStaffShop()">매장 보기</button>
                 </div>
             </div>
         </div>
@@ -49,20 +49,20 @@
     </div>
     <div class="row justify-content-center">
         <div class="col-6 col-md-4 py-2">
-            <div class="card" th:onclick="|location.href='@{/shop/join}'|">
+            <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">매장 가입</h5>
                     <p class="card-text">Celloct를 이용하기 위해 매장에 가입하세요.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <a th:href="@{/shop/join}" class="btn btn-primary w-100">가입하러 가기</a>
                 </div>
             </div>
         </div>
         <div class="col-6 col-md-4 py-2">
-            <div class="card" th:onclick="|location.href='@{/shop/create}'|">
+            <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">매장 생성</h5>
                     <p class="card-text">직원을 관리하기 위해 매장을 만듭니다.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <a th:href="@{/shop/create}" class="btn btn-primary w-100">매장 생성하기</a>
                 </div>
             </div>
         </div>
