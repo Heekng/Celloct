@@ -59,7 +59,17 @@ public class StaffWorkTimeController {
     }
 
     @PostMapping("/{shopId}/workTime/insert")
-    public void doInsertWorkTime(@PathVariable("shopId") Long shopId, Model model) {
+    public String doInsertWorkTime(@PathVariable("shopId") Long shopId, WorkDto.AddRequest addRequest, Model model) {
+        SessionMember member = (SessionMember) httpSession.getAttribute("member");
+        Optional<Staff> staffOptional = staffRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (staffOptional.isEmpty()) {
+            return "redirect:/";
+        }
 
+        addRequest.setMemberId(member.getId());
+        addRequest.setShopId(shopId);
+        Long workId = workService.addWork(addRequest);
+
+        return "redirect:/";
     }
 }
