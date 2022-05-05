@@ -49,6 +49,16 @@ public class WorkService {
         workRepository.delete(work);
     }
 
+    public Boolean validateExist(WorkDto.CheckExistRequest checkExistRequest) {
+        Staff staff = staffRepository.findByMemberIdAndShopId(checkExistRequest.getMemberId(), checkExistRequest.getShopId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
+        try {
+            validateDuplicateWork(checkExistRequest.getWorkDate(), staff.getId());
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * 근무 시작시간이 근무 종료시간보다 이전이어야 한다.
      * @param changeStartDate

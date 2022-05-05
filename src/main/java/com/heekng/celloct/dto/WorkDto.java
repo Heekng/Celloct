@@ -2,6 +2,8 @@ package com.heekng.celloct.dto;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -40,5 +42,15 @@ public class WorkDto {
             this.changeEndDate = changeEndDate;
         }
     }
+
+    @Getter
+    @Setter
+    public static class CheckExistRequest {
+        @DateTimeFormat(pattern = "yyyy-MM-dd")
+        private LocalDate workDate;
+        private Long memberId;
+        private Long shopId;
+    }
+
 
 }

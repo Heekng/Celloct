@@ -22,22 +22,23 @@
     </div>
     <div class="row justify-content-center">
         <div class="col-xl-6 col-lg-8 py-2">
+            <form name="workTimeInsertForm" method="post" th:action="@{/staff/{shopId}/workTime/insert(shopId=${shop.id})}" novalidate>
             <div class="mb-3 row">
                 <label for="workDate" class="col-sm-3 col-form-label">날짜</label>
                 <div class="col-sm-9">
-                    <input id="workDate" name="workDate" type="date" class="form-control">
+                    <input id="workDate" name="workDate" type="date" class="form-control" required>
                 </div>
             </div>
             <div class="mb-3 row">
-                <label for="workStartTime" class="col-sm-3 col-form-label">시작 일시</label>
+                <label for="startDate" class="col-sm-3 col-form-label">시작 일시</label>
                 <div class="col-sm-9">
-                    <input id="workStartTime" name="workStartTime" type="datetime-local" class="form-control">
+                    <input id="startDate" name="startDate" type="datetime-local" class="form-control" required>
                 </div>
             </div>
             <div class="mb-3 row">
-                <label for="workEndTime" class="col-sm-3 col-form-label">종료 일시</label>
+                <label for="endDate" class="col-sm-3 col-form-label">종료 일시</label>
                 <div class="col-sm-9">
-                    <input id="workEndTime" name="workEndTime" th:value="${shop.info}" type="datetime-local" class="form-control">
+                    <input id="endDate" name="endDate" th:value="${shop.info}" type="datetime-local" class="form-control" required>
                 </div>
             </div>
             <div class="mb-3 row">
@@ -47,14 +48,63 @@
                 </div>
             </div>
             <div class="text-center">
-                <button type="button" class="btn btn-lg btn-outline-primary">등록</button>
+                <button type="submit" class="btn btn-lg btn-outline-primary">등록</button>
             </div>
+            </form>
         </div>
     </div>
 </div> <!-- /container -->
 <script th:inline="javascript">
     window.onload = () => {
         document.querySelector("#a-addWorkTime").classList.add("active");
+    }
+
+    (function () {
+        let form = document.workTimeInsertForm;
+
+        form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            let workDate = document.querySelector("#workDate").value;
+            let startDate = new Date(document.querySelector("#startDate").value);
+            let endDate = new Date(document.querySelector("#endDate").value);
+
+            if (startDate.getTime() >= endDate) {
+                alert("시작 일시는 종료 일시보다 같거나 늦을 수 없습니다.");
+                event.preventDefault();
+                event.stopPropagation();
+                return false;
+            }
+
+            if (!validateDate(workDate)) {
+                alert("이미 등록한 날짜입니다.\n근무시간 수정을 요청하세요.");
+                event.preventDefault();
+                event.stopPropagation();
+                return false;
+            }
+
+            form.classList.add('was-validated');
+        }, false)
+    })();
+
+    async function validateDate(workDate) {
+        const url = "/staff/"+[[${shop.id}]]+"/workTime/validateExist?";
+        const option = {
+            method: "get"
+        }
+        const params = {
+            workDate: workDate
+        }
+        let query = Object.keys(params).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key])).join('&');
+
+        await fetch(url + query, option)
+            .then((result) => {
+                return result.json();
+            }).then((result) => {
+                return result === true;
+            });
     }
 </script>
 </body>
