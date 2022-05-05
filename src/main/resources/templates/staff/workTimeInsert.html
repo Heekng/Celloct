@@ -57,6 +57,7 @@
 <script th:inline="javascript">
     window.onload = () => {
         document.querySelector("#a-addWorkTime").classList.add("active");
+        document.querySelector("#workDate").valueAsDate = new Date();
     }
 
     (function () {
