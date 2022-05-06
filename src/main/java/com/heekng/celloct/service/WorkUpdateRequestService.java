@@ -30,9 +30,9 @@ public class WorkUpdateRequestService {
         Work work = workRepository.findById(addRequest.getWorkId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 근무입니다."));
         validateWorkUpdateRequest(addRequest.getWorkId());
         WorkUpdateRequest workUpdateRequest = WorkUpdateRequest.builder()
-                .updateWorkDate(addRequest.getUpdateDate())
-                .updateStartDate(addRequest.getUpdateStartDate())
-                .updateEndDate(addRequest.getUpdateEndDate())
+                .workDate(addRequest.getUpdateDate())
+                .startDate(addRequest.getUpdateStartDate())
+                .endDate(addRequest.getUpdateEndDate())
                 .work(work)
                 .build();
         workUpdateRequestRepository.save(workUpdateRequest);
@@ -57,7 +57,7 @@ public class WorkUpdateRequestService {
     public void updateWorkUpdateRequest(WorkUpdateRequestDto.updateRequest updateRequest) {
         WorkUpdateRequest workUpdateRequest = workUpdateRequestRepository.findById(updateRequest.getWorkUpdateRequestId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 근무시간 변경 요청입니다."));
         validateTime(updateRequest.getUpdateStartDate(), updateRequest.getUpdateEndDate());
-        workUpdateRequest.updateWorkUpdateRequest(updateRequest.getUpdateDate(), updateRequest.getUpdateStartDate(), updateRequest.getUpdateEndDate());
+        workUpdateRequest.getWorkTime().changeWorkTime(updateRequest.getUpdateStartDate(), updateRequest.getUpdateEndDate());
     }
 
     private void validateWorkUpdateRequest(Long workId) {

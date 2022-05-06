@@ -40,13 +40,20 @@ public class WorkService {
     public void changeWorkTime(WorkDto.ChangeWorkTimeRequest changeWorkTimeRequest) {
         Work work = workRepository.findById(changeWorkTimeRequest.getWorkId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 근무입니다."));
         validateTime(changeWorkTimeRequest.getChangeStartDate(), changeWorkTimeRequest.getChangeEndDate());
-        work.changeWorkTime(changeWorkTimeRequest.getChangeStartDate(), changeWorkTimeRequest.getChangeEndDate());
+        work.getWorkTime().changeWorkTime(changeWorkTimeRequest.getChangeStartDate(), changeWorkTimeRequest.getChangeEndDate());
     }
 
     @Transactional
     public void deleteWork(Long workId) {
         Work work = workRepository.findById(workId).orElseThrow(() -> new IllegalStateException("존재하지 않는 근무입니다."));
         workRepository.delete(work);
+    }
+
+    public List<Work> findWorkByFindWorkRequest(WorkDto.FindWorkRequest findWorkRequest) {
+        Staff staff = staffRepository.findByShopIdAndId(findWorkRequest.getShopId(), findWorkRequest.getStaffId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
+        LocalDate startDate = LocalDate.of(findWorkRequest.getYear(), findWorkRequest.getMonth(), 1);
+        LocalDate endDate = startDate.plusMonths(1).minusDays(1);
+        return workRepository.findByWorkTimeWorkDateBetweenAndStaffId(startDate, endDate, staff.getId());
     }
 
     public Boolean validateExist(WorkDto.CheckExistRequest checkExistRequest) {
@@ -71,7 +78,7 @@ public class WorkService {
     }
 
     private void validateDuplicateWork(LocalDate workDate, Long staffId) {
-        List<Work> findWorks = workRepository.findByWorkDateAndStaffId(workDate, staffId);
+        List<Work> findWorks = workRepository.findByWorkTimeWorkDateAndStaffId(workDate, staffId);
         if (!findWorks.isEmpty()) {
             throw new IllegalStateException("이미 근무한 날짜입니다.");
         }

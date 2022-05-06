@@ -103,11 +103,11 @@ class WorkRepositoryTest {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime startDate = now.minusHours(1L);
         LocalDateTime endDate = now;
-        saveWork.changeWorkTime(startDate, endDate);
+        saveWork.getWorkTime().changeWorkTime(startDate, endDate);
         Work findWork = workRepository.findById(work.getId()).get();
         //then
-        assertThat(findWork.getStartDate()).isEqualTo(startDate);
-        assertThat(findWork.getEndDate()).isEqualTo(endDate);
+        assertThat(findWork.getWorkTime().getStartDate()).isEqualTo(startDate);
+        assertThat(findWork.getWorkTime().getEndDate()).isEqualTo(endDate);
     }
 
     @Test

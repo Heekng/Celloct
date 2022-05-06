@@ -21,19 +21,14 @@ public class Work extends BaseTimeEntity {
     @Column(name = "work_id")
     private Long id;
 
-    @Column(nullable = false)
-    private LocalDate workDate;
+    @Embedded
+    private WorkTime workTime;
+
+    private String note;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "staff_id", nullable = false)
     private Staff staff;
-
-    @Column(nullable = false)
-    private LocalDateTime startDate;
-
-    @Column(nullable = false)
-    private LocalDateTime endDate;
-    private String note;
 
     @OneToOne(mappedBy = "work", fetch = LAZY, cascade = REMOVE)
     @JoinColumn(name = "work_update_request_id")
@@ -41,16 +36,13 @@ public class Work extends BaseTimeEntity {
 
     @Builder
     public Work(LocalDate workDate, Staff staff, LocalDateTime startDate, LocalDateTime endDate, String note) {
-        this.workDate = workDate;
         this.staff = staff;
-        this.startDate = startDate;
-        this.endDate = endDate;
         this.note = note;
-    }
-
-    public void changeWorkTime(LocalDateTime startDate, LocalDateTime endDate) {
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.workTime = WorkTime.builder()
+                .workDate(workDate)
+                .startDate(startDate)
+                .endDate(endDate)
+                .build();
     }
 
     public void addWorkUpdateRequest(WorkUpdateRequest workUpdateRequest) {

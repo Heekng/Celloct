@@ -3,7 +3,6 @@ package com.heekng.celloct.service;
 import com.heekng.celloct.dto.WorkUpdateRequestDto;
 import com.heekng.celloct.entity.*;
 import com.heekng.celloct.repository.*;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -121,9 +119,9 @@ class WorkUpdateRequestServiceTest {
 
         WorkUpdateRequest workUpdateRequest = WorkUpdateRequest.builder()
                 .work(work)
-                .updateWorkDate(workDate)
-                .updateStartDate(startDate.minusHours(1))
-                .updateEndDate(startDate.plusHours(1))
+                .workDate(workDate)
+                .startDate(startDate.minusHours(1))
+                .endDate(startDate.plusHours(1))
                 .build();
         workUpdateRequestRepository.save(workUpdateRequest);
 
@@ -131,12 +129,12 @@ class WorkUpdateRequestServiceTest {
         em.clear();
 
         //when
-        LocalDateTime updateStartDate = workUpdateRequest.getUpdateStartDate().minusHours(1);
+        LocalDateTime updateStartDate = workUpdateRequest.getWorkTime().getStartDate().minusHours(1);
         WorkUpdateRequestDto.updateRequest updateRequest = WorkUpdateRequestDto.updateRequest.builder()
                 .workUpdateRequestId(workUpdateRequest.getId())
-                .updateDate(workUpdateRequest.getUpdateWorkDate())
+                .updateDate(workUpdateRequest.getWorkTime().getWorkDate())
                 .updateStartDate(updateStartDate)
-                .updateEndDate(workUpdateRequest.getUpdateEndDate())
+                .updateEndDate(workUpdateRequest.getWorkTime().getEndDate())
                 .build();
 
         workUpdateRequestService.updateWorkUpdateRequest(updateRequest);
@@ -178,9 +176,9 @@ class WorkUpdateRequestServiceTest {
 
         WorkUpdateRequest workUpdateRequest = WorkUpdateRequest.builder()
                 .work(work)
-                .updateWorkDate(workDate)
-                .updateStartDate(startDate.minusHours(1))
-                .updateEndDate(endDate)
+                .workDate(workDate)
+                .startDate(startDate.minusHours(1))
+                .endDate(endDate)
                 .build();
         workUpdateRequestRepository.save(workUpdateRequest);
 

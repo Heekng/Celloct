@@ -136,8 +136,8 @@ class WorkServiceTest {
         Work findWork = workRepository.findById(work.getId()).get();
 
         //then
-        assertThat(findWork.getStartDate()).isEqualTo(changeStartDate);
-        assertThat(findWork.getEndDate()).isEqualTo(changeEndDate);
+        assertThat(findWork.getWorkTime().getStartDate()).isEqualTo(changeStartDate);
+        assertThat(findWork.getWorkTime().getEndDate()).isEqualTo(changeEndDate);
     }
 
     /**
