@@ -49,10 +49,33 @@
         </div>
     </div>
 </div> <!-- /container -->
+<!-- Modal -->
+<div class="modal fade" id="modal-workDetail" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">근무 상세</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                <button type="button" class="btn btn-primary">수정하기</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script th:inline="javascript">
     const workTime = {
-        weekday: ['일', '월', '화', '수', '목', '금', '토']
+        weekday: ['일', '월', '화', '수', '목', '금', '토'],
+        detailModal: new bootstrap.Modal(document.getElementById('modal-workDetail'), {
+            keyboard: false
+        }),
+        lastSearchStaffId: -1
     }
+
     window.onload = () => {
         document.querySelector("#a-workTime").classList.add("active");
     }
@@ -76,6 +99,7 @@
                 return result.json();
             }).then((result) => {
                 setWorkTime(result, year, month);
+                workTime.lastSearchStaffId = staffId;
             });
     }
 
@@ -164,8 +188,25 @@
         return month + "-" + day + " " + hour + ":" + minute;
     }
 
-    function viewDetail(id) {
-        console.log(id)
+    async function viewDetail(workId) {
+
+        const url = "/manage/" + [[${shop.id}]] + "/workTimes/" + workTime.lastSearchStaffId + "?";
+        const option = {
+            method: "get"
+        }
+        const params = {
+            workId: workId
+        }
+        let query = Object.keys(params).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key])).join('&');
+
+        await fetch(url + query, option)
+            .then((result) => {
+                return result.json();
+            }).then((result) => {
+                console.log(result)
+            });
+
+        workTime.detailModal.toggle();
     }
 
 </script>

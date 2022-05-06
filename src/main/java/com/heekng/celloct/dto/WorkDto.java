@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -104,6 +105,28 @@ public class WorkDto {
 
             this.hour = work.getWorkTime().workTimeHour();
             this.minute = work.getWorkTime().workTimeMinute();
+        }
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class WorkDetailResponse {
+        private Long workId;
+        private LocalDate workDate;
+        private LocalDateTime startDate;
+        private LocalDateTime endDate;
+        private String note;
+        private LocalDateTime lastModifiedDate;
+
+        @Builder
+        public WorkDetailResponse(Work work) {
+            this.workId = work.getId();
+            this.workDate = work.getWorkTime().getWorkDate();
+            this.startDate = work.getWorkTime().getStartDate();
+            this.endDate = work.getWorkTime().getEndDate();
+            this.note = work.getNote();
+            this.lastModifiedDate = work.getLastModifiedDate();
         }
     }
 

@@ -10,6 +10,7 @@ import com.heekng.celloct.entity.Staff;
 import com.heekng.celloct.entity.Work;
 import com.heekng.celloct.repository.ManagerRepository;
 import com.heekng.celloct.repository.StaffRepository;
+import com.heekng.celloct.repository.WorkRepository;
 import com.heekng.celloct.service.ShopService;
 import com.heekng.celloct.service.StaffService;
 import com.heekng.celloct.service.WorkService;
@@ -17,10 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
@@ -39,6 +37,7 @@ public class ManageWorkController {
     private final ShopService shopService;
     private final StaffRepository staffRepository;
     private final WorkService workService;
+    private final WorkRepository workRepository;
 
     @GetMapping("/workTimes")
     public String workTimes(@PathVariable("shopId") Long shopId, Model model) {
@@ -81,5 +80,24 @@ public class ManageWorkController {
         return workService.findWorkByFindWorkRequest(findWorkRequest).stream()
                 .map(WorkDto.WorkResponse::new)
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping("/workTimes/{staffId}")
+    @ResponseBody
+    public WorkDto.WorkDetailResponse workDetail(
+            @PathVariable("shopId") Long shopId,
+            @PathVariable("staffId") Long staffId,
+            @RequestParam("workId") Long workId
+    ) {
+        SessionMember member = (SessionMember) httpSession.getAttribute("member");
+        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (managerOptional.isEmpty()) {
+            throw new IllegalStateException("해당 매장의 매니저가 아닙니다.");
+        }
+        Staff staff = staffRepository.findByShopIdAndId(shopId, staffId)
+                .orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
+
+        Work work = workRepository.findById(workId).orElseThrow(() -> new IllegalStateException("존재하지 않는 근무입니다"));
+        return new WorkDto.WorkDetailResponse(work);
     }
 }
