@@ -39,13 +39,13 @@ public class WorkTime {
     public long workTimeHour() {
         Duration duration = Duration.between(startDate, endDate);
         long seconds = duration.getSeconds();
-        return seconds / 360;
+        return seconds / 3600;
     }
 
     public long workTimeMinute() {
         Duration duration = Duration.between(startDate, endDate);
         long seconds = duration.getSeconds();
-        return seconds % 360;
+        return seconds % 3600;
     }
 
 }
