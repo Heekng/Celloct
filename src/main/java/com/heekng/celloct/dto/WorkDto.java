@@ -91,6 +91,9 @@ public class WorkDto {
         private LocalDateTime endDate;
         private String note;
 
+        private long hour;
+        private long minute;
+
         @Builder
         public WorkResponse(Work work) {
             this.workId = work.getId();
@@ -98,6 +101,9 @@ public class WorkDto {
             this.startDate = work.getWorkTime().getStartDate();
             this.endDate = work.getWorkTime().getEndDate();
             this.note = work.getNote();
+
+            this.hour = work.getWorkTime().workTimeHour();
+            this.minute = work.getWorkTime().workTimeMinute();
         }
     }
 
