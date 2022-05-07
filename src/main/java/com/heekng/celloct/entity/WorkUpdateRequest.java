@@ -24,7 +24,7 @@ public class WorkUpdateRequest extends BaseTimeEntity {
     WorkTime workTime;
 
     @OneToOne(fetch = LAZY)
-    @JoinColumn(name = "work_id", nullable = false)
+    @JoinColumn(name = "work_id", nullable = false, unique = true)
     private Work work;
 
     @Builder
