@@ -142,7 +142,7 @@
             tr.append(td_detail);
             df.append(tr);
         }
-        hourSum += minuteSum / 60;
+        hourSum += parseInt(minuteSum / 60);
         minuteSum = minuteSum % 60;
         let tr = document.createElement("tr");
         let td = document.createElement("td");
