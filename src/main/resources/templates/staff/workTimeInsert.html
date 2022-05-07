@@ -72,7 +72,21 @@
             let startDate = new Date(document.querySelector("#startDate").value);
             let endDate = new Date(document.querySelector("#endDate").value);
 
-            if (startDate.getTime() >= endDate) {
+            if (workDate > startDate) {
+                alert("시작일시는 근무일보다 빠를 수 없습니다.");
+                event.preventDefault();
+                event.stopPropagation();
+                return false;
+            }
+
+            if ((startDate.getMinutes() % 15 !== 0) || (endDate.getMinutes() % 15 !== 0)) {
+                alert("시작일시와 종료일시는 15분 단위로 입력해주세요.");
+                event.preventDefault();
+                event.stopPropagation();
+                return false;
+            }
+
+            if (startDate >= endDate) {
                 alert("시작 일시는 종료 일시보다 같거나 늦을 수 없습니다.");
                 event.preventDefault();
                 event.stopPropagation();

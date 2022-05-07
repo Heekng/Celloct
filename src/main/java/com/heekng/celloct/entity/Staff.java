@@ -17,6 +17,14 @@ import static javax.persistence.FetchType.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "staff_member_id_shop_id_unique",
+                        columnNames = {"member_id", "shop_id"}
+                )
+        }
+)
 public class Staff extends BaseTimeEntity {
 
     @Id @GeneratedValue
@@ -26,7 +34,7 @@ public class Staff extends BaseTimeEntity {
     @Column(nullable = false)
     private LocalDate employmentDate;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
 
     @ManyToOne(fetch = LAZY)

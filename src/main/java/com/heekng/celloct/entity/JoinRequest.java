@@ -12,6 +12,14 @@ import static javax.persistence.FetchType.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "join_request_member_id_shop_id_unique",
+                        columnNames = {"member_id", "shop_id"}
+                )
+        }
+)
 public class JoinRequest extends BaseTimeEntity{
 
     @Id @GeneratedValue

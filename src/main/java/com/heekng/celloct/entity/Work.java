@@ -15,6 +15,14 @@ import static javax.persistence.FetchType.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "work_work_date_staff_id_unique",
+                        columnNames = {"work_date", "staff_id"}
+                )
+        }
+)
 public class Work extends BaseTimeEntity {
 
     @Id @GeneratedValue

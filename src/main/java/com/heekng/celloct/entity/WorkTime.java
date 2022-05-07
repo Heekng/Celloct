@@ -17,11 +17,11 @@ import java.time.Period;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class WorkTime {
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "work_date")
     private LocalDate workDate;
-    @Column(nullable = false)
+    @Column(nullable = false, name = "start_date")
     private LocalDateTime startDate;
-    @Column(nullable = false)
+    @Column(nullable = false, name = "end_date")
     private LocalDateTime endDate;
 
     @Builder

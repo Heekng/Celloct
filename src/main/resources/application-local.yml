@@ -3,7 +3,7 @@ spring:
     activate:
       on-profile: local
   datasource:
-    url: jdbc:h2:tcp://localhost/~/celloct
+    url: jdbc:h2:tcp://localhost/~/celloct;MODE=PostgreSQL;
     username: sa
     password:
     driver-class-name: org.h2.Driver
