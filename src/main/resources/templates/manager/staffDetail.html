@@ -37,6 +37,7 @@
             </div>
 
             <div class="text-center">
+                <button class="btn btn-lg btn-outline-primary" onclick="addManager()">관리자에 추가</button>
                 <button class="btn btn-lg btn-outline-primary" th:onclick="|location.href='@{/manage/{shopId}/staff/{staffId}/update(shopId=${shop.id}, staffId=${staff.staffId})}'|">직원정보 수정</button>
                 <button class="btn btn-lg btn-outline-primary" onclick="deleteStaff()">삭제</button>
             </div>
@@ -70,6 +71,26 @@
                 } else {
                     alert("잠시 후 다시 시도해주세요.");
                 }
+            });
+    }
+
+    async function addManager() {
+        let staffId = [[${staff.staffId}]];
+        if (!confirm("관리자는 매장의 직원정보를 모두 확인할 수 있습니다.\n추가하시겠습니까?")) {
+            return false;
+        }
+        const url = "/manage/" + [[${shop.id}]] + "/staff/" + staffId + "/addManager";
+        const option = {
+            method: "post"
+        }
+
+        await fetch(url, option)
+            .then((result) => {
+                return result.json();
+            }).then((result) => {
+                alert("관리자 등록이 완료되었습니다.");
+                let managerId = result.managerId;
+                location.href = "/manage/" + [[${shop.id}]] + "/manager/" + managerId;
             });
     }
 </script>

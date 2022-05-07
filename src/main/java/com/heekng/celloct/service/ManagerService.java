@@ -4,9 +4,11 @@ import com.heekng.celloct.dto.ManagerDto;
 import com.heekng.celloct.entity.Manager;
 import com.heekng.celloct.entity.Member;
 import com.heekng.celloct.entity.Shop;
+import com.heekng.celloct.entity.Staff;
 import com.heekng.celloct.repository.ManagerRepository;
 import com.heekng.celloct.repository.MemberRepository;
 import com.heekng.celloct.repository.ShopRepository;
+import com.heekng.celloct.repository.StaffRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,7 @@ public class ManagerService {
     private final ShopRepository shopRepository;
     private final ManagerRepository managerRepository;
     private final MemberRepository memberRepository;
+    private final StaffRepository staffRepository;
 
     @Transactional
     public Manager addManager(ManagerDto.addRequest addRequestDto) {
@@ -61,5 +64,19 @@ public class ManagerService {
         if (managers.isPresent()) {
             throw new IllegalStateException("이미 존재하는 관리자입니다.");
         }
+    }
+
+    @Transactional
+    public Manager addByStaff(ManagerDto.AddByStaffRequest addByStaffRequest) {
+        Staff staff = staffRepository.findById(addByStaffRequest.getStaffId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
+        Shop shop = shopRepository.findById(addByStaffRequest.getShopId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 매장입니다."));
+        Member staffMember = staff.getMember();
+        Manager manager = Manager.builder()
+                .name(staff.getName())
+                .member(staffMember)
+                .shop(shop)
+                .build();
+        managerRepository.save(manager);
+        return manager;
     }
 }
