@@ -178,7 +178,7 @@
             if (filterWorkTime.length !== 0) {
                 td_startDate.innerText = convertMmDdHhMm(new Date(filterWorkTime[0].startDate));
                 td_endDate.innerText = convertMmDdHhMm(new Date(filterWorkTime[0].endDate));
-                td_workTime.innerText = filterWorkTime[0].hour + (filterWorkTime[0].minute % 60);
+                td_workTime.innerText = filterWorkTime[0].hour + (filterWorkTime[0].minute / 60);
                 let btn_detail = document.createElement("button");
                 btn_detail.classList.add("btn");
                 btn_detail.classList.add("btn-primary");
