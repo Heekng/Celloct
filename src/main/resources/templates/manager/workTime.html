@@ -36,6 +36,12 @@
             <table class="table table-striped table-hover table-bordered text-center">
                 <thead>
                 <tr>
+                    <th colspan="5">
+                        <select id="select-yearMonth" class="form-select text-center">
+                        </select>
+                    </th>
+                </tr>
+                <tr>
                     <th>근무일</th>
                     <th>시작일시</th>
                     <th>종료일시</th>
@@ -58,7 +64,36 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                ...
+                <div class="mb-3 row">
+                    <label for="workDate" class="col-sm-3 col-form-label">근무일</label>
+                    <div class="col-sm-9">
+                        <input id="workDate" name="workDate" type="text" readonly class="form-control">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="startDate" class="col-sm-3 col-form-label">시작일시</label>
+                    <div class="col-sm-9">
+                        <input id="startDate" name="startDate" type="text" readonly class="form-control">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="endDate" class="col-sm-3 col-form-label">종료일시</label>
+                    <div class="col-sm-9">
+                        <input id="endDate" name="endDate" type="text" readonly class="form-control">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="note" class="col-sm-3 col-form-label">메모</label>
+                    <div class="col-sm-9">
+                        <input id="note" name="note" type="text" readonly class="form-control">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="lastModifiedDate" class="col-sm-3 col-form-label">최근 수정일</label>
+                    <div class="col-sm-9">
+                        <input id="lastModifiedDate" name="lastModifiedDate" type="text" readonly class="form-control">
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
@@ -78,16 +113,36 @@
 
     window.onload = () => {
         document.querySelector("#a-workTime").classList.add("active");
+        setSelectYearMonth();
+    }
+
+    function setSelectYearMonth() {
+        let selectYearMonth = document.querySelector("#select-yearMonth");
+        let countDate = new Date(2022, 0, 1);
+        let today = new Date();
+
+        let df = document.createDocumentFragment();
+        while (parseInt('' + today.getFullYear() + today.getMonth()) >= parseInt('' + countDate.getFullYear() + countDate.getMonth())) {
+            let option = document.createElement("option");
+            option.innerText = countDate.getFullYear() + "년 " + (countDate.getMonth() + 1) + "월";
+            option.value = convertYyyyMmDd(countDate);
+            df.prepend(option);
+            countDate = new Date(countDate.setMonth(countDate.getMonth() + 1));
+        }
+        selectYearMonth.append(df);
     }
 
     async function searchWorks() {
         let shopId = [[${shop.id}]];
         let staffId = document.querySelector("#select_staff").value;
-        let today = new Date();
-        const year = today.getFullYear();
-        const month = ('0' + (today.getMonth() + 1)).slice(-2);
-        const day = ('0' + today.getDate()).slice(-2);
-        const dateString = year + "-" + month + "-" + day;
+        // let today = new Date();
+        // const year = today.getFullYear();
+        // const month = ('0' + (today.getMonth() + 1)).slice(-2);
+        // const day = ('0' + today.getDate()).slice(-2);
+        // const dateString = year + "-" + month + "-" + day;
+        let yearMonth = document.querySelector("#select-yearMonth").value;
+        let year = yearMonth.split("-")[0];
+        let month = yearMonth.split("-")[1];
 
         const url = "/manage/" + shopId + "/workTimes/" + staffId + "/" + year + "/" + month;
         const option = {
@@ -142,7 +197,7 @@
             tr.append(td_detail);
             df.append(tr);
         }
-        hourSum += minuteSum / 60;
+        hourSum += parseInt(minuteSum / 60);
         minuteSum = minuteSum % 60;
         let tr = document.createElement("tr");
         let td = document.createElement("td");
@@ -188,6 +243,15 @@
         return month + "-" + day + " " + hour + ":" + minute;
     }
 
+    function convertYyyyMmDdHhMm(date) {
+        const year = date.getFullYear();
+        const month = ('0' + (date.getMonth() + 1)).slice(-2);
+        const day = ('0' + date.getDate()).slice(-2);
+        const hour = ('0' + date.getHours()).slice(-2);
+        const minute = ('0' + date.getMinutes()).slice(-2);
+        return year + "-" + month + "-" + day + " " + hour + ":" + minute;
+    }
+
     async function viewDetail(workId) {
 
         const url = "/manage/" + [[${shop.id}]] + "/workTimes/" + workTime.lastSearchStaffId + "?";
@@ -203,10 +267,24 @@
             .then((result) => {
                 return result.json();
             }).then((result) => {
-                console.log(result)
+                setWorkDetail(result);
             });
 
         workTime.detailModal.toggle();
+    }
+
+    function setWorkDetail(workDetail) {
+        let workDate = document.querySelector("#workDate");
+        let startDate = document.querySelector("#startDate");
+        let endDate = document.querySelector("#endDate");
+        let note = document.querySelector("#note");
+        let lsatModifiedDate = document.querySelector("#lastModifiedDate");
+
+        workDate.value = convertYyyyMmDd(new Date(workDetail.workDate));
+        startDate.value = convertMmDdHhMm(new Date(workDetail.startDate));
+        endDate.value = convertMmDdHhMm(new Date(workDetail.endDate));
+        note.value = workDetail.note;
+        lsatModifiedDate.value = convertYyyyMmDdHhMm(new Date(workDetail.lastModifiedDate));
     }
 
 </script>

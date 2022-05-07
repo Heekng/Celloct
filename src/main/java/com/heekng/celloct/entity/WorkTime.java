@@ -45,7 +45,7 @@ public class WorkTime {
     public long workTimeMinute() {
         Duration duration = Duration.between(startDate, endDate);
         long seconds = duration.getSeconds();
-        return seconds % 3600;
+        return seconds % 3600 / 60;
     }
 
 }
