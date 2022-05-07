@@ -73,6 +73,31 @@ public class ManagerDto {
         }
     }
 
+    @Getter
+    @Setter
+    public static class AddByStaffRequest {
+        private Long shopId;
+        private Long staffId;
+
+        @Builder
+        public AddByStaffRequest(Long shopId, Long staffId) {
+            this.shopId = shopId;
+            this.staffId = staffId;
+        }
+    }
+
+    @Getter
+    @Setter
+    public static class AddByStaffResponse {
+        private Long managerId;
+
+        @Builder
+        public AddByStaffResponse(Manager manager) {
+            this.managerId = manager.getId();
+        }
+    }
+
+
 
 
 

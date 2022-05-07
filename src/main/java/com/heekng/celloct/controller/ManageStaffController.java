@@ -196,4 +196,23 @@ public class ManageStaffController {
 
         return "redirect:/manage/{shopId}/staff/{staffId}";
     }
+
+    @PostMapping("/{shopId}/staff/{staffId}/addManager")
+    @ResponseBody
+    public ManagerDto.AddByStaffResponse addManager(StaffDto.UpdateRequest updateRequest, @PathVariable("shopId") Long shopId, @PathVariable("staffId") Long staffId, Model model) {
+        SessionMember member = (SessionMember) httpSession.getAttribute("member");
+        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (managerOptional.isEmpty()) {
+            throw new IllegalStateException("해당 매장의 매니저가 아닙니다.");
+        }
+
+        Staff staff = staffRepository.findByShopIdAndId(shopId, staffId).orElseThrow(() -> new IllegalStateException("해당 매장의 직원이 아닙니다."));
+
+        ManagerDto.AddByStaffRequest addByStaffRequest = ManagerDto.AddByStaffRequest.builder()
+                .staffId(staffId)
+                .shopId(shopId)
+                .build();
+        Manager savedManager = managerService.addByStaff(addByStaffRequest);
+        return new ManagerDto.AddByStaffResponse(savedManager);
+    }
 }
