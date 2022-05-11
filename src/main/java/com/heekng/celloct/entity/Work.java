@@ -32,6 +32,7 @@ public class Work extends BaseTimeEntity {
     @Embedded
     private WorkTime workTime;
 
+    @Column(name = "note")
     private String note;
 
     @ManyToOne(fetch = LAZY)

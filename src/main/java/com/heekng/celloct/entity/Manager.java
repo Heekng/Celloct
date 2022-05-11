@@ -26,7 +26,7 @@ public class Manager extends BaseTimeEntity{
     @Column(name = "manager_id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @ManyToOne(fetch = LAZY)
