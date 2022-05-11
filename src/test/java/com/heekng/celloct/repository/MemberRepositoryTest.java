@@ -30,15 +30,17 @@ class MemberRepositoryTest {
     void save() throws Exception {
         Member member = Member.builder()
                 .name("member")
+                .email("member@test.com")
                 .build();
 
         memberRepository.save(member);
+        em.flush();
+        em.clear();
 
         Member findMember = memberRepository.findById(member.getId()).get();
 
         assertThat(member.getId()).isEqualTo(findMember.getId());
         assertThat(member.getName()).isEqualTo(findMember.getName());
-        assertThat(member).isEqualTo(findMember);
     }
 
     @Test
@@ -50,8 +52,11 @@ class MemberRepositoryTest {
                 .build();
 
         memberRepository.save(member);
+        em.flush();
+        em.clear();
 
-        memberRepository.delete(member);
+        Member findMember = memberRepository.findById(member.getId()).get();
+        memberRepository.delete(findMember);
         em.flush();
         em.clear();
 
@@ -75,15 +80,32 @@ class MemberRepositoryTest {
 
         memberRepository.save(member1);
         memberRepository.save(member2);
+        em.flush();
+        em.clear();
 
         List<Member> members = memberRepository.findAll();
 
-        assertThat(members.get(0)).isEqualTo(member1);
-        assertThat(members.get(1)).isEqualTo(member2);
+        assertThat(members.get(0).getId()).isEqualTo(member1.getId());
+        assertThat(members.get(1).getId()).isEqualTo(member2.getId());
         assertThat(members.size()).isEqualTo(2);
     }
 
+    @Test
+    void findByEmailTest() throws Exception {
+        //given
+        Member member1 = Member.builder()
+                .name("member1")
+                .email("member1@gmail.com")
+                .build();
 
+        memberRepository.save(member1);
+        em.flush();
+        em.clear();
+        //when
+        Member findMember = memberRepository.findByEmail(member1.getEmail()).get();
+        //then
+        assertThat(findMember.getId()).isEqualTo(member1.getId());
 
+    }
 
 }
