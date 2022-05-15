@@ -40,3 +40,6 @@ application-oauth.yml
 application-real.yml
 
 ### test ###
+
+### QueryDSL ###
+generated
