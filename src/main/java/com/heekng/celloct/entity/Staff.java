@@ -31,7 +31,7 @@ public class Staff extends BaseTimeEntity {
     @Column(name = "staff_id")
     private Long id;
 
-    @Column(name = "employement_date", nullable = false)
+    @Column(name = "employment_date", nullable = false)
     private LocalDate employmentDate;
 
     @Column(name = "name", nullable = false)
