@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -20,6 +21,8 @@ import static org.assertj.core.api.Assertions.*;
 @Transactional
 class ShopServiceTest {
 
+    @Autowired
+    EntityManager em;
     @Autowired
     ShopService shopService;
     @Autowired
@@ -30,19 +33,23 @@ class ShopServiceTest {
     StaffRepository staffRepository;
 
     @Test
-    void make() throws Exception {
+    void makeShopTest() throws Exception {
         //given
         Member member = Member.builder()
                 .name("member1")
+                .email("member1@gmail.com")
                 .build();
         memberRepository.save(member);
 
+        em.flush();
+        em.clear();
+
+        //when
         ShopDto.CreateRequest createRequest = ShopDto.CreateRequest.builder()
                 .name("shop1")
                 .phone("010-1234-1234")
-                .managerName("")
+                .managerName("manager")
                 .build();
-        //when
         Long shopId = shopService.makeShop(createRequest, member.getId());
         Shop shop = shopRepository.findById(shopId).get();
 
@@ -96,5 +103,61 @@ class ShopServiceTest {
         List<ShopDto.ListResponse> listResponses = shopService.findListResponseListByNameContaining("op");
         //then
         assertThat(listResponses.get(0).getStaffCount()).isEqualTo(3);
+    }
+
+    @Test
+    void existNameTest() throws Exception {
+        //given
+        Member member = Member.builder()
+                .name("member1")
+                .email("member1@gmail.com")
+                .build();
+        memberRepository.save(member);
+
+        Shop shop = Shop.builder()
+                .name("testShop")
+                .info("information")
+                .phone("01012341234")
+                .build();
+        shopRepository.save(shop);
+        em.flush();
+        em.clear();
+        //when
+        boolean result = shopService.existName("testShop");
+
+        //then
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    void updateShopTest() throws Exception {
+        //given
+        Member member = Member.builder()
+                .name("member1")
+                .email("member1@gmail.com")
+                .build();
+        memberRepository.save(member);
+
+        Shop shop = Shop.builder()
+                .name("testShop")
+                .info("information")
+                .phone("01012341234")
+                .build();
+        shopRepository.save(shop);
+        em.flush();
+        em.clear();
+        //when
+        ShopDto.UpdateRequest updateRequest = ShopDto.UpdateRequest.builder()
+                .id(shop.getId())
+                .phone("01043214321")
+                .info("updateInfo")
+                .build();
+        shopService.updateShop(updateRequest);
+        em.flush();
+        em.clear();
+        Shop findShop = shopRepository.findById(shop.getId()).get();
+        //then
+        assertThat(findShop.getPhone()).isEqualTo("01043214321");
+        assertThat(findShop.getInfo()).isEqualTo("updateInfo");
     }
 }

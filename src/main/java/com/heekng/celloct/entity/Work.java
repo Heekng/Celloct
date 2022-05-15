@@ -32,6 +32,7 @@ public class Work extends BaseTimeEntity {
     @Embedded
     private WorkTime workTime;
 
+    @Column(name = "note")
     private String note;
 
     @ManyToOne(fetch = LAZY)
@@ -59,5 +60,14 @@ public class Work extends BaseTimeEntity {
 
     public void deleteWorkUpdateRequest() {
         this.workUpdateRequest = null;
+    }
+
+    public void updateWork(
+            LocalDateTime startDate,
+            LocalDateTime endDate,
+            String note
+    ) {
+        this.getWorkTime().changeWorkTime(startDate, endDate);
+        this.note = note;
     }
 }

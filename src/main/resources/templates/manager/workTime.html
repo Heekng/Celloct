@@ -67,19 +67,19 @@
                 <div class="mb-3 row">
                     <label for="workDate" class="col-sm-3 col-form-label">근무일</label>
                     <div class="col-sm-9">
-                        <input id="workDate" name="workDate" type="text" readonly class="form-control">
+                        <input id="workDate" name="workDate" type="date" readonly class="form-control">
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <label for="startDate" class="col-sm-3 col-form-label">시작일시</label>
                     <div class="col-sm-9">
-                        <input id="startDate" name="startDate" type="text" readonly class="form-control">
+                        <input id="startDate" name="startDate" type="datetime-local" readonly class="form-control">
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <label for="endDate" class="col-sm-3 col-form-label">종료일시</label>
                     <div class="col-sm-9">
-                        <input id="endDate" name="endDate" type="text" readonly class="form-control">
+                        <input id="endDate" name="endDate" type="datetime-local" readonly class="form-control">
                     </div>
                 </div>
                 <div class="mb-3 row">
@@ -91,13 +91,14 @@
                 <div class="mb-3 row">
                     <label for="lastModifiedDate" class="col-sm-3 col-form-label">최근 수정일</label>
                     <div class="col-sm-9">
-                        <input id="lastModifiedDate" name="lastModifiedDate" type="text" readonly class="form-control">
+                        <input id="lastModifiedDate" name="lastModifiedDate" type="datetime-local" readonly class="form-control">
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                <button type="button" class="btn btn-primary">수정하기</button>
+                <button id="button-update" type="button" class="btn btn-primary" onclick="workDetailUpdate()">수정</button>
+                <button id="button-do-update" type="button" class="btn btn-primary" onclick="workDetailUpdateRequest()">수정완료</button>
             </div>
         </div>
     </div>
@@ -108,7 +109,8 @@
         detailModal: new bootstrap.Modal(document.getElementById('modal-workDetail'), {
             keyboard: false
         }),
-        lastSearchStaffId: -1
+        lastSearchStaffId: -1,
+        lastSelectWorkId: -1
     }
 
     window.onload = () => {
@@ -159,7 +161,6 @@
     }
 
     function setWorkTime(workTimeList, year, month) {
-        console.log(workTimeList);
         let dateList = getDateList(year, month);
         let df = document.createDocumentFragment();
         let hourSum = 0;
@@ -268,23 +269,77 @@
                 return result.json();
             }).then((result) => {
                 setWorkDetail(result);
+                workTime.lastSelectWorkId = workId;
+                workTime.detailModal.toggle();
             });
 
-        workTime.detailModal.toggle();
     }
 
     function setWorkDetail(workDetail) {
+        const offset = new Date().getTimezoneOffset() * 60000;
+
         let workDate = document.querySelector("#workDate");
         let startDate = document.querySelector("#startDate");
         let endDate = document.querySelector("#endDate");
         let note = document.querySelector("#note");
-        let lsatModifiedDate = document.querySelector("#lastModifiedDate");
+        let lastModifiedDate = document.querySelector("#lastModifiedDate");
 
-        workDate.value = convertYyyyMmDd(new Date(workDetail.workDate));
-        startDate.value = convertMmDdHhMm(new Date(workDetail.startDate));
-        endDate.value = convertMmDdHhMm(new Date(workDetail.endDate));
+        startDate.readOnly = true;
+        endDate.readOnly = true;
+        note.readOnly = true;
+
+        workDate.valueAsDate = new Date(workDetail.workDate);
+        startDate.value = new Date(new Date(workDetail.startDate) - offset).toISOString().slice(0,16);
+        endDate.value = new Date(new Date(workDetail.endDate) - offset).toISOString().slice(0,16);
         note.value = workDetail.note;
-        lsatModifiedDate.value = convertYyyyMmDdHhMm(new Date(workDetail.lastModifiedDate));
+        lastModifiedDate.value = new Date(new Date(workDetail.lastModifiedDate) - offset).toISOString().slice(0,16);
+
+        document.querySelector("#button-do-update").classList.add("visually-hidden");
+        document.querySelector("#button-update").classList.remove("visually-hidden");
+    }
+
+    function workDetailUpdate() {
+        let startDate = document.querySelector("#startDate");
+        let endDate = document.querySelector("#endDate");
+        let note = document.querySelector("#note");
+
+        startDate.readOnly = false;
+        endDate.readOnly = false;
+        note.readOnly = false;
+
+        document.querySelector("#button-do-update").classList.remove("visually-hidden");
+        document.querySelector("#button-update").classList.add("visually-hidden");
+    }
+
+    async function workDetailUpdateRequest() {
+        let startDate = document.querySelector("#startDate");
+        let endDate = document.querySelector("#endDate");
+        let note = document.querySelector("#note");
+
+        const url = "/manage/" + [[${shop.id}]] + "/workTimes/" + workTime.lastSearchStaffId + "/update";
+        const option = {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                "workId": workTime.lastSelectWorkId,
+                "startDate": startDate.value,
+                "endDate": endDate.value,
+                "note": note.value
+            })
+        }
+        await fetch(url, option)
+            .then((response) => {return response.json()})
+            .then((response) => {
+                if (response === true) {
+                    startDate.readOnly = true;
+                    endDate.readOnly = true;
+                    note.readOnly = true;
+                } else {
+                    alert("잠시 후 다시 시도해주세요.")
+                }
+            })
     }
 
 </script>

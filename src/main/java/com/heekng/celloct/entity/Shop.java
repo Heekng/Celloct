@@ -20,9 +20,11 @@ public class Shop extends BaseTimeEntity {
     @Column(name = "shop_id")
     private Long id;
 
+    @Column(name = "phone")
     private String phone;
-    @Column(unique = true, nullable = false)
+    @Column(name = "name", unique = true, nullable = false)
     private String name;
+    @Column(name = "info")
     private String info;
 
     @OneToMany(mappedBy = "shop", cascade = REMOVE)

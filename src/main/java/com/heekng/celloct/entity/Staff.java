@@ -31,10 +31,10 @@ public class Staff extends BaseTimeEntity {
     @Column(name = "staff_id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "employment_date", nullable = false)
     private LocalDate employmentDate;
 
-    @Column(nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @ManyToOne(fetch = LAZY)
