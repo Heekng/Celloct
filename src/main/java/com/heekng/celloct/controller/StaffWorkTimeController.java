@@ -16,12 +16,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/staff")
+@RequestMapping("/staff/{shopId}")
 public class StaffWorkTimeController {
 
     private final HttpSession httpSession;
@@ -30,7 +32,7 @@ public class StaffWorkTimeController {
     private final WorkRepository workRepository;
     private final WorkService workService;
 
-    @GetMapping("/{shopId}/workTime/insert")
+    @GetMapping("/workTime/insert")
     public String insertWorkTime(@PathVariable("shopId") Long shopId, Model model) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
         Optional<Staff> staffOptional = staffRepository.findByMemberIdAndShopId(member.getId(), shopId);
@@ -44,7 +46,7 @@ public class StaffWorkTimeController {
         return "staff/workTimeInsert";
     }
 
-    @GetMapping("/{shopId}/workTime/validateExist")
+    @GetMapping("/workTime/validateExist")
     @ResponseBody
     public Boolean checkExist(@PathVariable("shopId") Long shopId, WorkDto.CheckExistRequest checkExistRequest) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
@@ -58,7 +60,7 @@ public class StaffWorkTimeController {
         return workService.validateExist(checkExistRequest);
     }
 
-    @PostMapping("/{shopId}/workTime/insert")
+    @PostMapping("/workTime/insert")
     public String doInsertWorkTime(@PathVariable("shopId") Long shopId, WorkDto.AddRequest addRequest, Model model) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
         Optional<Staff> staffOptional = staffRepository.findByMemberIdAndShopId(member.getId(), shopId);
@@ -71,5 +73,45 @@ public class StaffWorkTimeController {
         Long workId = workService.addWork(addRequest);
 
         return "redirect:/";
+    }
+
+    @GetMapping("/workTimes")
+    public String workTimes(@PathVariable("shopId") Long shopId, Model model) {
+        SessionMember member = (SessionMember) httpSession.getAttribute("member");
+        Optional<Staff> staffOptional = staffRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (staffOptional.isEmpty()) {
+            return "redirect:/";
+        }
+
+        Shop shop = shopService.findShop(shopId);
+        model.addAttribute("shop", new ShopDto.ShopDetailResponse(shop));
+
+        return "staff/workTime";
+    }
+
+    @GetMapping("/workTimes/{year}/{month}")
+    @ResponseBody
+    public List<WorkDto.WorkResponse> findWorks(
+            @PathVariable("shopId") Long shopId,
+            @PathVariable("year") Integer year,
+            @PathVariable("month") Integer month
+    ) {
+        SessionMember member = (SessionMember) httpSession.getAttribute("member");
+        Optional<Staff> staffOptional = staffRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (staffOptional.isEmpty()) {
+            throw new IllegalStateException("해당 매장의 직원이 아닙니다.");
+        }
+
+        Staff staff = staffRepository.findByMemberIdAndShopId(member.getId(), shopId).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
+
+        WorkDto.FindWorkRequest findWorkRequest = WorkDto.FindWorkRequest.builder()
+                .staffId(staff.getId())
+                .shopId(shopId)
+                .year(year)
+                .month(month)
+                .build();
+        return workService.findWorkByFindWorkRequest(findWorkRequest).stream()
+                .map(WorkDto.WorkResponse::new)
+                .collect(Collectors.toList());
     }
 }
