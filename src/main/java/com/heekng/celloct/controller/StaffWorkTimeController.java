@@ -5,6 +5,7 @@ import com.heekng.celloct.dto.ShopDto;
 import com.heekng.celloct.dto.WorkDto;
 import com.heekng.celloct.entity.Shop;
 import com.heekng.celloct.entity.Staff;
+import com.heekng.celloct.entity.Work;
 import com.heekng.celloct.repository.StaffRepository;
 import com.heekng.celloct.repository.WorkRepository;
 import com.heekng.celloct.service.ShopService;
@@ -89,12 +90,12 @@ public class StaffWorkTimeController {
         return "staff/workTime";
     }
 
-    @GetMapping("/workTimes/{year}/{month}")
+    @GetMapping("/workTimes/search")
     @ResponseBody
     public List<WorkDto.WorkResponse> findWorks(
             @PathVariable("shopId") Long shopId,
-            @PathVariable("year") Integer year,
-            @PathVariable("month") Integer month
+            @RequestParam("year") Integer year,
+            @RequestParam("month") Integer month
     ) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
         Optional<Staff> staffOptional = staffRepository.findByMemberIdAndShopId(member.getId(), shopId);
@@ -113,5 +114,22 @@ public class StaffWorkTimeController {
         return workService.findWorkByFindWorkRequest(findWorkRequest).stream()
                 .map(WorkDto.WorkResponse::new)
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping("/workTimes/{workId}")
+    @ResponseBody
+    public WorkDto.WorkDetailResponse workDetail(
+            @PathVariable("shopId") Long shopId,
+            @PathVariable("workId") Long workId
+    ) {
+        SessionMember member = (SessionMember) httpSession.getAttribute("member");
+        Optional<Staff> staffOptional = staffRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (staffOptional.isEmpty()) {
+            throw new IllegalStateException("해당 매장의 직원이 아닙니다.");
+        }
+
+        Staff staff = staffRepository.findByMemberIdAndShopId(member.getId(), shopId).orElseThrow(() -> new IllegalStateException("해당 직원의 근무가 아닙니다."));
+        Work work = workRepository.findByIdAndStaffId(workId, staff.getId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 근무입니다"));
+        return new WorkDto.WorkDetailResponse(work);
     }
 }

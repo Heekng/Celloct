@@ -47,12 +47,60 @@
         </div>
     </div>
 </div> <!-- /container -->
+<!-- Modal -->
+<div class="modal fade" id="modal-workDetail" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">근무 상세</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3 row">
+                    <label for="workDate" class="col-sm-3 col-form-label">근무일</label>
+                    <div class="col-sm-9">
+                        <input id="workDate" name="workDate" type="date" readonly class="form-control">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="startDate" class="col-sm-3 col-form-label">시작일시</label>
+                    <div class="col-sm-9">
+                        <input id="startDate" name="startDate" type="datetime-local" readonly class="form-control">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="endDate" class="col-sm-3 col-form-label">종료일시</label>
+                    <div class="col-sm-9">
+                        <input id="endDate" name="endDate" type="datetime-local" readonly class="form-control">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="note" class="col-sm-3 col-form-label">메모</label>
+                    <div class="col-sm-9">
+                        <input id="note" name="note" type="text" readonly class="form-control">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="lastModifiedDate" class="col-sm-3 col-form-label">최근 수정일</label>
+                    <div class="col-sm-9">
+                        <input id="lastModifiedDate" name="lastModifiedDate" type="datetime-local" readonly class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="button-update" type="button" class="btn btn-primary" onclick="workDetailUpdate()">수정</button>
+                <button id="button-do-update" type="button" class="btn btn-primary" onclick="workDetailUpdateRequest()">수정요청</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script th:inline="javascript">
     const workTime = {
         weekday: ['일', '월', '화', '수', '목', '금', '토'],
-        // detailModal: new bootstrap.Modal(document.getElementById('modal-workDetail'), {
-        //     keyboard: false
-        // }),
+        detailModal: new bootstrap.Modal(document.getElementById('modal-workDetail'), {
+            keyboard: false
+        }),
         lastSelectWorkId: -1
     }
 
@@ -83,12 +131,17 @@
         let year = yearMonth.split("-")[0];
         let month = yearMonth.split("-")[1];
 
-        const url = "/staff/" + shopId + "/workTimes/" + year + "/" + month;
+        const url = "/staff/" + shopId + "/workTimes/search?";
         const option = {
             method: "get"
         }
+        const params = {
+            year: year,
+            month: month
+        }
+        let query = Object.keys(params).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key])).join('&');
 
-        await fetch(url, option)
+        await fetch(url + query, option)
             .then((result) => {
                 return result.json();
             }).then((result) => {
@@ -179,6 +232,60 @@
         const hour = ('0' + date.getHours()).slice(-2);
         const minute = ('0' + date.getMinutes()).slice(-2);
         return month + "-" + day + " " + hour + ":" + minute;
+    }
+
+    async function viewDetail(workId) {
+
+        const url = "/staff/" + [[${shop.id}]] + "/workTimes/" + workId;
+        const option = {
+            method: "get"
+        }
+
+        await fetch(url, option)
+            .then((result) => {
+                return result.json();
+            }).then((result) => {
+                setWorkDetail(result);
+                workTime.lastSelectWorkId = workId;
+                workTime.detailModal.toggle();
+            });
+
+    }
+
+    function setWorkDetail(workDetail) {
+        const offset = new Date().getTimezoneOffset() * 60000;
+
+        let workDate = document.querySelector("#workDate");
+        let startDate = document.querySelector("#startDate");
+        let endDate = document.querySelector("#endDate");
+        let note = document.querySelector("#note");
+        let lastModifiedDate = document.querySelector("#lastModifiedDate");
+
+        startDate.readOnly = true;
+        endDate.readOnly = true;
+        note.readOnly = true;
+
+        workDate.valueAsDate = new Date(workDetail.workDate);
+        startDate.value = new Date(new Date(workDetail.startDate) - offset).toISOString().slice(0,16);
+        endDate.value = new Date(new Date(workDetail.endDate) - offset).toISOString().slice(0,16);
+        note.value = workDetail.note;
+        lastModifiedDate.value = new Date(new Date(workDetail.lastModifiedDate) - offset).toISOString().slice(0,16);
+
+        document.querySelector("#button-do-update").classList.add("visually-hidden");
+        document.querySelector("#button-update").classList.remove("visually-hidden");
+    }
+
+    function workDetailUpdate() {
+        let startDate = document.querySelector("#startDate");
+        let endDate = document.querySelector("#endDate");
+        let note = document.querySelector("#note");
+
+        startDate.readOnly = false;
+        endDate.readOnly = false;
+        note.readOnly = false;
+
+        document.querySelector("#button-do-update").classList.remove("visually-hidden");
+        document.querySelector("#button-update").classList.add("visually-hidden");
     }
 
 </script>
