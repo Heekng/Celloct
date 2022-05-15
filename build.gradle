@@ -1,16 +1,7 @@
-// querydsl
-buildscript {
-	ext {
-		queryDslVersion = "5.0.0"
-	}
-}
-
 plugins {
 	id 'org.springframework.boot' version '2.6.4'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
-	//querydsl
-	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 group = 'com.heekng'
@@ -44,9 +35,13 @@ dependencies {
 	runtimeOnly 'mysql:mysql-connector-java'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
 	//querydsl 추가
-	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
-	annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
+	implementation 'com.querydsl:querydsl-core'
+	implementation 'com.querydsl:querydsl-jpa'
+	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa"
+	annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
+	annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
 }
 
 jar {
@@ -58,18 +53,15 @@ tasks.named('test') {
 }
 
 //querydsl
-def querydslDir = "$buildDir/generated/querydsl"
-
-querydsl {
-	jpa = true
-	querydslSourcesDir = querydslDir
-}
+def generated='src/main/generated'
 sourceSets {
-	main.java.srcDir querydslDir
+	main.java.srcDirs += [ generated ]
 }
-configurations {
-	querydsl.extendsFrom compileClasspath
+
+tasks.withType(JavaCompile) {
+	options.generatedSourceOutputDirectory.set(file(generated))
 }
-compileQuerydsl {
-	options.annotationProcessorPath = configurations.querydsl
+
+clean.doLast {
+	file(generated).deleteDir()
 }
