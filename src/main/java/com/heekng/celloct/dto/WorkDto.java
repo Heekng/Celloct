@@ -134,7 +134,6 @@ public class WorkDto {
     @Setter
     @NoArgsConstructor
     public static class UpdateRequest {
-        private Long shopId;
         private Long staffId;
         private Long workId;
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
@@ -143,6 +142,21 @@ public class WorkDto {
         private LocalDateTime endDate;
         private String note;
     }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class DeleteRequest {
+        private Long staffId;
+        private Long workId;
+
+        @Builder
+        public DeleteRequest(Long staffId, Long workId) {
+            this.staffId = staffId;
+            this.workId = workId;
+        }
+    }
+
 
 
 

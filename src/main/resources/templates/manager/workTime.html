@@ -96,9 +96,10 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                 <button id="button-update" type="button" class="btn btn-primary" onclick="workDetailUpdate()">수정</button>
+                <button id="button-do-delete" type="button" class="btn btn-primary" onclick="deleteWork()">삭제</button>
                 <button id="button-do-update" type="button" class="btn btn-primary" onclick="workDetailUpdateRequest()">수정완료</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
             </div>
         </div>
     </div>
@@ -295,6 +296,7 @@
         lastModifiedDate.value = new Date(new Date(workDetail.lastModifiedDate) - offset).toISOString().slice(0,16);
 
         document.querySelector("#button-do-update").classList.add("visually-hidden");
+        document.querySelector("#button-do-delete").classList.add("visually-hidden");
         document.querySelector("#button-update").classList.remove("visually-hidden");
     }
 
@@ -308,6 +310,7 @@
         note.readOnly = false;
 
         document.querySelector("#button-do-update").classList.remove("visually-hidden");
+        document.querySelector("#button-do-delete").classList.remove("visually-hidden");
         document.querySelector("#button-update").classList.add("visually-hidden");
     }
 
@@ -337,7 +340,32 @@
                     endDate.readOnly = true;
                     note.readOnly = true;
                     document.querySelector("#button-do-update").classList.add("visually-hidden");
+                    document.querySelector("#button-do-delete").classList.add("visually-hidden");
                     document.querySelector("#button-update").classList.remove("visually-hidden");
+                } else {
+                    alert("잠시 후 다시 시도해주세요.")
+                }
+            })
+    }
+
+    async function deleteWork() {
+        const url = "/manage/" + [[${shop.id}]] + "/workTimes/" + workTime.lastSearchStaffId + "/delete";
+        const option = {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                "workId": workTime.lastSelectWorkId,
+            })
+        }
+        await fetch(url, option)
+            .then((response) => {return response.json()})
+            .then((response) => {
+                if (response === true) {
+                    alert("삭제되었습니다.");
+                    searchWorks();
+                    workTime.detailModal.toggle();
                 } else {
                     alert("잠시 후 다시 시도해주세요.")
                 }

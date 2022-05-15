@@ -43,12 +43,6 @@ public class WorkService {
         work.getWorkTime().changeWorkTime(changeWorkTimeRequest.getChangeStartDate(), changeWorkTimeRequest.getChangeEndDate());
     }
 
-    @Transactional
-    public void deleteWork(Long workId) {
-        Work work = workRepository.findById(workId).orElseThrow(() -> new IllegalStateException("존재하지 않는 근무입니다."));
-        workRepository.delete(work);
-    }
-
     public List<Work> findWorkByFindWorkRequest(WorkDto.FindWorkRequest findWorkRequest) {
         Staff staff = staffRepository.findByShopIdAndId(findWorkRequest.getShopId(), findWorkRequest.getStaffId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
         LocalDate startDate = LocalDate.of(findWorkRequest.getYear(), findWorkRequest.getMonth(), 1);
@@ -68,9 +62,14 @@ public class WorkService {
 
     @Transactional
     public void updateWork(WorkDto.UpdateRequest updateRequest) {
-        Staff staff = staffRepository.findByShopIdAndId(updateRequest.getShopId(), updateRequest.getStaffId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
         Work work = workRepository.findByIdAndStaffId(updateRequest.getWorkId(), updateRequest.getStaffId()).orElseThrow(() -> new IllegalStateException("해당 직원의 근무가 아닙니다."));
         work.updateWork(updateRequest.getStartDate(), updateRequest.getEndDate(), updateRequest.getNote());
+    }
+
+    @Transactional
+    public void deleteWork(WorkDto.DeleteRequest deleteRequest) {
+        Work work = workRepository.findByIdAndStaffId(deleteRequest.getWorkId(), deleteRequest.getStaffId()).orElseThrow(() -> new IllegalStateException("해당 직원의 근무가 아닙니다."));
+        workRepository.delete(work);
     }
 
     /**

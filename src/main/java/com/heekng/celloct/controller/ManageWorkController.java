@@ -113,10 +113,28 @@ public class ManageWorkController {
         if (managerOptional.isEmpty()) {
             throw new IllegalStateException("해당 매장의 매니저가 아닙니다.");
         }
-        updateRequest.setShopId(shopId);
+        staffRepository.findByShopIdAndId(shopId, staffId).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
         updateRequest.setStaffId(staffId);
 
         workService.updateWork(updateRequest);
+        return true;
+    }
+
+    @PostMapping("/workTimes/{staffId}/delete")
+    @ResponseBody
+    public Boolean workUpdate(
+            @PathVariable("shopId") Long shopId,
+            @PathVariable("staffId") Long staffId,
+            @RequestBody WorkDto.DeleteRequest deleteRequest
+    ) {
+        SessionMember member = (SessionMember) httpSession.getAttribute("member");
+        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (managerOptional.isEmpty()) {
+            throw new IllegalStateException("해당 매장의 매니저가 아닙니다.");
+        }
+        staffRepository.findByShopIdAndId(shopId, staffId).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
+        deleteRequest.setStaffId(staffId);
+        workService.deleteWork(deleteRequest);
         return true;
     }
 }
