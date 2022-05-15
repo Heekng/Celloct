@@ -100,4 +100,23 @@ public class ManageWorkController {
         Work work = workRepository.findById(workId).orElseThrow(() -> new IllegalStateException("존재하지 않는 근무입니다"));
         return new WorkDto.WorkDetailResponse(work);
     }
+
+    @PostMapping("/workTimes/{staffId}/update")
+    @ResponseBody
+    public Boolean workUpdate(
+            @PathVariable("shopId") Long shopId,
+            @PathVariable("staffId") Long staffId,
+            @RequestBody WorkDto.UpdateRequest updateRequest
+    ) {
+        SessionMember member = (SessionMember) httpSession.getAttribute("member");
+        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (managerOptional.isEmpty()) {
+            throw new IllegalStateException("해당 매장의 매니저가 아닙니다.");
+        }
+        updateRequest.setShopId(shopId);
+        updateRequest.setStaffId(staffId);
+
+        workService.updateWork(updateRequest);
+        return true;
+    }
 }

@@ -130,6 +130,21 @@ public class WorkDto {
         }
     }
 
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class UpdateRequest {
+        private Long shopId;
+        private Long staffId;
+        private Long workId;
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+        private LocalDateTime startDate;
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+        private LocalDateTime endDate;
+        private String note;
+    }
+
+
 
 
 

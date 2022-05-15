@@ -61,4 +61,13 @@ public class Work extends BaseTimeEntity {
     public void deleteWorkUpdateRequest() {
         this.workUpdateRequest = null;
     }
+
+    public void updateWork(
+            LocalDateTime startDate,
+            LocalDateTime endDate,
+            String note
+    ) {
+        this.getWorkTime().changeWorkTime(startDate, endDate);
+        this.note = note;
+    }
 }

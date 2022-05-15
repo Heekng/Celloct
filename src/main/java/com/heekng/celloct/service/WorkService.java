@@ -66,6 +66,13 @@ public class WorkService {
         return true;
     }
 
+    @Transactional
+    public void updateWork(WorkDto.UpdateRequest updateRequest) {
+        Staff staff = staffRepository.findByShopIdAndId(updateRequest.getShopId(), updateRequest.getStaffId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
+        Work work = workRepository.findByIdAndStaffId(updateRequest.getWorkId(), updateRequest.getStaffId()).orElseThrow(() -> new IllegalStateException("해당 직원의 근무가 아닙니다."));
+        work.updateWork(updateRequest.getStartDate(), updateRequest.getEndDate(), updateRequest.getNote());
+    }
+
     /**
      * 근무 시작시간이 근무 종료시간보다 이전이어야 한다.
      * @param changeStartDate
