@@ -336,6 +336,8 @@
                     startDate.readOnly = true;
                     endDate.readOnly = true;
                     note.readOnly = true;
+                    document.querySelector("#button-do-update").classList.add("visually-hidden");
+                    document.querySelector("#button-update").classList.remove("visually-hidden");
                 } else {
                     alert("잠시 후 다시 시도해주세요.")
                 }
