@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,14 +25,15 @@ public class WorkUpdateRequestService {
      * @param addRequest
      * @return
      */
-    public Long addWorkUpdateRequest(WorkUpdateRequestDto.addRequest addRequest) {
-        Work work = workRepository.findById(addRequest.getWorkId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 근무입니다."));
+    public Long addWorkUpdateRequest(WorkUpdateRequestDto.AddRequest addRequest) {
+        Work work = workRepository.findByIdAndStaffId(addRequest.getWorkId(), addRequest.getStaffId()).orElseThrow(() -> new IllegalStateException("해당 직원의 근무가 아닙니다."));
         validateWorkUpdateRequest(addRequest.getWorkId());
         WorkUpdateRequest workUpdateRequest = WorkUpdateRequest.builder()
-                .workDate(addRequest.getUpdateDate())
-                .startDate(addRequest.getUpdateStartDate())
-                .endDate(addRequest.getUpdateEndDate())
+                .workDate(addRequest.getWorkDate())
+                .startDate(addRequest.getStartDate())
+                .endDate(addRequest.getEndDate())
                 .work(work)
+                .note(addRequest.getNote())
                 .build();
         workUpdateRequestRepository.save(workUpdateRequest);
         work.addWorkUpdateRequest(workUpdateRequest);

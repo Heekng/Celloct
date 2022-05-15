@@ -288,6 +288,42 @@
         document.querySelector("#button-update").classList.add("visually-hidden");
     }
 
+    async function workDetailUpdateRequest() {
+        let workDate = document.querySelector("#workDate");
+        let startDate = document.querySelector("#startDate");
+        let endDate = document.querySelector("#endDate");
+        let note = document.querySelector("#note");
+
+        const url = "/staff/" + [[${shop.id}]] + "/workTimes/" + workTime.lastSelectWorkId + "/update";
+        const option = {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                "workId": workTime.lastSelectWorkId,
+                "workDate": workDate.value,
+                "startDate": startDate.value,
+                "endDate": endDate.value,
+                "note": note.value
+            })
+        }
+        await fetch(url, option)
+            .then((response) => {return response.json()})
+            .then((response) => {
+                if (response === true) {
+                    alert("근무시간 수정 요청이 완료되었습니다.");
+                    startDate.readOnly = true;
+                    endDate.readOnly = true;
+                    note.readOnly = true;
+                    document.querySelector("#button-do-update").classList.add("visually-hidden");
+                    document.querySelector("#button-update").classList.remove("visually-hidden");
+                } else {
+                    alert("잠시 후 다시 시도해주세요.")
+                }
+            })
+    }
+
 </script>
 </body>
 </html>

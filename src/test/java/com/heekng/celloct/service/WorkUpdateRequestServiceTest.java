@@ -70,11 +70,12 @@ class WorkUpdateRequestServiceTest {
         workRepository.save(work);
 
         //when
-        WorkUpdateRequestDto.addRequest addRequest = WorkUpdateRequestDto.addRequest.builder()
+        WorkUpdateRequestDto.AddRequest addRequest = WorkUpdateRequestDto.AddRequest.builder()
+                .staffId(staff.getId())
                 .workId(work.getId())
-                .updateDate(workDate)
-                .updateStartDate(startDate.minusHours(1))
-                .updateEndDate(endDate.plusHours(1))
+                .workDate(workDate)
+                .startDate(startDate.minusHours(1))
+                .endDate(endDate.plusHours(1))
                 .build();
         Long workUpdateRequestId = workUpdateRequestService.addWorkUpdateRequest(addRequest);
         WorkUpdateRequest findWorkUpdateRequest = workUpdateRequestRepository.findById(workUpdateRequestId).get();
