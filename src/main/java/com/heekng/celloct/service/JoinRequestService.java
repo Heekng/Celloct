@@ -56,11 +56,6 @@ public class JoinRequestService {
         }
     }
 
-    //가입신청 조회(회원)
-    public List<JoinRequest> findByMemberId(Long memberId) {
-        return joinRequestRepository.findByMemberId(memberId);
-    }
-
     //가입신청 취소
     @Transactional
     public void cancel(Long joinRequestId) {
