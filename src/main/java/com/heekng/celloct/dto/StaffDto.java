@@ -3,6 +3,7 @@ package com.heekng.celloct.dto;
 import com.heekng.celloct.entity.Staff;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -84,12 +85,22 @@ public class StaffDto {
 
     @Getter
     @Setter
+    @NoArgsConstructor
     public static class UpdateRequest {
         private Long staffId;
         private String name;
         private Long shopId;
         private Long memberId;
         private String staffEmploymentDate;
+
+        @Builder
+        public UpdateRequest(Long staffId, String name, Long shopId, Long memberId, String staffEmploymentDate) {
+            this.staffId = staffId;
+            this.name = name;
+            this.shopId = shopId;
+            this.memberId = memberId;
+            this.staffEmploymentDate = staffEmploymentDate;
+        }
     }
 
     @Getter
