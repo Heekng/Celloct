@@ -4,15 +4,19 @@ import com.heekng.celloct.dto.ManagerDto;
 import com.heekng.celloct.entity.Manager;
 import com.heekng.celloct.entity.Member;
 import com.heekng.celloct.entity.Shop;
+import com.heekng.celloct.entity.Staff;
 import com.heekng.celloct.repository.ManagerRepository;
 import com.heekng.celloct.repository.MemberRepository;
 import com.heekng.celloct.repository.ShopRepository;
+import com.heekng.celloct.repository.StaffRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,6 +31,8 @@ class ManagerServiceTest {
     ShopRepository shopRepository;
     @Autowired
     ManagerRepository managerRepository;
+    @Autowired
+    StaffRepository staffRepository;
     @Autowired
     ManagerService managerService;
     @Autowired
@@ -46,16 +52,24 @@ class ManagerServiceTest {
                 .phone("010-1234-1234")
                 .build();
         shopRepository.save(shop);
+
+        em.flush();
+        em.clear();
+
         //when
+        System.out.println("========================================");
         ManagerDto.addRequest addRequestDto = ManagerDto.addRequest.builder()
                 .shopId(shop.getId())
                 .memberId(member.getId())
                 .build();
         Manager savedManager = managerService.addManager(addRequestDto);
+        Member findMember = memberRepository.findById(member.getId()).get();
+        Shop findShop = shopRepository.findById(shop.getId()).get();
+        System.out.println("========================================");
 
         //then
-        assertThat(member.getManagers()).isNotEmpty();
-        assertThat(shop.getManagers()).isNotEmpty();
+        assertThat(findMember.getManagers()).isNotEmpty();
+        assertThat(findShop.getManagers()).isNotEmpty();
         assertThat(savedManager).isNotNull();
     }
 
@@ -79,7 +93,7 @@ class ManagerServiceTest {
                 .member(member)
                 .name("manager1")
                 .build();
-        Manager savedManager = managerRepository.save(manager);
+        managerRepository.save(manager);
 
         em.flush();
         em.clear();
@@ -97,5 +111,77 @@ class ManagerServiceTest {
         //then
         assertThat(shop.getManagers()).isEmpty();
 
+    }
+
+    @Test
+    void updateManagerTest() throws Exception {
+        //given
+        Member member = Member.builder()
+                .name("member1")
+                .email("test@gmail.com")
+                .build();
+        memberRepository.save(member);
+
+        Shop shop = Shop.builder()
+                .name("shop1")
+                .phone("010-1234-1234")
+                .build();
+        shopRepository.save(shop);
+
+        Manager manager = Manager.builder()
+                .shop(shop)
+                .member(member)
+                .name("manager1")
+                .build();
+        managerRepository.save(manager);
+
+        em.flush();
+        em.clear();
+        //when
+        ManagerDto.updateRequest updateRequest = ManagerDto.updateRequest.builder()
+                .id(manager.getId())
+                .name("changeManagerName")
+                .build();
+        managerService.updateManager(updateRequest);
+
+        Optional<Manager> managerOptional = managerRepository.findById(manager.getId());
+        //then
+        assertThat(managerOptional).isNotEmpty();
+        assertThat(managerOptional.get().getName()).isNotEqualTo(manager.getName());
+    }
+
+    @Test
+    void addByStaffTest() throws Exception {
+        //given
+        Member member = Member.builder()
+                .name("member1")
+                .email("test@gmail.com")
+                .build();
+        memberRepository.save(member);
+
+        Shop shop = Shop.builder()
+                .name("shop1")
+                .phone("010-1234-1234")
+                .build();
+        shopRepository.save(shop);
+
+        Staff staff = Staff.builder()
+                .name("staff")
+                .member(member)
+                .shop(shop)
+                .build();
+        staffRepository.save(staff);
+
+        em.flush();
+        em.clear();
+        //when
+        ManagerDto.AddByStaffRequest addByStaffRequest = ManagerDto.AddByStaffRequest.builder()
+                .staffId(staff.getId())
+                .shopId(shop.getId())
+                .build();
+        Manager savedManager = managerService.addByStaff(addByStaffRequest);
+
+        //then
+        assertThat(savedManager.getName()).isEqualTo(staff.getName());
     }
 }

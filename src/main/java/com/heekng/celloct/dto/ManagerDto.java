@@ -3,6 +3,7 @@ package com.heekng.celloct.dto;
 import com.heekng.celloct.entity.Manager;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 public class ManagerDto {
@@ -53,9 +54,16 @@ public class ManagerDto {
 
     @Getter
     @Setter
+    @NoArgsConstructor
     public static class updateRequest {
         private Long id;
         private String name;
+
+        @Builder
+        public updateRequest(Long id, String name) {
+            this.id = id;
+            this.name = name;
+        }
     }
 
     @Getter
