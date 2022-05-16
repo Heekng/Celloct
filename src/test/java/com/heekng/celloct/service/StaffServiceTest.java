@@ -9,7 +9,6 @@ import com.heekng.celloct.repository.ManagerRepository;
 import com.heekng.celloct.repository.MemberRepository;
 import com.heekng.celloct.repository.ShopRepository;
 import com.heekng.celloct.repository.StaffRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -96,7 +93,7 @@ class StaffServiceTest {
         em.clear();
 
         //when
-        StaffDto.addRequest addRequestDto = StaffDto.addRequest.builder()
+        StaffDto.AddRequest addRequestDto = StaffDto.AddRequest.builder()
                 .memberId(member.getId())
                 .shopId(shop.getId())
                 .build();
@@ -135,7 +132,7 @@ class StaffServiceTest {
         //when
         LocalDate now = LocalDate.now();
         LocalDate changeDate = now.minusDays(4);
-        StaffDto.updateEmploymentDateRequest updateEmploymentDateRequestDto = StaffDto.updateEmploymentDateRequest.builder()
+        StaffDto.UpdateEmploymentDateRequest updateEmploymentDateRequestDto = StaffDto.UpdateEmploymentDateRequest.builder()
                 .staffId(staff.getId())
                 .changeEmploymentDate(changeDate)
                 .build();

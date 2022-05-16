@@ -24,7 +24,7 @@ public class JoinRequestController {
 
     @PostMapping
     @ResponseBody
-    public Boolean joinRequest(@RequestBody JoinRequestDto.joinRequest joinRequest) {
+    public Boolean joinRequest(@RequestBody JoinRequestDto.JoinRequest joinRequest) {
         SessionMember sessionMember = (SessionMember) httpSession.getAttribute("member");
         joinRequest.setMemberId(sessionMember.getId());
 

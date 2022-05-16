@@ -28,7 +28,7 @@ public class ManagerService {
     private final StaffRepository staffRepository;
 
     @Transactional
-    public Manager addManager(ManagerDto.addRequest addRequestDto) {
+    public Manager addManager(ManagerDto.AddRequest addRequestDto) {
         Shop shop = shopRepository.findById(addRequestDto.getShopId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 매장입니다."));
         Member member = memberRepository.findById(addRequestDto.getMemberId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
         validateExistManager(addRequestDto.getShopId(), addRequestDto.getMemberId());
@@ -50,7 +50,7 @@ public class ManagerService {
     }
 
     @Transactional
-    public void updateManager(ManagerDto.updateRequest updateRequest) {
+    public void updateManager(ManagerDto.UpdateRequest updateRequest) {
         Manager manager = managerRepository.findById(updateRequest.getId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 관리자입니다."));
         manager.updateInfo(updateRequest.getName());
     }

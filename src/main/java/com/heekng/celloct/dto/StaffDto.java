@@ -10,26 +10,26 @@ import java.time.LocalDate;
 public class StaffDto {
 
     @Getter
-    public static class addRequest {
+    public static class AddRequest {
 
         private Long shopId;
         private Long memberId;
 
         @Builder
-        public addRequest(Long shopId, Long memberId) {
+        public AddRequest(Long shopId, Long memberId) {
             this.shopId = shopId;
             this.memberId = memberId;
         }
     }
 
     @Getter
-    public static class updateEmploymentDateRequest {
+    public static class UpdateEmploymentDateRequest {
 
         private Long staffId;
         private LocalDate changeEmploymentDate;
 
         @Builder
-        public updateEmploymentDateRequest(Long staffId, LocalDate changeEmploymentDate) {
+        public UpdateEmploymentDateRequest(Long staffId, LocalDate changeEmploymentDate) {
             this.staffId = staffId;
             this.changeEmploymentDate = changeEmploymentDate;
         }
@@ -37,12 +37,12 @@ public class StaffDto {
 
     @Getter
     @Setter
-    public static class staffResponse {
+    public static class StaffResponse {
         private Long id;
         private String name;
 
         @Builder
-        public staffResponse(Staff staff) {
+        public StaffResponse(Staff staff) {
             this.id = staff.getId();
             this.name = staff.getName();
         }

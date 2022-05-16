@@ -9,7 +9,6 @@ import com.heekng.celloct.repository.JoinRequestRepository;
 import com.heekng.celloct.repository.MemberRepository;
 import com.heekng.celloct.repository.ShopRepository;
 import com.heekng.celloct.repository.StaffRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,7 +19,6 @@ import javax.persistence.EntityManager;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -59,7 +57,7 @@ class JoinRequestServiceTest {
         em.clear();
 
         //when
-        JoinRequestDto.joinRequest joinRequest = JoinRequestDto.joinRequest.builder()
+        JoinRequestDto.JoinRequest joinRequest = JoinRequestDto.JoinRequest.builder()
                 .shopId(shop.getId())
                 .memberId(member.getId())
                 .build();
@@ -86,7 +84,7 @@ class JoinRequestServiceTest {
                 .build();
         shopRepository.save(shop);
 
-        JoinRequest joinRequest = JoinRequest.builder()
+        JoinRequest joinRequest = com.heekng.celloct.entity.JoinRequest.builder()
                 .shop(shop)
                 .member(member)
                 .build();
@@ -117,7 +115,7 @@ class JoinRequestServiceTest {
                 .build();
         shopRepository.save(shop);
 
-        JoinRequest joinRequest = JoinRequest.builder()
+        JoinRequest joinRequest = com.heekng.celloct.entity.JoinRequest.builder()
                 .shop(shop)
                 .member(member)
                 .build();
@@ -154,7 +152,7 @@ class JoinRequestServiceTest {
                 .build();
         shopRepository.save(shop);
 
-        JoinRequest joinRequest = JoinRequest.builder()
+        JoinRequest joinRequest = com.heekng.celloct.entity.JoinRequest.builder()
                 .shop(shop)
                 .member(member)
                 .build();

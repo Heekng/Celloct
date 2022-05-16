@@ -37,14 +37,14 @@ public class WorkUpdateRequestDto {
     }
 
     @Getter
-    public static class updateRequest {
+    public static class UpdateRequest {
         private Long workUpdateRequestId;
         private LocalDate updateDate;
         private LocalDateTime updateStartDate;
         private LocalDateTime updateEndDate;
 
         @Builder
-        public updateRequest(Long workUpdateRequestId, LocalDate updateDate, LocalDateTime updateStartDate, LocalDateTime updateEndDate) {
+        public UpdateRequest(Long workUpdateRequestId, LocalDate updateDate, LocalDateTime updateStartDate, LocalDateTime updateEndDate) {
             this.workUpdateRequestId = workUpdateRequestId;
             this.updateDate = updateDate;
             this.updateStartDate = updateStartDate;

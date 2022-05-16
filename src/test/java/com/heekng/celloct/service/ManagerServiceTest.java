@@ -19,7 +19,6 @@ import javax.persistence.EntityManager;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -58,7 +57,7 @@ class ManagerServiceTest {
 
         //when
         System.out.println("========================================");
-        ManagerDto.addRequest addRequestDto = ManagerDto.addRequest.builder()
+        ManagerDto.AddRequest addRequestDto = ManagerDto.AddRequest.builder()
                 .shopId(shop.getId())
                 .memberId(member.getId())
                 .build();
@@ -138,7 +137,7 @@ class ManagerServiceTest {
         em.flush();
         em.clear();
         //when
-        ManagerDto.updateRequest updateRequest = ManagerDto.updateRequest.builder()
+        ManagerDto.UpdateRequest updateRequest = ManagerDto.UpdateRequest.builder()
                 .id(manager.getId())
                 .name("changeManagerName")
                 .build();

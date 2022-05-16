@@ -54,7 +54,7 @@ public class WorkUpdateRequestService {
      * 근무시간 변경 요청 수정
      * @param updateRequest
      */
-    public void updateWorkUpdateRequest(WorkUpdateRequestDto.updateRequest updateRequest) {
+    public void updateWorkUpdateRequest(WorkUpdateRequestDto.UpdateRequest updateRequest) {
         WorkUpdateRequest workUpdateRequest = workUpdateRequestRepository.findById(updateRequest.getWorkUpdateRequestId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 근무시간 변경 요청입니다."));
         validateTime(updateRequest.getUpdateStartDate(), updateRequest.getUpdateEndDate());
         workUpdateRequest.getWorkTime().changeWorkTime(updateRequest.getUpdateStartDate(), updateRequest.getUpdateEndDate());

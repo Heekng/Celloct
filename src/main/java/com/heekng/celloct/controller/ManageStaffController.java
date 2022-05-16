@@ -45,10 +45,10 @@ public class ManageStaffController {
             return "redirect:/";
         }
         List<Manager> managers = managerRepository.findListByShopId(shopId);
-        model.addAttribute("managers", managers.stream().map(ManagerDto.managerResponse::new).collect(Collectors.toList()));
+        model.addAttribute("managers", managers.stream().map(ManagerDto.ManagerResponse::new).collect(Collectors.toList()));
 
         List<Staff> staffs = staffRepository.findByShopId(shopId);
-        model.addAttribute("staffs", staffs.stream().map(StaffDto.staffResponse::new).collect(Collectors.toList()));
+        model.addAttribute("staffs", staffs.stream().map(StaffDto.StaffResponse::new).collect(Collectors.toList()));
 
         Shop shop = shopService.findShop(shopId);
         model.addAttribute("shop", new ShopDto.ShopDetailResponse(shop));
@@ -65,7 +65,7 @@ public class ManageStaffController {
         }
 
         Manager findManager = managerRepository.findWithMemberById(managerId);
-        model.addAttribute("manager", new ManagerDto.withMemberResponse(findManager));
+        model.addAttribute("manager", new ManagerDto.WithMemberResponse(findManager));
 
         Shop shop = shopService.findShop(shopId);
         model.addAttribute("shop", new ShopDto.ShopDetailResponse(shop));
@@ -82,7 +82,7 @@ public class ManageStaffController {
         }
 
         Manager findManager = managerRepository.findWithMemberById(managerId);
-        model.addAttribute("manager", new ManagerDto.withMemberResponse(findManager));
+        model.addAttribute("manager", new ManagerDto.WithMemberResponse(findManager));
 
         Shop shop = shopService.findShop(shopId);
         model.addAttribute("shop", new ShopDto.ShopDetailResponse(shop));
@@ -91,7 +91,7 @@ public class ManageStaffController {
     }
 
     @PostMapping("/{shopId}/manager/{managerId}/update")
-    public String doManagerDetailUpdate(ManagerDto.updateRequest updateRequest, @PathVariable("shopId") Long shopId, @PathVariable("managerId") Long managerId, Model model, RedirectAttributes redirectAttributes) {
+    public String doManagerDetailUpdate(ManagerDto.UpdateRequest updateRequest, @PathVariable("shopId") Long shopId, @PathVariable("managerId") Long managerId, Model model, RedirectAttributes redirectAttributes) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
         Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
         if (managerOptional.isEmpty()) {

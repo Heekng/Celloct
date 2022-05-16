@@ -131,7 +131,7 @@ class WorkUpdateRequestServiceTest {
 
         //when
         LocalDateTime updateStartDate = workUpdateRequest.getWorkTime().getStartDate().minusHours(1);
-        WorkUpdateRequestDto.updateRequest updateRequest = WorkUpdateRequestDto.updateRequest.builder()
+        WorkUpdateRequestDto.UpdateRequest updateRequest = WorkUpdateRequestDto.UpdateRequest.builder()
                 .workUpdateRequestId(workUpdateRequest.getId())
                 .updateDate(workUpdateRequest.getWorkTime().getWorkDate())
                 .updateStartDate(updateStartDate)

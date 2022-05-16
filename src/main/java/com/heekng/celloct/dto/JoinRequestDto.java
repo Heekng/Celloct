@@ -1,6 +1,5 @@
 package com.heekng.celloct.dto;
 
-import com.heekng.celloct.entity.JoinRequest;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,12 +12,12 @@ public class JoinRequestDto {
     @Getter
     @Setter
     @NoArgsConstructor
-    public static class joinRequest {
+    public static class JoinRequest {
         private Long memberId;
         private Long shopId;
 
         @Builder
-        public joinRequest(Long memberId, Long shopId) {
+        public JoinRequest(Long memberId, Long shopId) {
             this.memberId = memberId;
             this.shopId = shopId;
         }
@@ -34,7 +33,7 @@ public class JoinRequestDto {
         private LocalDateTime createDate;
 
         @Builder
-        public ManagerShopJoinRequestResponse(JoinRequest joinRequest) {
+        public ManagerShopJoinRequestResponse(com.heekng.celloct.entity.JoinRequest joinRequest) {
             this.joinRequestId = joinRequest.getId();
             this.memberId = joinRequest.getMember().getId();
             this.memberName = joinRequest.getMember().getName();
