@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -99,6 +100,9 @@ class ShopServiceTest {
         staffRepository.save(staff2);
         staffRepository.save(staff3);
 
+        em.flush();
+        em.clear();
+
         //when
         List<ShopDto.ListResponse> listResponses = shopService.findListResponseListByNameContaining("op");
         //then
@@ -132,12 +136,6 @@ class ShopServiceTest {
     @Test
     void updateShopTest() throws Exception {
         //given
-        Member member = Member.builder()
-                .name("member1")
-                .email("member1@gmail.com")
-                .build();
-        memberRepository.save(member);
-
         Shop shop = Shop.builder()
                 .name("testShop")
                 .info("information")
@@ -159,5 +157,23 @@ class ShopServiceTest {
         //then
         assertThat(findShop.getPhone()).isEqualTo("01043214321");
         assertThat(findShop.getInfo()).isEqualTo("updateInfo");
+    }
+
+    @Test
+    void deleteTest() throws Exception {
+        //given
+        Shop shop = Shop.builder()
+                .name("testShop")
+                .info("information")
+                .phone("01012341234")
+                .build();
+        shopRepository.save(shop);
+        em.flush();
+        em.clear();
+        //when
+        shopService.delete(shop.getId());
+        Optional<Shop> shopOptional = shopRepository.findById(shop.getId());
+        //then
+        assertThat(shopOptional).isEmpty();
     }
 }
