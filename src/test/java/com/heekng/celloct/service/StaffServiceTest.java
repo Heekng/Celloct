@@ -9,7 +9,6 @@ import com.heekng.celloct.repository.ManagerRepository;
 import com.heekng.celloct.repository.MemberRepository;
 import com.heekng.celloct.repository.ShopRepository;
 import com.heekng.celloct.repository.StaffRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -96,15 +93,15 @@ class StaffServiceTest {
         em.clear();
 
         //when
-        StaffDto.addRequest addRequestDto = StaffDto.addRequest.builder()
+        StaffDto.AddRequest addRequestDto = StaffDto.AddRequest.builder()
                 .memberId(member.getId())
                 .shopId(shop.getId())
                 .build();
         Long savedStaffId = staffService.addStaff(addRequestDto);
-        Staff findStaff = staffRepository.findById(savedStaffId).get();
+        Optional<Staff> staffOptional = staffRepository.findById(savedStaffId);
 
         //then
-        assertThat(findStaff).isNotNull();
+        assertThat(staffOptional).isNotEmpty();
     }
 
     @Test
@@ -135,7 +132,7 @@ class StaffServiceTest {
         //when
         LocalDate now = LocalDate.now();
         LocalDate changeDate = now.minusDays(4);
-        StaffDto.updateEmploymentDateRequest updateEmploymentDateRequestDto = StaffDto.updateEmploymentDateRequest.builder()
+        StaffDto.UpdateEmploymentDateRequest updateEmploymentDateRequestDto = StaffDto.UpdateEmploymentDateRequest.builder()
                 .staffId(staff.getId())
                 .changeEmploymentDate(changeDate)
                 .build();
@@ -194,5 +191,42 @@ class StaffServiceTest {
         Optional<Staff> staffOptional = staffRepository.findById(staff.getId());
         //then
         assertThat(staffOptional).isEmpty();
+    }
+
+    @Test
+    void updateStaffTest() throws Exception {
+        //given
+        Shop shop = Shop.builder()
+                .name("shop1")
+                .build();
+        shopRepository.save(shop);
+
+        Member member = Member.builder()
+                .name("member1")
+                .email("member1@gmail.com")
+                .build();
+        memberRepository.save(member);
+
+        Staff staff = Staff.builder()
+                .name("staff1")
+                .shop(shop)
+                .member(member)
+                .build();
+        staffRepository.save(staff);
+
+        em.flush();
+        em.clear();
+        //when
+        StaffDto.UpdateRequest updateRequest = StaffDto.UpdateRequest.builder()
+                .staffId(staff.getId())
+                .shopId(shop.getId())
+                .name("updateStaffName")
+                .build();
+        staffService.updateStaff(updateRequest);
+        Optional<Staff> staffOptional = staffRepository.findById(staff.getId());
+        //then
+        assertThat(staffOptional).isNotEmpty();
+        assertThat(staffOptional.get().getName()).isNotEqualTo(staff.getName());
+
     }
 }

@@ -179,7 +179,11 @@ class WorkServiceTest {
         em.clear();
 
         //when
-        workService.deleteWork(work.getId());
+        WorkDto.DeleteRequest deleteRequest = WorkDto.DeleteRequest.builder()
+                .staffId(staff.getId())
+                .workId(work.getId())
+                .build();
+        workService.deleteWork(deleteRequest);
         Optional<Work> workOptional = workRepository.findById(work.getId());
 
         //then

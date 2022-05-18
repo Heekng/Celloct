@@ -3,6 +3,7 @@ package com.heekng.celloct.dto;
 import com.heekng.celloct.entity.Staff;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -10,26 +11,26 @@ import java.time.LocalDate;
 public class StaffDto {
 
     @Getter
-    public static class addRequest {
+    public static class AddRequest {
 
         private Long shopId;
         private Long memberId;
 
         @Builder
-        public addRequest(Long shopId, Long memberId) {
+        public AddRequest(Long shopId, Long memberId) {
             this.shopId = shopId;
             this.memberId = memberId;
         }
     }
 
     @Getter
-    public static class updateEmploymentDateRequest {
+    public static class UpdateEmploymentDateRequest {
 
         private Long staffId;
         private LocalDate changeEmploymentDate;
 
         @Builder
-        public updateEmploymentDateRequest(Long staffId, LocalDate changeEmploymentDate) {
+        public UpdateEmploymentDateRequest(Long staffId, LocalDate changeEmploymentDate) {
             this.staffId = staffId;
             this.changeEmploymentDate = changeEmploymentDate;
         }
@@ -37,12 +38,12 @@ public class StaffDto {
 
     @Getter
     @Setter
-    public static class staffResponse {
+    public static class StaffResponse {
         private Long id;
         private String name;
 
         @Builder
-        public staffResponse(Staff staff) {
+        public StaffResponse(Staff staff) {
             this.id = staff.getId();
             this.name = staff.getName();
         }
@@ -84,12 +85,22 @@ public class StaffDto {
 
     @Getter
     @Setter
+    @NoArgsConstructor
     public static class UpdateRequest {
         private Long staffId;
         private String name;
         private Long shopId;
         private Long memberId;
         private String staffEmploymentDate;
+
+        @Builder
+        public UpdateRequest(Long staffId, String name, Long shopId, Long memberId, String staffEmploymentDate) {
+            this.staffId = staffId;
+            this.name = name;
+            this.shopId = shopId;
+            this.memberId = memberId;
+            this.staffEmploymentDate = staffEmploymentDate;
+        }
     }
 
     @Getter

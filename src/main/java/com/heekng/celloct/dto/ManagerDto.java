@@ -3,17 +3,18 @@ package com.heekng.celloct.dto;
 import com.heekng.celloct.entity.Manager;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 public class ManagerDto {
 
     @Getter
-    public static class addRequest {
+    public static class AddRequest {
         private Long shopId;
         private Long memberId;
 
         @Builder
-        public addRequest(Long shopId, Long memberId) {
+        public AddRequest(Long shopId, Long memberId) {
             this.shopId = shopId;
             this.memberId = memberId;
         }
@@ -21,12 +22,12 @@ public class ManagerDto {
 
     @Getter
     @Setter
-    public static class managerResponse {
+    public static class ManagerResponse {
         private Long id;
         private String name;
 
         @Builder
-        public managerResponse(Manager manager) {
+        public ManagerResponse(Manager manager) {
             this.id = manager.getId();
             this.name = manager.getName();
         }
@@ -34,7 +35,7 @@ public class ManagerDto {
 
     @Getter
     @Setter
-    public static class withMemberResponse {
+    public static class WithMemberResponse {
         private Long managerId;
         private String managerName;
         private Long memberId;
@@ -42,7 +43,7 @@ public class ManagerDto {
         private String email;
 
         @Builder
-        public withMemberResponse(Manager manager) {
+        public WithMemberResponse(Manager manager) {
             this.managerId = manager.getId();
             this.managerName = manager.getName();
             this.memberId = manager.getMember().getId();
@@ -53,9 +54,16 @@ public class ManagerDto {
 
     @Getter
     @Setter
-    public static class updateRequest {
+    @NoArgsConstructor
+    public static class UpdateRequest {
         private Long id;
         private String name;
+
+        @Builder
+        public UpdateRequest(Long id, String name) {
+            this.id = id;
+            this.name = name;
+        }
     }
 
     @Getter

@@ -23,17 +23,21 @@ public class WorkUpdateRequest extends BaseTimeEntity {
     @Embedded
     WorkTime workTime;
 
+    @Column(name = "note")
+    String note;
+
     @OneToOne(fetch = LAZY)
     @JoinColumn(name = "work_id", nullable = false, unique = true)
     private Work work;
 
     @Builder
-    public WorkUpdateRequest(LocalDate workDate, LocalDateTime startDate, LocalDateTime endDate, Work work) {
+    public WorkUpdateRequest(LocalDate workDate, LocalDateTime startDate, LocalDateTime endDate, Work work, String note) {
         this.work = work;
         this.workTime = WorkTime.builder()
                 .workDate(workDate)
                 .startDate(startDate)
                 .endDate(endDate)
                 .build();
+        this.note = note;
     }
 }

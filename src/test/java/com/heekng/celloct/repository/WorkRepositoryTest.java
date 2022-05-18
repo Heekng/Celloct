@@ -267,4 +267,47 @@ class WorkRepositoryTest {
         assertThat(works.get(0).getId()).isEqualTo(work.getId());
     }
 
+    @Test
+    void findByIdAndStaffIdTest() throws Exception {
+        //given
+        Member shopMember = Member.builder()
+                .name("shopMember")
+                .email("shopMember@gmail.com")
+                .build();
+        memberRepository.save(shopMember);
+
+        Member staffMember = Member.builder()
+                .name("staffMember")
+                .email("staffMember@gmail.com")
+                .build();
+        memberRepository.save(staffMember);
+
+        Shop shop = Shop.builder()
+                .name("shop1")
+                .build();
+        shopRepository.save(shop);
+
+        Staff staff = Staff.builder()
+                .shop(shop)
+                .member(staffMember)
+                .name("staff")
+                .build();
+        staffRepository.save(staff);
+
+        Work work = Work.builder()
+                .staff(staff)
+                .workDate(LocalDate.now())
+                .startDate(LocalDateTime.now())
+                .endDate(LocalDateTime.now().plusHours(1))
+                .build();
+        workRepository.save(work);
+
+        em.flush();
+        em.clear();
+        //when
+        Optional<Work> workOptional = workRepository.findByIdAndStaffId(work.getId(), staff.getId());
+        //then
+        assertThat(workOptional).isNotEmpty();
+    }
+
 }

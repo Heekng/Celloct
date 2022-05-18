@@ -1,6 +1,5 @@
 package com.heekng.celloct.service;
 
-import com.heekng.celloct.dto.ManagerDto;
 import com.heekng.celloct.dto.StaffDto;
 import com.heekng.celloct.entity.Manager;
 import com.heekng.celloct.entity.Member;
@@ -14,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +31,7 @@ public class StaffService {
     }
 
     @Transactional
-    public Long addStaff(StaffDto.addRequest addRequestDto) {
+    public Long addStaff(StaffDto.AddRequest addRequestDto) {
         Shop shop = shopRepository.findById(addRequestDto.getShopId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 매장입니다."));
         Member member = memberRepository.findById(addRequestDto.getMemberId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
         validateExistStaff(addRequestDto.getShopId(), addRequestDto.getMemberId());
@@ -46,7 +44,7 @@ public class StaffService {
     }
 
     @Transactional
-    public void updateEmploymentDate(StaffDto.updateEmploymentDateRequest updateEmploymentDateRequestDto) {
+    public void updateEmploymentDate(StaffDto.UpdateEmploymentDateRequest updateEmploymentDateRequestDto) {
         Staff staff = staffRepository.findById(updateEmploymentDateRequestDto.getStaffId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
         staff.changeEmploymentDate(updateEmploymentDateRequestDto.getChangeEmploymentDate());
     }

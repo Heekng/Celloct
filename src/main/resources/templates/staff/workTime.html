@@ -9,26 +9,15 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-12 py-4 text-center">
-            <p class="display-4">직원 근무시간</p>
+            <p class="display-4">근무시간 조회</p>
             <h3>
-                <small class="text-muted">직원 근무시간을 관리합니다.</small>
+                <small class="text-muted">내 근무시간을 조회합니다.</small>
             </h3>
         </div>
     </div>
     <div class="row justify-content-center">
         <div class="col-xl-6 col-lg-8 py-2">
-            <ul th:replace="fragments/managerNav :: ulNav"></ul>
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="col-xl-6 col-lg-8 py-2">
-            <div class="input-group">
-                <label class="input-group-text" for="select_staff">직원명</label>
-                <select id="select_staff" class="form-select">
-                    <option th:each="staff : ${staffs}" th:value="${staff.id}" th:text="${staff.name}"></option>
-                </select>
-                <button type="button" class="btn btn-lg btn-primary" onclick="searchWorks()">조회</button>
-            </div>
+            <ul th:replace="fragments/staffNav :: ulNav"></ul>
         </div>
     </div>
     <div class="row justify-content-center">
@@ -37,8 +26,11 @@
                 <thead>
                 <tr>
                     <th colspan="5">
-                        <select id="select-yearMonth" class="form-select text-center">
-                        </select>
+                        <div class="input-group">
+                            <select id="select-yearMonth" class="form-select text-center">
+                            </select>
+                            <button type="button" class="btn btn-lg btn-primary" onclick="searchWorks()">조회</button>
+                        </div>
                     </th>
                 </tr>
                 <tr>
@@ -97,8 +89,7 @@
             </div>
             <div class="modal-footer">
                 <button id="button-update" type="button" class="btn btn-primary" onclick="workDetailUpdate()">수정</button>
-                <button id="button-do-delete" type="button" class="btn btn-primary" onclick="deleteWork()">삭제</button>
-                <button id="button-do-update" type="button" class="btn btn-primary" onclick="workDetailUpdateRequest()">수정완료</button>
+                <button id="button-do-update" type="button" class="btn btn-primary" onclick="workDetailUpdateRequest()">수정요청</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
             </div>
         </div>
@@ -110,12 +101,11 @@
         detailModal: new bootstrap.Modal(document.getElementById('modal-workDetail'), {
             keyboard: false
         }),
-        lastSearchStaffId: -1,
         lastSelectWorkId: -1
     }
 
     window.onload = () => {
-        document.querySelector("#a-workTime").classList.add("active");
+        document.querySelector("#a-viewWorkTime").classList.add("active");
         setSelectYearMonth();
     }
 
@@ -137,28 +127,34 @@
 
     async function searchWorks() {
         let shopId = [[${shop.id}]];
-        let staffId = document.querySelector("#select_staff").value;
-        // let today = new Date();
-        // const year = today.getFullYear();
-        // const month = ('0' + (today.getMonth() + 1)).slice(-2);
-        // const day = ('0' + today.getDate()).slice(-2);
-        // const dateString = year + "-" + month + "-" + day;
         let yearMonth = document.querySelector("#select-yearMonth").value;
         let year = yearMonth.split("-")[0];
         let month = yearMonth.split("-")[1];
 
-        const url = "/manage/" + shopId + "/workTimes/" + staffId + "/" + year + "/" + month;
+        const url = "/staff/" + shopId + "/workTimes/search?";
         const option = {
             method: "get"
         }
+        const params = {
+            year: year,
+            month: month
+        }
+        let query = Object.keys(params).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key])).join('&');
 
-        await fetch(url, option)
+        await fetch(url + query, option)
             .then((result) => {
                 return result.json();
             }).then((result) => {
+                console.log(result);
                 setWorkTime(result, year, month);
-                workTime.lastSearchStaffId = staffId;
             });
+    }
+
+    function convertYyyyMmDd(date) {
+        const year = date.getFullYear();
+        const month = ('0' + (date.getMonth() + 1)).slice(-2);
+        const day = ('0' + date.getDate()).slice(-2);
+        return year + "-" + month + "-" + day;
     }
 
     function setWorkTime(workTimeList, year, month) {
@@ -229,13 +225,6 @@
         return dateList;
     }
 
-    function convertYyyyMmDd(date) {
-        const year = date.getFullYear();
-        const month = ('0' + (date.getMonth() + 1)).slice(-2);
-        const day = ('0' + date.getDate()).slice(-2);
-        return year + "-" + month + "-" + day;
-    }
-
     function convertMmDdHhMm(date) {
         const year = date.getFullYear();
         const month = ('0' + (date.getMonth() + 1)).slice(-2);
@@ -245,27 +234,14 @@
         return month + "-" + day + " " + hour + ":" + minute;
     }
 
-    function convertYyyyMmDdHhMm(date) {
-        const year = date.getFullYear();
-        const month = ('0' + (date.getMonth() + 1)).slice(-2);
-        const day = ('0' + date.getDate()).slice(-2);
-        const hour = ('0' + date.getHours()).slice(-2);
-        const minute = ('0' + date.getMinutes()).slice(-2);
-        return year + "-" + month + "-" + day + " " + hour + ":" + minute;
-    }
-
     async function viewDetail(workId) {
 
-        const url = "/manage/" + [[${shop.id}]] + "/workTimes/" + workTime.lastSearchStaffId + "?";
+        const url = "/staff/" + [[${shop.id}]] + "/workTimes/" + workId;
         const option = {
             method: "get"
         }
-        const params = {
-            workId: workId
-        }
-        let query = Object.keys(params).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key])).join('&');
 
-        await fetch(url + query, option)
+        await fetch(url, option)
             .then((result) => {
                 return result.json();
             }).then((result) => {
@@ -296,7 +272,6 @@
         lastModifiedDate.value = new Date(new Date(workDetail.lastModifiedDate) - offset).toISOString().slice(0,16);
 
         document.querySelector("#button-do-update").classList.add("visually-hidden");
-        document.querySelector("#button-do-delete").classList.add("visually-hidden");
         document.querySelector("#button-update").classList.remove("visually-hidden");
     }
 
@@ -310,16 +285,16 @@
         note.readOnly = false;
 
         document.querySelector("#button-do-update").classList.remove("visually-hidden");
-        document.querySelector("#button-do-delete").classList.remove("visually-hidden");
         document.querySelector("#button-update").classList.add("visually-hidden");
     }
 
     async function workDetailUpdateRequest() {
+        let workDate = document.querySelector("#workDate");
         let startDate = document.querySelector("#startDate");
         let endDate = document.querySelector("#endDate");
         let note = document.querySelector("#note");
 
-        const url = "/manage/" + [[${shop.id}]] + "/workTimes/" + workTime.lastSearchStaffId + "/update";
+        const url = "/staff/" + [[${shop.id}]] + "/workTimes/" + workTime.lastSelectWorkId + "/update";
         const option = {
             method: "post",
             headers: {
@@ -327,6 +302,7 @@
             },
             body: JSON.stringify({
                 "workId": workTime.lastSelectWorkId,
+                "workDate": workDate.value,
                 "startDate": startDate.value,
                 "endDate": endDate.value,
                 "note": note.value
@@ -336,36 +312,12 @@
             .then((response) => {return response.json()})
             .then((response) => {
                 if (response === true) {
+                    alert("근무시간 수정 요청이 완료되었습니다.");
                     startDate.readOnly = true;
                     endDate.readOnly = true;
                     note.readOnly = true;
                     document.querySelector("#button-do-update").classList.add("visually-hidden");
-                    document.querySelector("#button-do-delete").classList.add("visually-hidden");
                     document.querySelector("#button-update").classList.remove("visually-hidden");
-                } else {
-                    alert("잠시 후 다시 시도해주세요.")
-                }
-            })
-    }
-
-    async function deleteWork() {
-        const url = "/manage/" + [[${shop.id}]] + "/workTimes/" + workTime.lastSearchStaffId + "/delete";
-        const option = {
-            method: "post",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                "workId": workTime.lastSelectWorkId,
-            })
-        }
-        await fetch(url, option)
-            .then((response) => {return response.json()})
-            .then((response) => {
-                if (response === true) {
-                    alert("삭제되었습니다.");
-                    searchWorks();
-                    workTime.detailModal.toggle();
                 } else {
                     alert("잠시 후 다시 시도해주세요.")
                 }

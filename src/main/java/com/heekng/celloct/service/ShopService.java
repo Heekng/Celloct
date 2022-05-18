@@ -59,7 +59,7 @@ public class ShopService {
      */
     @Transactional
     public void updateShop(ShopDto.UpdateRequest updateRequest) {
-        Shop shop = shopRepository.findById(updateRequest.getId()).get();
+        Shop shop = shopRepository.findById(updateRequest.getId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 매장입니다."));
         shop.update(updateRequest.getPhone(), updateRequest.getInfo());
     }
 
@@ -80,15 +80,6 @@ public class ShopService {
      */
     public Shop findShop(Long shopId) {
         return shopRepository.findById(shopId).orElseThrow(() -> new IllegalStateException("존재하지 않는 매장입니다."));
-    }
-
-    /**
-     * 이름으로 매장 리스트 찾기
-     * @param name
-     * @return
-     */
-    public Optional<Shop> findListByName(String name) {
-        return shopRepository.findByName(name);
     }
 
     public List<ShopDto.ListResponse> findListResponseListByNameContaining(String name) {

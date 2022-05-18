@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,12 +28,12 @@ public class JoinRequestService {
 
     //가입 신청
     @Transactional
-    public Long joinRequest(JoinRequestDto.joinRequest joinRequestDto) {
+    public Long joinRequest(JoinRequestDto.JoinRequest joinRequestDto) {
         Member findMember = memberRepository.findById(joinRequestDto.getMemberId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
         Shop findShop = shopRepository.findById(joinRequestDto.getShopId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 매장입니다."));
         validateDuplicateJoinRequest(joinRequestDto.getMemberId(), joinRequestDto.getShopId());
         validateDuplicateStaff(joinRequestDto.getMemberId(), joinRequestDto.getShopId());
-        JoinRequest joinRequest = JoinRequest.builder()
+        JoinRequest joinRequest = com.heekng.celloct.entity.JoinRequest.builder()
                 .shop(findShop)
                 .member(findMember)
                 .build();
@@ -54,11 +53,6 @@ public class JoinRequestService {
         if(byMemberIdAndShopId.isPresent()) {
             throw new IllegalStateException("이미 가입된 회원입니다.");
         }
-    }
-
-    //가입신청 조회(회원)
-    public List<JoinRequest> findByMemberId(Long memberId) {
-        return joinRequestRepository.findByMemberId(memberId);
     }
 
     //가입신청 취소

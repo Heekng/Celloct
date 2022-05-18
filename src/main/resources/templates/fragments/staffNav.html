@@ -8,6 +8,6 @@
         <a id="a-addWorkTime" class="nav-link" th:href="@{/staff/{shopId}/workTime/insert(shopId=${shop.id})}">근무시간 등록</a>
     </li>
     <li class="nav-item">
-        <a id="a-viewWorkTime" class="nav-link" href="#">근무시간 조회</a>
+        <a id="a-viewWorkTime" class="nav-link" th:href="@{/staff/{shopId}/workTimes(shopId=${shop.id})}">근무시간 조회</a>
     </li>
 </ul>

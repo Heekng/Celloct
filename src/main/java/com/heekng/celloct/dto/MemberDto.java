@@ -1,18 +1,17 @@
 package com.heekng.celloct.dto;
 
-import com.heekng.celloct.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 
 public class MemberDto {
 
     @Getter
-    public static class withDraw {
+    public static class WithDraw {
 
         private String email;
 
         @Builder
-        public withDraw(String email) {
+        public WithDraw(String email) {
             this.email = email;
         }
     }

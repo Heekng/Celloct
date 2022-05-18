@@ -12,7 +12,6 @@ import com.heekng.celloct.repository.ManagerRepository;
 import com.heekng.celloct.repository.StaffRepository;
 import com.heekng.celloct.repository.WorkRepository;
 import com.heekng.celloct.service.ShopService;
-import com.heekng.celloct.service.StaffService;
 import com.heekng.celloct.service.WorkService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +20,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -47,8 +45,8 @@ public class ManageWorkController {
             return "redirect:/";
         }
 
-        List<StaffDto.staffResponse> staffs = staffRepository.findByShopId(shopId).stream()
-                .map(StaffDto.staffResponse::new)
+        List<StaffDto.StaffResponse> staffs = staffRepository.findByShopId(shopId).stream()
+                .map(StaffDto.StaffResponse::new)
                 .collect(Collectors.toList());
         model.addAttribute("staffs", staffs);
         Shop shop = shopService.findShop(shopId);
@@ -113,10 +111,28 @@ public class ManageWorkController {
         if (managerOptional.isEmpty()) {
             throw new IllegalStateException("해당 매장의 매니저가 아닙니다.");
         }
-        updateRequest.setShopId(shopId);
+        staffRepository.findByShopIdAndId(shopId, staffId).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
         updateRequest.setStaffId(staffId);
 
         workService.updateWork(updateRequest);
+        return true;
+    }
+
+    @PostMapping("/workTimes/{staffId}/delete")
+    @ResponseBody
+    public Boolean workUpdate(
+            @PathVariable("shopId") Long shopId,
+            @PathVariable("staffId") Long staffId,
+            @RequestBody WorkDto.DeleteRequest deleteRequest
+    ) {
+        SessionMember member = (SessionMember) httpSession.getAttribute("member");
+        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (managerOptional.isEmpty()) {
+            throw new IllegalStateException("해당 매장의 매니저가 아닙니다.");
+        }
+        staffRepository.findByShopIdAndId(shopId, staffId).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
+        deleteRequest.setStaffId(staffId);
+        workService.deleteWork(deleteRequest);
         return true;
     }
 }
