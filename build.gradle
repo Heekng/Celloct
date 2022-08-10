@@ -2,6 +2,11 @@ plugins {
 	id 'org.springframework.boot' version '2.6.4'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+
+	// kotlin 추가
+	id 'org.jetbrains.kotlin.jvm' version '1.6.21'
+	id 'org.jetbrains.kotlin.plugin.jpa' version '1.6.21'
+	id 'org.jetbrains.kotlin.plugin.spring' version '1.6.21'
 }
 
 group = 'com.heekng'
@@ -42,6 +47,12 @@ dependencies {
 	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa"
 	annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
 	annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
+
+	// kotlin 추가
+	implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+	implementation 'org.jetbrains.kotlin:kotlin-reflect:1.6.21'
+	implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.13.3'
+
 }
 
 jar {
@@ -64,4 +75,16 @@ tasks.withType(JavaCompile) {
 
 clean.doLast {
 	file(generated).deleteDir()
+}
+
+compileKotlin {
+	kotlinOptions {
+		jvmTarget = "11"
+	}
+}
+
+compileTestKotlin{
+	kotlinOptions {
+		jvmTarget = "11"
+	}
 }
