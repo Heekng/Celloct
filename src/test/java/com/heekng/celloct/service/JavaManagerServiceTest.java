@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-class ManagerServiceTest {
+class JavaManagerServiceTest {
 
     @Autowired
     MemberRepository memberRepository;
