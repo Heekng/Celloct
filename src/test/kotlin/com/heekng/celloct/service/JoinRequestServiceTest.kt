@@ -31,9 +31,9 @@ class JoinRequestServiceTest @Autowired constructor(
     @Test
     fun joinRequestTest() {
         //given
-        val member = Member("member", "member@gmail.com", null, null)
+        val member = Member.fixture("member", "member@gmail.com")
         memberRepository.save(member)
-        val shop = Shop("010-1234-1234", "shop", "shopInfo")
+        val shop = Shop.fixture("010-1234-1234", "shop", "shopInfo")
         shopRepository.save(shop)
         em.flush()
         em.clear()
@@ -49,11 +49,11 @@ class JoinRequestServiceTest @Autowired constructor(
     @Test
     fun cancelTest() {
         //given
-        val member = Member("member", "member@gmail.com", null, null)
+        val member = Member.fixture("member", "member@gmail.com")
         memberRepository.save(member)
-        val shop = Shop("010-1234-1234", "shop", "shopInfo")
+        val shop = Shop.fixture("010-1234-1234", "shop", "shopInfo")
         shopRepository.save(shop)
-        val joinRequest = com.heekng.celloct.entity.JoinRequest(member, shop)
+        val joinRequest = com.heekng.celloct.entity.JoinRequest.fixture(member, shop)
         joinRequestRepository.save(joinRequest)
         em.flush()
         em.clear()
@@ -67,11 +67,11 @@ class JoinRequestServiceTest @Autowired constructor(
     @Test
     fun approvalTest() {
         //given
-        val member = Member("member", "member@gmail.com", null, null)
+        val member = Member.fixture("member", "member@gmail.com")
         memberRepository.save(member)
-        val shop = Shop("010-1234-1234", "shop", "shopInfo")
+        val shop = Shop.fixture("010-1234-1234", "shop", "shopInfo")
         shopRepository.save(shop)
-        val joinRequest = com.heekng.celloct.entity.JoinRequest(member, shop)
+        val joinRequest = com.heekng.celloct.entity.JoinRequest.fixture(member, shop)
         joinRequestRepository.save(joinRequest)
         em.flush()
         em.clear()
@@ -89,11 +89,11 @@ class JoinRequestServiceTest @Autowired constructor(
     @Test
     fun refusalTest() {
         //given
-        val member = Member("member", "member@gmail.com", null, null)
+        val member = Member.fixture("member", "member@gmail.com")
         memberRepository.save(member)
-        val shop = Shop("010-1234-1234", "shop", "shopInfo")
+        val shop = Shop.fixture("010-1234-1234", "shop", "shopInfo")
         shopRepository.save(shop)
-        val joinRequest = com.heekng.celloct.entity.JoinRequest(member, shop)
+        val joinRequest = com.heekng.celloct.entity.JoinRequest.fixture(member, shop)
         joinRequestRepository.save(joinRequest)
         em.flush()
         em.clear()

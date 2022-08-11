@@ -33,10 +33,7 @@ public class JoinRequestService {
         Shop findShop = shopRepository.findById(joinRequestDto.getShopId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 매장입니다."));
         validateDuplicateJoinRequest(joinRequestDto.getMemberId(), joinRequestDto.getShopId());
         validateDuplicateStaff(joinRequestDto.getMemberId(), joinRequestDto.getShopId());
-        JoinRequest joinRequest = com.heekng.celloct.entity.JoinRequest.builder()
-                .shop(findShop)
-                .member(findMember)
-                .build();
+        JoinRequest joinRequest = new JoinRequest(null, findMember, findShop);
         JoinRequest savedJoinRequest = joinRequestRepository.save(joinRequest);
         return savedJoinRequest.getId();
     }
@@ -69,11 +66,7 @@ public class JoinRequestService {
         Member member = findJoinRequest.getMember();
         Shop shop = findJoinRequest.getShop();
         validateDuplicateStaff(member.getId(), shop.getId());
-        Staff staff = Staff.builder()
-                .shop(shop)
-                .member(member)
-                .name(member.getName())
-                .build();
+        Staff staff = Staff.Companion.fixture(member, shop, member.getName());
         staffRepository.save(staff);
         joinRequestRepository.delete(findJoinRequest);
         return staff.getId();

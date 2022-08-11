@@ -3,6 +3,7 @@ package com.heekng.celloct.service;
 import com.heekng.celloct.dto.WorkDto;
 import com.heekng.celloct.entity.Staff;
 import com.heekng.celloct.entity.Work;
+import com.heekng.celloct.entity.WorkTime;
 import com.heekng.celloct.repository.StaffRepository;
 import com.heekng.celloct.repository.WorkRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,13 +26,7 @@ public class WorkService {
     public Long addWork(WorkDto.AddRequest addRequest) {
         Staff staff = staffRepository.findByMemberIdAndShopId(addRequest.getMemberId(), addRequest.getShopId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
         validateDuplicateWork(addRequest.getWorkDate(), staff.getId());
-        Work work = Work.builder()
-                .staff(staff)
-                .workDate(addRequest.getWorkDate())
-                .startDate(addRequest.getStartDate())
-                .endDate(addRequest.getEndDate())
-                .note(addRequest.getNote())
-                .build();
+        Work work = new Work(null, new WorkTime(addRequest.getWorkDate(), addRequest.getStartDate(), addRequest.getEndDate()), addRequest.getNote(), staff, null);
         workRepository.save(work);
         return work.getId();
     }

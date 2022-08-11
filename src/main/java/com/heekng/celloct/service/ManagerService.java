@@ -32,10 +32,7 @@ public class ManagerService {
         Shop shop = shopRepository.findById(addRequestDto.getShopId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 매장입니다."));
         Member member = memberRepository.findById(addRequestDto.getMemberId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
         validateExistManager(addRequestDto.getShopId(), addRequestDto.getMemberId());
-        Manager manager = Manager.builder()
-                .member(member)
-                .shop(shop)
-                .build();
+        Manager manager = Manager.Companion.fixture(shop, member, member.getName());
         return managerRepository.save(manager);
     }
 
@@ -71,11 +68,7 @@ public class ManagerService {
         Staff staff = staffRepository.findById(addByStaffRequest.getStaffId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
         Shop shop = shopRepository.findById(addByStaffRequest.getShopId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 매장입니다."));
         Member staffMember = staff.getMember();
-        Manager manager = Manager.builder()
-                .name(staff.getName())
-                .member(staffMember)
-                .shop(shop)
-                .build();
+        Manager manager = Manager.Companion.fixture(shop, staffMember, staff.getName());
         managerRepository.save(manager);
         return manager;
     }

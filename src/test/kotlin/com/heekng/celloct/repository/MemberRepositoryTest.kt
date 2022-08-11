@@ -20,7 +20,7 @@ class MemberRepositoryTest @Autowired constructor(
     @Test
     fun saveTest() {
         //given
-        val member = Member("member", "member@test.com", null, null)
+        val member = Member.fixture("member", "member@test.com")
         memberRepository.save(member)
         em.flush()
         em.clear()
@@ -33,7 +33,7 @@ class MemberRepositoryTest @Autowired constructor(
     @Test
     fun deleteTest() {
         //given
-        val member = Member("member", "member@gmail.com", null, null)
+        val member = Member.fixture("member", "member@gmail.com")
         memberRepository.save(member)
         em.flush()
         em.clear()
@@ -50,8 +50,8 @@ class MemberRepositoryTest @Autowired constructor(
     @Test
     fun readTest() {
         //given
-        val member1 = Member("member1", "member1@gmail.com", null, null)
-        val member2 = Member("member2", "member2@gmail.com", null, null)
+        val member1 = Member.fixture("member1", "member1@gmail.com")
+        val member2 = Member.fixture("member2", "member2@gmail.com")
         memberRepository.save(member1)
         memberRepository.save(member2)
         em.flush()
@@ -66,7 +66,7 @@ class MemberRepositoryTest @Autowired constructor(
     @Test
     fun findByEmailTest() {
         //given
-        val member = Member("member1", "member1@gmail.com", null, null)
+        val member = Member.fixture("member1", "member1@gmail.com")
         memberRepository.save(member)
         em.flush()
         em.clear()

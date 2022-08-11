@@ -31,12 +31,7 @@ public class ShopService {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
         String managerName = createRequest.getManagerName().equals("") ? member.getName() : createRequest.getManagerName();
         validateDuplicateShop(shop);
-
-        Manager manager = Manager.builder()
-                .member(member)
-                .shop(shop)
-                .name(managerName)
-                .build();
+        Manager manager = Manager.Companion.fixture(shop, member, managerName);
         shop.addManager(manager);
 
         shopRepository.save(shop);

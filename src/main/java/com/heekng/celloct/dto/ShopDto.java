@@ -26,11 +26,7 @@ public class ShopDto {
         }
 
         public Shop toEntity() {
-            return Shop.builder()
-                    .name(name)
-                    .phone(phone)
-                    .info(info)
-                    .build();
+            return Shop.Companion.fixture(phone, name, info);
         }
     }
 

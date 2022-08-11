@@ -28,13 +28,7 @@ public class WorkUpdateRequestService {
     public Long addWorkUpdateRequest(WorkUpdateRequestDto.AddRequest addRequest) {
         Work work = workRepository.findByIdAndStaffId(addRequest.getWorkId(), addRequest.getStaffId()).orElseThrow(() -> new IllegalStateException("해당 직원의 근무가 아닙니다."));
         validateWorkUpdateRequest(addRequest.getWorkId());
-        WorkUpdateRequest workUpdateRequest = WorkUpdateRequest.builder()
-                .workDate(addRequest.getWorkDate())
-                .startDate(addRequest.getStartDate())
-                .endDate(addRequest.getEndDate())
-                .work(work)
-                .note(addRequest.getNote())
-                .build();
+        WorkUpdateRequest workUpdateRequest = WorkUpdateRequest.Companion.fixture(addRequest.getWorkDate(), addRequest.getStartDate(), addRequest.getEndDate(), work, addRequest.getNote());
         workUpdateRequestRepository.save(workUpdateRequest);
         work.addWorkUpdateRequest(workUpdateRequest);
         return workUpdateRequest.getId();

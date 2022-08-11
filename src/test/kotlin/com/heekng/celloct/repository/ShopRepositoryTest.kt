@@ -18,7 +18,7 @@ class ShopRepositoryTest @Autowired constructor(
     @Test
     fun findByNameTest() {
         //given
-        val shop = Shop("010-1234-1234", "shop", "shop")
+        val shop = Shop.fixture("010-1234-1234", "shop", "shop")
         shopRepository.save(shop)
         em.flush()
         em.clear()
@@ -31,7 +31,7 @@ class ShopRepositoryTest @Autowired constructor(
     @Test
     fun findListByNameContainingTest() {
         //given
-        val shop = Shop("010-1234-1234", "shop", "shop")
+        val shop = Shop.fixture("010-1234-1234", "shop", "shop")
         shopRepository.save(shop)
         em.flush()
         em.clear()

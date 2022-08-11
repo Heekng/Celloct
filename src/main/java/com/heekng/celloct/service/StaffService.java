@@ -35,10 +35,7 @@ public class StaffService {
         Shop shop = shopRepository.findById(addRequestDto.getShopId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 매장입니다."));
         Member member = memberRepository.findById(addRequestDto.getMemberId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
         validateExistStaff(addRequestDto.getShopId(), addRequestDto.getMemberId());
-        Staff staff = Staff.builder()
-                .shop(shop)
-                .member(member)
-                .build();
+        Staff staff = Staff.Companion.fixture(member, shop, member.getName());
         staffRepository.save(staff);
         return staff.getId();
     }

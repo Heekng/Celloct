@@ -5,6 +5,7 @@ import com.heekng.celloct.entity.Role;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 @Getter
@@ -40,11 +41,6 @@ public class OAuthAttributes {
     }
 
     public Member toEntity() {
-        return Member.builder()
-                .name(name)
-                .email(email)
-                .picture(picture)
-                .role(Role.USER)
-                .build();
+        return new Member(null, name, email, picture, Role.USER, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     }
 }

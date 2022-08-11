@@ -24,11 +24,11 @@ class ManagerRepositoryTest @Autowired constructor(
     @Test
     fun createTest() {
         //given
-        val member = Member("member1", "member1@heekng.com", null, null)
+        val member = Member.fixture("member1", "member1@heekng.com")
         memberRepository.save(member)
-        val shop = Shop("010-1234-1234", "shop1", null)
+        val shop = Shop.fixture("010-1234-1234", "shop1", null)
         shopRepository.save(shop)
-        val manager = Manager(shop, member, "managerName")
+        val manager = Manager.fixture(shop, member, "managerName")
         managerRepository.save(manager)
         em.flush()
         em.clear()
@@ -43,11 +43,11 @@ class ManagerRepositoryTest @Autowired constructor(
     @Test
     fun deleteTest() {
         //given
-        val member = Member("member1", "member1@heekng.com", null, null)
+        val member = Member.fixture("member1", "member1@heekng.com")
         memberRepository.save(member)
-        val shop = Shop("010-1234-1234", "shop1", null)
+        val shop = Shop.fixture("010-1234-1234", "shop1", null)
         shopRepository.save(shop)
-        val manager = Manager(shop, member, "managerName")
+        val manager = Manager.fixture(shop, member, "managerName")
         managerRepository.save(manager)
         em.flush()
         em.clear()
@@ -64,11 +64,11 @@ class ManagerRepositoryTest @Autowired constructor(
     @Test
     fun findByMemberIdAndShopIdTest() {
         //given
-        val member = Member("member", "member@heekng.com", null, null)
+        val member = Member.fixture("member", "member@heekng.com")
         memberRepository.save(member)
-        val shop = Shop("010-1234-1234", "shop", null)
+        val shop = Shop.fixture("010-1234-1234", "shop", null)
         shopRepository.save(shop)
-        val manager = Manager(shop, member, "managerName")
+        val manager = Manager.fixture(shop, member, "managerName")
         managerRepository.save(manager)
         em.flush()
         em.clear()
@@ -81,11 +81,11 @@ class ManagerRepositoryTest @Autowired constructor(
     @Test
     fun findByMemberIdTest() {
         //given
-        val member = Member("member", "member@heekng.com", null, null)
+        val member = Member.fixture("member", "member@heekng.com")
         memberRepository.save(member)
-        val shop = Shop("010-1234-1234", "shop", null)
+        val shop = Shop.fixture("010-1234-1234", "shop", null)
         shopRepository.save(shop)
-        val manager = Manager(shop, member, "managerName")
+        val manager = Manager.fixture(shop, member, "managerName")
         managerRepository.save(manager)
         em.flush()
         em.clear()
@@ -99,11 +99,11 @@ class ManagerRepositoryTest @Autowired constructor(
     @Test
     fun findWithShopByMemberIdTest() {
         //given
-        val member = Member("member", "member@heekng.com", null, null)
+        val member = Member.fixture("member", "member@heekng.com")
         memberRepository.save(member)
-        val shop = Shop("010-1234-1234", "shop", null)
+        val shop = Shop.fixture("010-1234-1234", "shop", null)
         shopRepository.save(shop)
-        val manager = Manager(shop, member, "managerName")
+        val manager = Manager.fixture(shop, member, "managerName")
         managerRepository.save(manager)
         em.flush()
         em.clear()
@@ -119,11 +119,11 @@ class ManagerRepositoryTest @Autowired constructor(
     @Test
     fun findListByShopIdTest() {
         //given
-        val member = Member("member", "member@heekng.com", null, null)
+        val member = Member.fixture("member", "member@heekng.com")
         memberRepository.save(member)
-        val shop = Shop("010-1234-1234", "shop", null)
+        val shop = Shop.fixture("010-1234-1234", "shop", null)
         shopRepository.save(shop)
-        val manager = Manager(shop, member, "managerName")
+        val manager = Manager.fixture(shop, member, "managerName")
         managerRepository.save(manager)
         em.flush()
         em.clear()
@@ -137,11 +137,11 @@ class ManagerRepositoryTest @Autowired constructor(
     @Test
     fun findWithMemberByIdTest() {
         //given
-        val member = Member("member", "member@heekng.com", null, null)
+        val member = Member.fixture("member", "member@heekng.com")
         memberRepository.save(member)
-        val shop = Shop("010-1234-1234", "shop", null)
+        val shop = Shop.fixture("010-1234-1234", "shop", null)
         shopRepository.save(shop)
-        val manager = Manager(shop, member, "managerName")
+        val manager = Manager.fixture(shop, member, "managerName")
         managerRepository.save(manager)
         em.flush()
         em.clear()
@@ -156,11 +156,11 @@ class ManagerRepositoryTest @Autowired constructor(
     @Test
     fun findByShopIdAndIdTest() {
         //given
-        val member = Member("member", "member@heekng.com", null, null)
+        val member = Member.fixture("member", "member@heekng.com")
         memberRepository.save(member)
-        val shop = Shop("010-1234-1234", "shop", null)
+        val shop = Shop.fixture("010-1234-1234", "shop", null)
         shopRepository.save(shop)
-        val manager = Manager(shop, member, "managerName")
+        val manager = Manager.fixture(shop, member, "managerName")
         managerRepository.save(manager)
         em.flush()
         em.clear()

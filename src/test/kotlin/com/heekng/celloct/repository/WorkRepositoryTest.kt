@@ -1,9 +1,6 @@
 package com.heekng.celloct.repository
 
-import com.heekng.celloct.entity.Member
-import com.heekng.celloct.entity.Shop
-import com.heekng.celloct.entity.Staff
-import com.heekng.celloct.entity.Work
+import com.heekng.celloct.entity.*
 import com.heekng.celloct.util.findByIdOrThrow
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -28,15 +25,23 @@ class WorkRepositoryTest @Autowired constructor(
     @Test
     fun createTest() {
         //given
-        val shopMember = Member("shopMember", "shopMember@gmail.com", null, null)
+        val shopMember = Member.fixture("shopMember", "shopMember@gmail.com")
         memberRepository.save(shopMember)
-        val staffMember = Member("staffMember", "staffMember@gmail.com", null, null)
+        val staffMember = Member.fixture("staffMember", "staffMember@gmail.com")
         memberRepository.save(staffMember)
-        val shop = Shop(null, "shop", null)
+        val shop = Shop.fixture(null, "shop", null)
         shopRepository.save(shop)
-        val staff = Staff(staffMember, shop, "staff")
+        val staff = Staff.fixture(staffMember, shop, "staff")
         staffRepository.save(staff)
-        val work = Work(LocalDate.now(), staff, LocalDateTime.now(), LocalDateTime.now().plusHours(1), null)
+        val work = Work(
+            workTime = WorkTime(
+                workDate = LocalDate.now(),
+                startDate = LocalDateTime.now(),
+                endDate = LocalDateTime.now().plusHours(1),
+            ) ,
+            staff = staff,
+            workUpdateRequest = null,
+        )
         workRepository.save(work)
         em.flush()
         em.clear()
@@ -49,15 +54,23 @@ class WorkRepositoryTest @Autowired constructor(
     @Test
     fun updateWorkTimeTest() {
         //given
-        val shopMember = Member("shopMember", "shopMember@gmail.com", null, null)
+        val shopMember = Member.fixture("shopMember", "shopMember@gmail.com")
         memberRepository.save(shopMember)
-        val staffMember = Member("staffMember", "staffMember@gmail.com", null, null)
+        val staffMember = Member.fixture("staffMember", "staffMember@gmail.com")
         memberRepository.save(staffMember)
-        val shop = Shop(null, "shop", null)
+        val shop = Shop.fixture(null, "shop", null)
         shopRepository.save(shop)
-        val staff = Staff(staffMember, shop, "staff")
+        val staff = Staff.fixture(staffMember, shop, "staff")
         staffRepository.save(staff)
-        val work = Work(LocalDate.now(), staff, LocalDateTime.now(), LocalDateTime.now().plusHours(1), null)
+        val work = Work(
+            workTime = WorkTime(
+                workDate = LocalDate.now(),
+                startDate = LocalDateTime.now(),
+                endDate = LocalDateTime.now().plusHours(1),
+            ) ,
+            staff = staff,
+            workUpdateRequest = null,
+        )
         workRepository.save(work)
         em.flush()
         em.clear()
@@ -79,15 +92,23 @@ class WorkRepositoryTest @Autowired constructor(
     @Test
     fun deleteTest() {
         //given
-        val shopMember = Member("shopMember", "shopMember@gmail.com", null, null)
+        val shopMember = Member.fixture("shopMember", "shopMember@gmail.com")
         memberRepository.save(shopMember)
-        val staffMember = Member("staffMember", "staffMember@gmail.com", null, null)
+        val staffMember = Member.fixture("staffMember", "staffMember@gmail.com")
         memberRepository.save(staffMember)
-        val shop = Shop(null, "shop", null)
+        val shop = Shop.fixture(null, "shop", null)
         shopRepository.save(shop)
-        val staff = Staff(staffMember, shop, "staff")
+        val staff = Staff.fixture(staffMember, shop, "staff")
         staffRepository.save(staff)
-        val work = Work(LocalDate.now(), staff, LocalDateTime.now(), LocalDateTime.now().plusHours(1), null)
+        val work = Work(
+            workTime = WorkTime(
+                workDate = LocalDate.now(),
+                startDate = LocalDateTime.now(),
+                endDate = LocalDateTime.now().plusHours(1),
+            ) ,
+            staff = staff,
+            workUpdateRequest = null,
+        )
         workRepository.save(work)
         em.flush()
         em.clear()
@@ -104,15 +125,23 @@ class WorkRepositoryTest @Autowired constructor(
     @Test
     fun findByWorkTimeWorkDateAndStaffIdTest() {
         //given
-        val shopMember = Member("shopMember", "shopMember@gmail.com", null, null)
+        val shopMember = Member.fixture("shopMember", "shopMember@gmail.com")
         memberRepository.save(shopMember)
-        val staffMember = Member("staffMember", "staffMember@gmail.com", null, null)
+        val staffMember = Member.fixture("staffMember", "staffMember@gmail.com")
         memberRepository.save(staffMember)
-        val shop = Shop(null, "shop", null)
+        val shop = Shop.fixture(null, "shop", null)
         shopRepository.save(shop)
-        val staff = Staff(staffMember, shop, "staff")
+        val staff = Staff.fixture(staffMember, shop, "staff")
         staffRepository.save(staff)
-        val work = Work(LocalDate.now(), staff, LocalDateTime.now(), LocalDateTime.now().plusHours(1), null)
+        val work = Work(
+            workTime = WorkTime(
+                workDate = LocalDate.now(),
+                startDate = LocalDateTime.now(),
+                endDate = LocalDateTime.now().plusHours(1),
+            ) ,
+            staff = staff,
+            workUpdateRequest = null,
+        )
         workRepository.save(work)
         em.flush()
         em.clear()
@@ -126,15 +155,23 @@ class WorkRepositoryTest @Autowired constructor(
     @Test
     fun findByWorkTimeWorkDateBetweenAndStaffIdTest() {
         //given
-        val shopMember = Member("shopMember", "shopMember@gmail.com", null, null)
+        val shopMember = Member.fixture("shopMember", "shopMember@gmail.com")
         memberRepository.save(shopMember)
-        val staffMember = Member("staffMember", "staffMember@gmail.com", null, null)
+        val staffMember = Member.fixture("staffMember", "staffMember@gmail.com")
         memberRepository.save(staffMember)
-        val shop = Shop(null, "shop", null)
+        val shop = Shop.fixture(null, "shop", null)
         shopRepository.save(shop)
-        val staff = Staff(staffMember, shop, "staff")
+        val staff = Staff.fixture(staffMember, shop, "staff")
         staffRepository.save(staff)
-        val work = Work(LocalDate.now(), staff, LocalDateTime.now(), LocalDateTime.now().plusHours(1), null)
+        val work = Work(
+            workTime = WorkTime(
+                workDate = LocalDate.now(),
+                startDate = LocalDateTime.now(),
+                endDate = LocalDateTime.now().plusHours(1),
+            ) ,
+            staff = staff,
+            workUpdateRequest = null,
+        )
         workRepository.save(work)
         em.flush()
         em.clear()
@@ -152,15 +189,23 @@ class WorkRepositoryTest @Autowired constructor(
     @Test
     fun findByIdAndStaffIdTest() {
         //given
-        val shopMember = Member("shopMember", "shopMember@gmail.com", null, null)
+        val shopMember = Member.fixture("shopMember", "shopMember@gmail.com")
         memberRepository.save(shopMember)
-        val staffMember = Member("staffMember", "staffMember@gmail.com", null, null)
+        val staffMember = Member.fixture("staffMember", "staffMember@gmail.com")
         memberRepository.save(staffMember)
-        val shop = Shop(null, "shop", null)
+        val shop = Shop.fixture(null, "shop", null)
         shopRepository.save(shop)
-        val staff = Staff(staffMember, shop, "staff")
+        val staff = Staff.fixture(staffMember, shop, "staff")
         staffRepository.save(staff)
-        val work = Work(LocalDate.now(), staff, LocalDateTime.now(), LocalDateTime.now().plusHours(1), null)
+        val work = Work(
+            workTime = WorkTime(
+                workDate = LocalDate.now(),
+                startDate = LocalDateTime.now(),
+                endDate = LocalDateTime.now().plusHours(1),
+            ) ,
+            staff = staff,
+            workUpdateRequest = null,
+        )
         workRepository.save(work)
         em.flush()
         em.clear()

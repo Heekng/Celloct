@@ -24,11 +24,11 @@ class JoinRequestRepositoryTest @Autowired constructor(
     @Test
     fun createTest() {
         //given
-        val member = Member("member1", "member1@test.com", null, null)
+        val member = Member.fixture("member1", "member1@test.com")
         memberRepository.save(member)
-        val shop = Shop("010-1234-1234", "shop1", null)
+        val shop = Shop.fixture("010-1234-1234", "shop1", null)
         shopRepository.save(shop)
-        val joinRequest = JoinRequest(member, shop)
+        val joinRequest = JoinRequest.fixture(member, shop)
         joinRequestRepository.save(joinRequest)
         em.flush()
         em.clear()
@@ -43,11 +43,11 @@ class JoinRequestRepositoryTest @Autowired constructor(
     @Test
     fun findByMemberIdTest() {
         //given
-        val member = Member("member", "member1@Test.com", null, null)
+        val member = Member.fixture("member", "member1@Test.com")
         memberRepository.save(member)
-        val shop = Shop("010-1234-1234", "shop", null)
+        val shop = Shop.fixture("010-1234-1234", "shop", null)
         shopRepository.save(shop)
-        val joinRequest = JoinRequest(member, shop)
+        val joinRequest = JoinRequest.fixture(member, shop)
         joinRequestRepository.save(joinRequest)
         em.flush()
         em.clear()
@@ -60,11 +60,11 @@ class JoinRequestRepositoryTest @Autowired constructor(
     @Test
     fun findByShopIdTest() {
         //given
-        val member1 = Member("member1", "member1@Test.com", null, null)
+        val member1 = Member.fixture("member1", "member1@Test.com")
         memberRepository.save(member1)
-        val shop = Shop("010-1234-1234", "shop1", null)
+        val shop = Shop.fixture("010-1234-1234", "shop1", null)
         shopRepository.save(shop)
-        val joinRequest = JoinRequest(member1, shop)
+        val joinRequest = JoinRequest.fixture(member1, shop)
         joinRequestRepository.save(joinRequest)
         em.flush()
         em.clear()
@@ -77,11 +77,11 @@ class JoinRequestRepositoryTest @Autowired constructor(
     @Test
     fun deleteJoinRequestTest() {
         //given
-        val member = Member("member1", "member1@Test.com", null, null)
+        val member = Member.fixture("member1", "member1@Test.com")
         memberRepository.save(member)
-        val shop = Shop("010-1234-1234", "shop1", null)
+        val shop = Shop.fixture("010-1234-1234", "shop1", null)
         shopRepository.save(shop)
-        val joinRequest = JoinRequest(member, shop)
+        val joinRequest = JoinRequest.fixture(member, shop)
         joinRequestRepository.save(joinRequest)
         em.flush()
         em.clear()
@@ -96,11 +96,11 @@ class JoinRequestRepositoryTest @Autowired constructor(
     @Test
     fun findByMemberIdAndShopIdTest() {
         //given
-        val member = Member("member1", "member1@test.com", null, null)
+        val member = Member.fixture("member1", "member1@test.com")
         memberRepository.save(member)
-        val shop = Shop("010-1234-1234", "shop1", null)
+        val shop = Shop.fixture("010-1234-1234", "shop1", null)
         shopRepository.save(shop)
-        val joinRequest = JoinRequest(member, shop)
+        val joinRequest = JoinRequest.fixture(member, shop)
         joinRequestRepository.save(joinRequest)
         em.flush()
         em.clear()
@@ -115,11 +115,11 @@ class JoinRequestRepositoryTest @Autowired constructor(
     @Test
     fun findWithMemberByShopIdTest() {
         //given
-        val member = Member("member1", "member1@test.com", null, null)
+        val member = Member.fixture("member1", "member1@test.com")
         memberRepository.save(member)
-        val shop = Shop("010-1234-1234", "shop1", null)
+        val shop = Shop.fixture("010-1234-1234", "shop1", null)
         shopRepository.save(shop)
-        val joinRequest = JoinRequest(member, shop)
+        val joinRequest = JoinRequest.fixture(member, shop)
         joinRequestRepository.save(joinRequest)
         em.flush()
         em.clear()

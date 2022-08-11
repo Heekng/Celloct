@@ -1,10 +1,7 @@
 package com.heekng.celloct.service
 
 import com.heekng.celloct.dto.WorkDto.*
-import com.heekng.celloct.entity.Member
-import com.heekng.celloct.entity.Shop
-import com.heekng.celloct.entity.Staff
-import com.heekng.celloct.entity.Work
+import com.heekng.celloct.entity.*
 import com.heekng.celloct.repository.MemberRepository
 import com.heekng.celloct.repository.ShopRepository
 import com.heekng.celloct.repository.StaffRepository
@@ -37,11 +34,11 @@ class WorkServiceTest @Autowired constructor(
     @DisplayName("근무시간 추가 테스트")
     fun addTest() {
         //given
-        val shop = Shop(null, "shop", null)
+        val shop = Shop.fixture(null, "shop", null)
         shopRepository.save(shop)
-        val member = Member("member", "test@gmail.com", null, null)
+        val member = Member.fixture("member", "test@gmail.com")
         memberRepository.save(member)
-        val staff = Staff(member, shop, "staff")
+        val staff = Staff.fixture(member, shop, "staff")
         staffRepository.save(staff)
         em.flush()
         em.clear()
@@ -60,16 +57,23 @@ class WorkServiceTest @Autowired constructor(
     @DisplayName("근무시간 수정 테스트")
     fun changeWorkTimeTest() {
         //given
-        val shop = Shop(null, "shop", null)
+        val shop = Shop.fixture(null, "shop", null)
         shopRepository.save(shop)
-        val member = Member("member", "test@gmail.com", null, null)
+        val member = Member.fixture("member", "test@gmail.com")
         memberRepository.save(member)
-        val staff = Staff(member, shop, "staff")
+        val staff = Staff.fixture(member, shop, "staff")
         staffRepository.save(staff)
         val workDate = LocalDate.of(2020, 5, 5)
         val startDate = LocalDateTime.of(workDate, LocalTime.of(10, 50))
         val endDate = LocalDateTime.of(workDate, LocalTime.of(15, 50))
-        val work = Work(workDate, staff, startDate, endDate, null)
+        val work = Work(
+            workTime = WorkTime(
+                workDate = workDate,
+                startDate = startDate,
+                endDate = endDate,
+            ) ,
+            staff = staff,
+        )
         workRepository.save(work)
         em.flush()
         em.clear()
@@ -88,16 +92,23 @@ class WorkServiceTest @Autowired constructor(
     @DisplayName("근무 삭제 테스트")
     fun deleteWorkTest() {
         //given
-        val shop = Shop(null, "shop", null)
+        val shop = Shop.fixture(null, "shop", null)
         shopRepository.save(shop)
-        val member = Member("member", "test@gmail.com", null, null)
+        val member = Member.fixture("member", "test@gmail.com")
         memberRepository.save(member)
-        val staff = Staff(member, shop, "staff")
+        val staff = Staff.fixture(member, shop, "staff")
         staffRepository.save(staff)
         val workDate = LocalDate.of(2020, 5, 5)
         val startDate = LocalDateTime.of(workDate, LocalTime.of(10, 50))
         val endDate = LocalDateTime.of(workDate, LocalTime.of(15, 50))
-        val work = Work(workDate, staff, startDate, endDate, null)
+        val work = Work(
+            workTime = WorkTime(
+                workDate = workDate,
+                startDate = startDate,
+                endDate = endDate,
+            ) ,
+            staff = staff,
+        )
         workRepository.save(work)
         em.flush()
         em.clear()

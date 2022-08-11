@@ -32,16 +32,23 @@ class WorkUpdateRequestServiceTest @Autowired constructor(
     @DisplayName("근무시간 수정 요청 추가 테스트")
     fun addTest() {
         //given
-        val shop = Shop(null, "shop", null)
+        val shop = Shop.fixture(null, "shop", null)
         shopRepository.save(shop)
-        val member = Member("member", "test@gmail.com", null, null)
+        val member = Member.fixture("member", "test@gmail.com")
         memberRepository.save(member)
-        val staff = Staff(member, shop, "staff")
+        val staff = Staff.fixture(member, shop, "staff")
         staffRepository.save(staff)
         val workDate = LocalDate.of(2022, 10, 10)
         val startDate = LocalDateTime.of(2022, 10, 10, 5, 10)
         val endDate = LocalDateTime.of(2022, 10, 10, 6, 10)
-        val work = Work(workDate, staff, startDate, endDate, null)
+        val work = Work(
+            workTime = WorkTime(
+                workDate = workDate,
+                startDate = startDate,
+                endDate = endDate,
+            ) ,
+            staff = staff,
+        )
         workRepository.save(work)
         //when
         val addRequest = AddRequest(work.id, staff.id, workDate, startDate.minusHours(1), endDate.plusHours(1), null)
@@ -55,18 +62,25 @@ class WorkUpdateRequestServiceTest @Autowired constructor(
     @DisplayName("근무시간 요청 수정")
     fun updateTest() {
         //given
-        val shop = Shop(null, "shop", null)
+        val shop = Shop.fixture(null, "shop", null)
         shopRepository.save(shop)
-        val member = Member("member", "test@gmail.com", null, null)
+        val member = Member.fixture("member", "test@gmail.com")
         memberRepository.save(member)
-        val staff = Staff(member, shop, "staff")
+        val staff = Staff.fixture(member, shop, "staff")
         staffRepository.save(staff)
         val workDate = LocalDate.of(2022, 10, 10)
         val startDate = LocalDateTime.of(2022, 10, 10, 5, 10)
         val endDate = LocalDateTime.of(2022, 10, 10, 6, 10)
-        val work = Work(workDate, staff, startDate, endDate, null)
+        val work = Work(
+            workTime = WorkTime(
+                workDate = workDate,
+                startDate = startDate,
+                endDate = endDate,
+            ) ,
+            staff = staff,
+        )
         workRepository.save(work)
-        val workUpdateRequest = WorkUpdateRequest(workDate, startDate.minusHours(1), endDate.plusHours(1), work, null)
+        val workUpdateRequest = WorkUpdateRequest.fixture(workDate, startDate.minusHours(1), endDate.plusHours(1), work, null)
         workUpdateRequestRepository.save(workUpdateRequest)
         em.flush()
         em.clear()
@@ -88,18 +102,25 @@ class WorkUpdateRequestServiceTest @Autowired constructor(
     @DisplayName("근무시간 수정 요청 삭제 테스트")
     fun deleteTest() {
         //given
-        val shop = Shop(null, "shop", null)
+        val shop = Shop.fixture(null, "shop", null)
         shopRepository.save(shop)
-        val member = Member("member", "test@gmail.com", null, null)
+        val member = Member.fixture("member", "test@gmail.com")
         memberRepository.save(member)
-        val staff = Staff(member, shop, "staff")
+        val staff = Staff.fixture(member, shop, "staff")
         staffRepository.save(staff)
         val workDate = LocalDate.of(2022, 10, 10)
         val startDate = LocalDateTime.of(2022, 10, 10, 5, 10)
         val endDate = LocalDateTime.of(2022, 10, 10, 6, 10)
-        val work = Work(workDate, staff, startDate, endDate, null)
+        val work = Work(
+            workTime = WorkTime(
+                workDate = workDate,
+                startDate = startDate,
+                endDate = endDate,
+            ) ,
+            staff = staff,
+        )
         workRepository.save(work)
-        val workUpdateRequest = WorkUpdateRequest(workDate, startDate.minusHours(1), endDate.plusHours(1), work, null)
+        val workUpdateRequest = WorkUpdateRequest.fixture(workDate, startDate.minusHours(1), endDate.plusHours(1), work, null)
         workUpdateRequestRepository.save(workUpdateRequest)
         em.flush()
         em.clear()

@@ -29,7 +29,7 @@ class ShopServiceTest @Autowired constructor(
     @Test
     fun makeShopTest() {
         //given
-        val member = Member("member", "member@gmail.com", null, null)
+        val member = Member.fixture("member", "member@gmail.com")
         memberRepository.save(member)
         em.flush()
         em.clear()
@@ -45,19 +45,19 @@ class ShopServiceTest @Autowired constructor(
     @Test
     fun findListByNameContainingTest() {
         //given
-        val member1 = Member("member1", "member1@gmail.com", null, null)
+        val member1 = Member.fixture("member1", "member1@gmail.com")
         memberRepository.save(member1)
-        val member2 = Member("member2", "member2@gmail.com", null, null)
+        val member2 = Member.fixture("member2", "member2@gmail.com")
         memberRepository.save(member2)
-        val member3 = Member("member3", "member3@gmail.com", null, null)
+        val member3 = Member.fixture("member3", "member3@gmail.com")
         memberRepository.save(member3)
-        val shop = Shop(null, "shop", null)
+        val shop = Shop.fixture(null, "shop", null)
         shopRepository.save(shop)
-        val staff1 = Staff(member1, shop, "staff1")
+        val staff1 = Staff.fixture(member1, shop, "staff1")
         staffRepository.save(staff1)
-        val staff2 = Staff(member2, shop, "staff2")
+        val staff2 = Staff.fixture(member2, shop, "staff2")
         staffRepository.save(staff2)
-        val staff3 = Staff(member3, shop, "staff3")
+        val staff3 = Staff.fixture(member3, shop, "staff3")
         staffRepository.save(staff3)
         em.flush()
         em.clear()
@@ -71,9 +71,9 @@ class ShopServiceTest @Autowired constructor(
     @Test
     fun existNameTest() {
         //given
-        val member = Member("member", "member@gmail.com", null, null)
+        val member = Member.fixture("member", "member@gmail.com")
         memberRepository.save(member)
-        val shop = Shop("010-1234-1234", "shop", "information")
+        val shop = Shop.fixture("010-1234-1234", "shop", "information")
         shopRepository.save(shop)
         em.flush()
         em.clear()
@@ -86,7 +86,7 @@ class ShopServiceTest @Autowired constructor(
     @Test
     fun updateShopTest() {
         //given
-        val shop = Shop("010-1234-1234", "shop", "information")
+        val shop = Shop.fixture("010-1234-1234", "shop", "information")
         shopRepository.save(shop)
         em.flush()
         em.clear()
@@ -105,7 +105,7 @@ class ShopServiceTest @Autowired constructor(
     @Test
     fun deleteTest() {
         //given
-        val shop = Shop("010-1234-1234", "shop", "information")
+        val shop = Shop.fixture("010-1234-1234", "shop", "information")
         shopRepository.save(shop)
         em.flush()
         em.clear()

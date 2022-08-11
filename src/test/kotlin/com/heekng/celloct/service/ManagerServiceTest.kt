@@ -32,9 +32,9 @@ class ManagerServiceTest @Autowired constructor(
     @Test
     fun addManagerTest() {
         //given
-        val member = Member("member", "test@gmail.com", null, null)
+        val member = Member.fixture("member", "test@gmail.com")
         memberRepository.save(member)
-        val shop = Shop("010-1234-1234", "shop", null)
+        val shop = Shop.fixture("010-1234-1234", "shop", null)
         shopRepository.save(shop)
         em.flush()
         em.clear()
@@ -52,11 +52,11 @@ class ManagerServiceTest @Autowired constructor(
     @Test
     fun deleteManager() {
         //given
-        val member = Member("member", "test@gmail.com", null, null)
+        val member = Member.fixture("member", "test@gmail.com")
         memberRepository.save(member)
-        val shop = Shop(null, "shop", null)
+        val shop = Shop.fixture(null, "shop", null)
         shopRepository.save(shop)
-        val manager = Manager(shop, member, "manager")
+        val manager = Manager.fixture(shop, member, "manager")
         managerRepository.save(manager)
         em.flush()
         em.clear()
@@ -73,11 +73,11 @@ class ManagerServiceTest @Autowired constructor(
     @Test
     fun updateManagerTest() {
         //given
-        val member = Member("member", "test@gmail.com", null, null)
+        val member = Member.fixture("member", "test@gmail.com")
         memberRepository.save(member)
-        val shop = Shop("010-1234-1234", "shop", null)
+        val shop = Shop.fixture("010-1234-1234", "shop", null)
         shopRepository.save(shop)
-        val manager = Manager(shop, member, "manager")
+        val manager = Manager.fixture(shop, member, "manager")
         managerRepository.save(manager)
         em.flush()
         em.clear()
@@ -93,11 +93,11 @@ class ManagerServiceTest @Autowired constructor(
     @Test
     fun addByStaffTest() {
         //given
-        val member = Member("member", "test@gmail.com", null, null)
+        val member = Member.fixture("member", "test@gmail.com")
         memberRepository.save(member)
-        val shop = Shop("010-1234-1234", "shop", null)
+        val shop = Shop.fixture("010-1234-1234", "shop", null)
         shopRepository.save(shop)
-        val staff = Staff(member, shop, "staff")
+        val staff = Staff.fixture(member, shop, "staff")
         staffRepository.save(staff)
         em.flush()
         em.clear()

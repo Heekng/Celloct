@@ -35,11 +35,11 @@ class StaffServiceTest @Autowired constructor(
     @DisplayName("영속성 컨텍스트가 비워지면 연관관계의 주인이 아닌 객체의 리스트에도 비워진다.")
     fun test() {
         //given
-        val member = Member("member", "test@gmail.com", null, null)
+        val member = Member.fixture("member", "test@gmail.com")
         memberRepository.save(member)
-        val shop = Shop(null, "shop", null)
+        val shop = Shop.fixture(null, "shop", null)
         shopRepository.save(shop)
-        val staff = Staff(member, shop, "staff")
+        val staff = Staff.fixture(member, shop, "staff")
         em.flush()
         em.clear()
         //when
@@ -55,9 +55,9 @@ class StaffServiceTest @Autowired constructor(
     @DisplayName("직원 추가 테스트")
     fun addTest() {
         //given
-        val shop = Shop(null, "shop", null)
+        val shop = Shop.fixture(null, "shop", null)
         shopRepository.save(shop)
-        val member = Member("member", "test@gmail.com", null, null)
+        val member = Member.fixture("member", "test@gmail.com")
         memberRepository.save(member)
         em.flush()
         em.clear()
@@ -74,11 +74,11 @@ class StaffServiceTest @Autowired constructor(
     @DisplayName("가입날짜 변경 테스트")
     fun updateEmploymentDateTest() {
         //given
-        val shop = Shop(null, "shop", null)
+        val shop = Shop.fixture(null, "shop", null)
         shopRepository.save(shop)
-        val member = Member("member", "test@gmail.com", null, null)
+        val member = Member.fixture("member", "test@gmail.com")
         memberRepository.save(member)
-        val staff = Staff(member, shop, "staff")
+        val staff = Staff.fixture(member, shop, "staff")
         staffRepository.save(staff)
         em.flush()
         em.clear()
@@ -96,15 +96,15 @@ class StaffServiceTest @Autowired constructor(
     @DisplayName("삭제 테스트")
     fun deleteTest() {
         //given
-        val shop = Shop(null, "shop", null)
+        val shop = Shop.fixture(null, "shop", null)
         shopRepository.save(shop)
-        val managerMember = Member("managerMember", "manager1@gmail.com", null, null)
+        val managerMember = Member.fixture("managerMember", "manager1@gmail.com")
         memberRepository.save(managerMember)
-        val manager = Manager(shop, managerMember, "managerMember")
+        val manager = Manager.fixture(shop, managerMember, "managerMember")
         managerRepository.save(manager)
-        val staffMember = Member("staffMember", "staff@gmail.com", null, null)
+        val staffMember = Member.fixture("staffMember", "staff@gmail.com")
         memberRepository.save(staffMember)
-        val staff = Staff(staffMember, shop, "staff")
+        val staff = Staff.fixture(staffMember, shop, "staff")
         staffRepository.save(staff)
         em.flush()
         em.clear()
@@ -119,11 +119,11 @@ class StaffServiceTest @Autowired constructor(
     @Test
     fun updateStaffTest() {
         //given
-        val shop = Shop(null, "shop", null)
+        val shop = Shop.fixture(null, "shop", null)
         shopRepository.save(shop)
-        val member = Member("member", "member@gmail.com", null, null)
+        val member = Member.fixture("member", "member@gmail.com")
         memberRepository.save(member)
-        val staff = Staff(member, shop, "staff")
+        val staff = Staff.fixture(member, shop, "staff")
         staffRepository.save(staff)
         em.flush()
         em.clear()
