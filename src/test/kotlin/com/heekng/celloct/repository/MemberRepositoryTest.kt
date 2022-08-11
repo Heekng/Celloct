@@ -12,10 +12,8 @@ import javax.persistence.EntityManager
 
 @SpringBootTest
 @Transactional
-class MemberRepositoryTest(
-    @Autowired
+class MemberRepositoryTest @Autowired constructor(
     val memberRepository: MemberRepository,
-    @Autowired
     val em: EntityManager
 ) {
 

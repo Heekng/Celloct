@@ -20,18 +20,12 @@ import javax.persistence.EntityManager
 
 @SpringBootTest
 @Transactional
-class ManagerServiceTest(
-    @Autowired
+class ManagerServiceTest @Autowired constructor(
     private val memberRepository: MemberRepository,
-    @Autowired
     private val shopRepository: ShopRepository,
-    @Autowired
     private val managerRepository: ManagerRepository,
-    @Autowired
     private val staffRepository: StaffRepository,
-    @Autowired
     private val managerService: ManagerService,
-    @Autowired
     private val em: EntityManager,
 ) {
 

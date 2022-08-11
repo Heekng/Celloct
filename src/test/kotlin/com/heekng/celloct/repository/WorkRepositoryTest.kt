@@ -17,16 +17,11 @@ import javax.persistence.EntityManager
 
 @SpringBootTest
 @Transactional
-class WorkRepositoryTest(
-    @Autowired
+class WorkRepositoryTest @Autowired constructor(
     private val em: EntityManager,
-    @Autowired
     private val memberRepository: MemberRepository,
-    @Autowired
     private val shopRepository: ShopRepository,
-    @Autowired
     private val staffRepository: StaffRepository,
-    @Autowired
     private val workRepository: WorkRepository,
 ) {
 

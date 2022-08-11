@@ -10,8 +10,7 @@ import com.heekng.celloct.repository.MemberRepository
 import com.heekng.celloct.repository.ShopRepository
 import com.heekng.celloct.repository.StaffRepository
 import com.heekng.celloct.util.findByIdOrThrow
-import org.assertj.core.api.Assertions
-import org.assertj.core.api.Assertions.*
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,18 +22,12 @@ import javax.persistence.EntityManager
 
 @SpringBootTest
 @Transactional
-class StaffServiceTest(
-    @Autowired
+class StaffServiceTest @Autowired constructor(
     private val memberRepository: MemberRepository,
-    @Autowired
     private val shopRepository: ShopRepository,
-    @Autowired
     private val staffRepository: StaffRepository,
-    @Autowired
     private val managerRepository: ManagerRepository,
-    @Autowired
     private val staffService: StaffService,
-    @Autowired
     private val em: EntityManager,
 ) {
 

@@ -10,10 +10,8 @@ import javax.persistence.EntityManager
 
 @SpringBootTest
 @Transactional
-class ShopRepositoryTest(
-    @Autowired
+class ShopRepositoryTest @Autowired constructor(
     private val em: EntityManager,
-    @Autowired
     private val shopRepository: ShopRepository,
 ) {
 
