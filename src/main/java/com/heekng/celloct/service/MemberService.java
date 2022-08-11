@@ -30,8 +30,8 @@ public class MemberService {
     }
 
     private void validateExist(String email) {
-        Optional<Member> members = memberRepository.findByEmail(email);
-        if (members.isEmpty()) {
+        Member member = memberRepository.findByEmail(email);
+        if (member == null) {
             throw new IllegalStateException("존재하지 않는 이메일입니다.");
         }
     }
