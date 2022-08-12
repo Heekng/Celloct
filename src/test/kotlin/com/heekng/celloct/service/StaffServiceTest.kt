@@ -62,7 +62,7 @@ class StaffServiceTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val addRequest = StaffDto.AddRequest(shop.id, member.id)
+        val addRequest = StaffDto.AddRequest(shop.id!!, member.id!!)
         val savedStaffId = staffService.addStaff(addRequest)
         val findStaff = staffRepository.findByIdOrThrow(savedStaffId)
         //then
@@ -85,7 +85,7 @@ class StaffServiceTest @Autowired constructor(
         //when
         val now = LocalDate.now()
         val changeDate = now.minusDays(6)
-        val updateEmploymentDateRequest = StaffDto.UpdateEmploymentDateRequest(staff.id, changeDate)
+        val updateEmploymentDateRequest = StaffDto.UpdateEmploymentDateRequest(staff.id!!, changeDate)
         staffService.updateEmploymentDate(updateEmploymentDateRequest)
         val findStaff = staffRepository.findByIdOrThrow(staff.id)
         //then
@@ -109,7 +109,7 @@ class StaffServiceTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val deleteRequest = StaffDto.DeleteRequest(staff.id, shop.id, managerMember.id)
+        val deleteRequest = StaffDto.DeleteRequest(staff.id!!, shop.id!!, managerMember.id!!)
         staffService.deleteStaff(deleteRequest)
         val staffOrNull = staffRepository.findByIdOrNull(staff.id)
         //then
@@ -128,7 +128,7 @@ class StaffServiceTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val updateRequest = StaffDto.UpdateRequest(staff.id, "updateStaffName", shop.id, null, null)
+        val updateRequest = StaffDto.UpdateRequest(staff.id!!, "updateStaffName", shop.id!!)
         staffService.updateStaff(updateRequest)
         val findStaff = staffRepository.findByIdOrThrow(staff.id)
         //then

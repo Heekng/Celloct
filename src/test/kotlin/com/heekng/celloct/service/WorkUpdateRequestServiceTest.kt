@@ -51,7 +51,13 @@ class WorkUpdateRequestServiceTest @Autowired constructor(
         )
         workRepository.save(work)
         //when
-        val addRequest = AddRequest(work.id, staff.id, workDate, startDate.minusHours(1), endDate.plusHours(1), null)
+        val addRequest = AddRequest(
+            workId = work.id!!,
+            staffId = staff.id!!,
+            workDate = workDate,
+            startDate = startDate.minusHours(1),
+            endDate = endDate.plusHours(1),
+        )
         val workUpdateRequestId = workUpdateRequestService.addWorkUpdateRequest(addRequest)
         val findWorkUpdateRequest = workUpdateRequestRepository.findByIdOrThrow(workUpdateRequestId)
         //then
@@ -87,10 +93,10 @@ class WorkUpdateRequestServiceTest @Autowired constructor(
         //when
         val updateStartDate = workUpdateRequest.workTime.startDate.minusHours(1)
         val updateRequest = UpdateRequest(
-            workUpdateRequest.id,
-            workUpdateRequest.workTime.workDate,
-            updateStartDate,
-            workUpdateRequest.workTime.endDate
+            workUpdateRequestId = workUpdateRequest.id!!,
+            updateDate = workUpdateRequest.workTime.workDate,
+            updateStartDate = updateStartDate,
+            updateEndDate = workUpdateRequest.workTime.endDate,
         )
         workUpdateRequestService.updateWorkUpdateRequest(updateRequest)
         val findWorkUpdateRequest = workUpdateRequestRepository.findByIdOrThrow(workUpdateRequest.id)

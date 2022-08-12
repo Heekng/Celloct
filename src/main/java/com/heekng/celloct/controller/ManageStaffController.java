@@ -115,11 +115,7 @@ public class ManageStaffController {
             return false;
         }
 
-        ManagerDto.DeleteRequest deleteRequest = ManagerDto.DeleteRequest.builder()
-                .managerId(managerId)
-                .shopId(shopId)
-                .memberId(member.getId())
-                .build();
+        ManagerDto.DeleteRequest deleteRequest = new ManagerDto.DeleteRequest(managerId, shopId, member.getId());
         managerService.deleteManager(deleteRequest);
 
         return true;
@@ -151,11 +147,7 @@ public class ManageStaffController {
             return false;
         }
 
-        StaffDto.DeleteRequest deleteRequest = StaffDto.DeleteRequest.builder()
-                .staffId(staffId)
-                .shopId(shopId)
-                .memberId(member.getId())
-                .build();
+        StaffDto.DeleteRequest deleteRequest = new StaffDto.DeleteRequest(staffId, shopId, member.getId());
         staffService.deleteStaff(deleteRequest);
 
         return true;
@@ -210,10 +202,7 @@ public class ManageStaffController {
             throw new IllegalStateException("해당 매장의 직원이 아닙니다.");
         }
 
-        ManagerDto.AddByStaffRequest addByStaffRequest = ManagerDto.AddByStaffRequest.builder()
-                .staffId(staffId)
-                .shopId(shopId)
-                .build();
+        ManagerDto.AddByStaffRequest addByStaffRequest = new ManagerDto.AddByStaffRequest(shopId, staffId);
         Manager savedManager = managerService.addByStaff(addByStaffRequest);
         return new ManagerDto.AddByStaffResponse(savedManager);
     }

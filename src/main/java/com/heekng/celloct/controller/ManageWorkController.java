@@ -68,12 +68,7 @@ public class ManageWorkController {
         if (manager == null) {
             throw new IllegalStateException("해당 매장의 매니저가 아닙니다.");
         }
-        WorkDto.FindWorkRequest findWorkRequest = WorkDto.FindWorkRequest.builder()
-                .staffId(staffId)
-                .shopId(shopId)
-                .year(year)
-                .month(month)
-                .build();
+        WorkDto.FindWorkRequest findWorkRequest = new WorkDto.FindWorkRequest(staffId, shopId, year, month);
         return workService.findWorkByFindWorkRequest(findWorkRequest).stream()
                 .map(WorkDto.WorkResponse::new)
                 .collect(Collectors.toList());

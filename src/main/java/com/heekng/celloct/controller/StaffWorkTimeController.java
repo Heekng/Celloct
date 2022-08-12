@@ -106,12 +106,7 @@ public class StaffWorkTimeController {
             throw new IllegalStateException("존재하지 않는 직원입니다.");
         }
 
-        WorkDto.FindWorkRequest findWorkRequest = WorkDto.FindWorkRequest.builder()
-                .staffId(staff.getId())
-                .shopId(shopId)
-                .year(year)
-                .month(month)
-                .build();
+        WorkDto.FindWorkRequest findWorkRequest = new WorkDto.FindWorkRequest(staff.getId(), shopId, year, month);
         return workService.findWorkByFindWorkRequest(findWorkRequest).stream()
                 .map(WorkDto.WorkResponse::new)
                 .collect(Collectors.toList());

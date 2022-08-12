@@ -38,7 +38,7 @@ class JoinRequestServiceTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val joinRequest = JoinRequest(member.id, shop.id)
+        val joinRequest = JoinRequest(member.id!!, shop.id!!)
         val joinRequestId = joinRequestService.joinRequest(joinRequest)
         val findJoinRequest = joinRequestRepository.findByIdOrThrow(joinRequestId)
         //then
@@ -76,7 +76,7 @@ class JoinRequestServiceTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val approvalRefusalRequest = ApprovalRefusalRequest(joinRequest.id)
+        val approvalRefusalRequest = ApprovalRefusalRequest(joinRequest.id!!)
         val staffId = joinRequestService.approval(approvalRefusalRequest)
 
         val findJoinRequestOrNull = joinRequestRepository.findByIdOrNull(joinRequest.id)
@@ -98,7 +98,7 @@ class JoinRequestServiceTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val approvalDto = ApprovalRefusalRequest(joinRequest.id)
+        val approvalDto = ApprovalRefusalRequest(joinRequest.id!!)
         joinRequestService.refusal(approvalDto)
         val findJoinRequestOrNull = joinRequestRepository.findByIdOrNull(joinRequest.id)
         //then

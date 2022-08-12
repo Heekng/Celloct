@@ -46,7 +46,13 @@ class WorkServiceTest @Autowired constructor(
         val workDate = LocalDate.of(2020, 5, 5)
         val startDate = LocalDateTime.of(workDate, LocalTime.of(10, 50))
         val endDate = LocalDateTime.of(workDate, LocalTime.of(15, 50))
-        val addRequest = AddRequest(workDate, startDate, endDate, null, member.id, shop.id)
+        val addRequest = AddRequest(
+            workDate = workDate,
+            startDate = startDate,
+            endDate = endDate,
+            memberId = member.id!!,
+            shopId = shop.id!!,
+        )
         val workId = workService.addWork(addRequest)
         val findWork = workRepository.findByIdOrNull(workId)
         //then
@@ -80,7 +86,11 @@ class WorkServiceTest @Autowired constructor(
         //when
         val changeStartDate = startDate.minusHours(1)
         val changeEndDate = endDate.plusHours(1)
-        val changeWorkTimeRequest = ChangeWorkTimeRequest(work.id, changeStartDate, changeEndDate)
+        val changeWorkTimeRequest = ChangeWorkTimeRequest(
+            workId = work.id!!,
+            changeStartDate = changeStartDate,
+            changeEndDate = changeEndDate,
+        )
         workService.changeWorkTime(changeWorkTimeRequest)
         val findWork = workRepository.findByIdOrThrow(work.id)
         //then
@@ -113,7 +123,7 @@ class WorkServiceTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val deleteRequest = DeleteRequest(staff.id, work.id)
+        val deleteRequest = DeleteRequest(staff.id!!, work.id!!)
         workService.deleteWork(deleteRequest)
         val findWorkOrNull = workRepository.findByIdOrNull(work.id)
         //then

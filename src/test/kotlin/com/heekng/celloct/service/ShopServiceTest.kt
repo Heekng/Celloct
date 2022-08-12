@@ -91,7 +91,7 @@ class ShopServiceTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val updateRequest = ShopDto.UpdateRequest(shop.id, "010-4321-4312", "updateInfo")
+        val updateRequest = ShopDto.UpdateRequest(shop.id!!, "010-4321-4312", "updateInfo")
         shopService.updateShop(updateRequest)
         em.flush()
         em.clear()

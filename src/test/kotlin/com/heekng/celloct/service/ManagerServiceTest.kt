@@ -15,6 +15,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.transaction.annotation.Transactional
 import javax.persistence.EntityManager
 
@@ -39,8 +40,10 @@ class ManagerServiceTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val addRequest = ManagerDto.AddRequest(shop.id, member.id)
+        val addRequest = ManagerDto.AddRequest(shop.id!!, member.id!!)
         val savedManager = managerService.addManager(addRequest)
+        em.flush()
+        em.clear()
         val findMember = memberRepository.findByIdOrThrow(member.id)
         val findShop = shopRepository.findByIdOrThrow(shop.id)
         //then
@@ -61,7 +64,7 @@ class ManagerServiceTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val deleteRequest = ManagerDto.DeleteRequest(manager.id, shop.id, null)
+        val deleteRequest = ManagerDto.DeleteRequest(manager.id!!, shop.id!!)
         managerService.deleteManager(deleteRequest)
         em.flush()
         em.clear()
@@ -82,7 +85,7 @@ class ManagerServiceTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val updateRequest = ManagerDto.UpdateRequest(manager.id, "changeManagerName")
+        val updateRequest = ManagerDto.UpdateRequest(manager.id!!, "changeManagerName")
         managerService.updateManager(updateRequest)
         val findManager = managerRepository.findByIdOrThrow(manager.id)
         //then
@@ -102,7 +105,7 @@ class ManagerServiceTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val addByStaffRequest = AddByStaffRequest(shop.id, staff.id)
+        val addByStaffRequest = AddByStaffRequest(shop.id!!, staff.id!!)
         val savedManager = managerService.addByStaff(addByStaffRequest)
         //then
         assertThat(savedManager.name).isEqualTo(staff.name)
