@@ -33,9 +33,9 @@ class WorkDto {
 
     data class CheckExistRequest(
         @DateTimeFormat(pattern = "yyyy-MM-dd")
-        val workDate: LocalDate? = null,
-        var memberId: Long? = null,
-        var shopId: Long? = null,
+        val workDate: LocalDate,
+        var memberId: Long,
+        var shopId: Long,
     )
 
     data class FindWorkRequest (
@@ -84,14 +84,14 @@ class WorkDto {
     }
 
     data class UpdateRequest(
-        var staffId: Long? = null,
-        val workId: Long? = null,
+        var staffId: Long,
+        val workId: Long,
 
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-        val startDate: LocalDateTime? = null,
+        val startDate: LocalDateTime,
 
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-        val endDate: LocalDateTime? = null,
+        val endDate: LocalDateTime,
         val note: String? = null,
     )
 
