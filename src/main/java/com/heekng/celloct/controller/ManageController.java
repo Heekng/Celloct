@@ -1,9 +1,7 @@
 package com.heekng.celloct.controller;
 
 import com.heekng.celloct.config.oauth.dto.SessionMember;
-import com.heekng.celloct.dto.JoinRequestDto;
 import com.heekng.celloct.dto.ShopDto;
-import com.heekng.celloct.entity.JoinRequest;
 import com.heekng.celloct.entity.Manager;
 import com.heekng.celloct.entity.Shop;
 import com.heekng.celloct.repository.JoinRequestRepository;
@@ -19,9 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
@@ -38,8 +33,8 @@ public class ManageController {
     @GetMapping("/{shopId}")
     public String shopHome(@PathVariable("shopId") Long shopId, Model model) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (managerOptional.isEmpty()) {
+        Manager manager = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (manager == null) {
             return "redirect:/";
         }
         Shop shop = shopService.findShop(shopId);
@@ -50,8 +45,8 @@ public class ManageController {
     @GetMapping("/{shopId}/update")
     public String updateShop(@PathVariable("shopId") Long shopId, Model model) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (managerOptional.isEmpty()) {
+        Manager manager = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (manager == null) {
             return "redirect:/";
         }
         Shop shop = shopService.findShop(shopId);
@@ -63,8 +58,8 @@ public class ManageController {
     public String updateShopRequest(@PathVariable("shopId") Long shopId, ShopDto.UpdateRequest updateRequest, Model model) {
         log.info("updateShopRequest");
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (managerOptional.isEmpty()) {
+        Manager manager = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (manager == null) {
             return "redirect:/";
         }
         updateRequest.setId(shopId);

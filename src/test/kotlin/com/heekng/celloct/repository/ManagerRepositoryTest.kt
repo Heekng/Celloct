@@ -73,9 +73,9 @@ class ManagerRepositoryTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val findManager = managerRepository.findByMemberIdAndShopId(member.id, shop.id).get()
+        val findManager = managerRepository.findByMemberIdAndShopId(member.id!!, shop.id!!)
         //then
-        assertThat(findManager.id).isEqualTo(manager.id)
+        assertThat(findManager!!.id).isEqualTo(manager.id)
     }
 
     @Test
@@ -90,7 +90,7 @@ class ManagerRepositoryTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val findManagers = managerRepository.findByMemberId(member.id)
+        val findManagers = managerRepository.findByMemberId(member.id!!)
         //then
         assertThat(findManagers).hasSize(1)
         assertThat(findManagers[0].id).isEqualTo(manager.id)
@@ -108,7 +108,7 @@ class ManagerRepositoryTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val managers = managerRepository.findWithShopByMemberId(member.id)
+        val managers = managerRepository.findWithShopByMemberId(member.id!!)
         em.flush()
         em.clear()
         //then
@@ -128,7 +128,7 @@ class ManagerRepositoryTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val managers = managerRepository.findListByShopId(shop.id)
+        val managers = managerRepository.findListByShopId(shop.id!!)
         //then
         assertThat(managers).hasSize(1)
         assertThat(managers[0].id).isEqualTo(manager.id)
@@ -146,7 +146,7 @@ class ManagerRepositoryTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val findManager = managerRepository.findWithMemberById(manager.id)
+        val findManager = managerRepository.findWithMemberById(manager.id!!)
         em.flush()
         em.clear()
         //then
@@ -165,8 +165,8 @@ class ManagerRepositoryTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val findManager = managerRepository.findByShopIdAndId(shop.id, manager.id).get()
+        val findManager = managerRepository.findByShopIdAndId(shop.id!!, manager.id!!)
         //then
-        assertThat(findManager.id).isEqualTo(manager.id)
+        assertThat(findManager!!.id).isEqualTo(manager.id)
     }
 }

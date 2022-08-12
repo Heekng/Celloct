@@ -36,8 +36,8 @@ public class ManageJoinRequestController {
     @GetMapping("/{shopId}/joinRequest")
     public String joinRequest(@PathVariable("shopId") Long shopId, Model model) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (managerOptional.isEmpty()) {
+        Manager manager = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (manager == null) {
             return "redirect:/";
         }
 
@@ -55,8 +55,8 @@ public class ManageJoinRequestController {
     @ResponseBody
     public Boolean approval(@RequestBody JoinRequestDto.ApprovalRefusalRequest approvalRequest, @PathVariable("shopId") Long shopId) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (managerOptional.isEmpty()) {
+        Manager manager = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (manager == null) {
             return false;
         }
 
@@ -69,8 +69,8 @@ public class ManageJoinRequestController {
     @ResponseBody
     public Boolean refusal(@RequestBody JoinRequestDto.ApprovalRefusalRequest approvalRequest, @PathVariable("shopId") Long shopId) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (managerOptional.isEmpty()) {
+        Manager manager = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (manager == null) {
             return false;
         }
 

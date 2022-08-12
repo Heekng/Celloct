@@ -40,8 +40,8 @@ public class ManageStaffController {
     @GetMapping("/{shopId}/staff")
     public String staffList(@PathVariable("shopId") Long shopId, Model model) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (managerOptional.isEmpty()) {
+        Manager manager = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (manager == null) {
             return "redirect:/";
         }
         List<Manager> managers = managerRepository.findListByShopId(shopId);
@@ -59,8 +59,8 @@ public class ManageStaffController {
     @GetMapping("/{shopId}/manager/{managerId}")
     public String managerDetail(@PathVariable("shopId") Long shopId, @PathVariable("managerId") Long managerId, Model model) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (managerOptional.isEmpty()) {
+        Manager manager = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (manager == null) {
             return "redirect:/";
         }
 
@@ -76,8 +76,8 @@ public class ManageStaffController {
     @GetMapping("/{shopId}/manager/{managerId}/update")
     public String managerDetailUpdate(@PathVariable("shopId") Long shopId, @PathVariable("managerId") Long managerId, Model model) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (managerOptional.isEmpty()) {
+        Manager manager = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (manager == null) {
             return "redirect:/";
         }
 
@@ -93,8 +93,8 @@ public class ManageStaffController {
     @PostMapping("/{shopId}/manager/{managerId}/update")
     public String doManagerDetailUpdate(ManagerDto.UpdateRequest updateRequest, @PathVariable("shopId") Long shopId, @PathVariable("managerId") Long managerId, Model model, RedirectAttributes redirectAttributes) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (managerOptional.isEmpty()) {
+        Manager manager = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (manager == null) {
             return "redirect:/";
         }
 
@@ -111,8 +111,8 @@ public class ManageStaffController {
     @ResponseBody
     public Boolean managerDelete(@PathVariable("shopId") Long shopId, @PathVariable("managerId") Long managerId, Model model) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (managerOptional.isEmpty()) {
+        Manager manager = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (manager == null) {
             return false;
         }
 
@@ -129,8 +129,8 @@ public class ManageStaffController {
     @GetMapping("/{shopId}/staff/{staffId}")
     public String staffDetail(@PathVariable("shopId") Long shopId, @PathVariable("staffId") Long staffId, Model model) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (managerOptional.isEmpty()) {
+        Manager manager = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (manager == null) {
             return "redirect:/";
         }
 
@@ -147,8 +147,8 @@ public class ManageStaffController {
     @ResponseBody
     public Boolean staffDelete(@PathVariable("shopId") Long shopId, @PathVariable("staffId") Long staffId, Model model) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (managerOptional.isEmpty()) {
+        Manager manager = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (manager == null) {
             return false;
         }
 
@@ -165,8 +165,8 @@ public class ManageStaffController {
     @GetMapping("/{shopId}/staff/{staffId}/update")
     public String staffDetailUpdate(@PathVariable("shopId") Long shopId, @PathVariable("staffId") Long staffId, Model model) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (managerOptional.isEmpty()) {
+        Manager manager = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (manager == null) {
             return "redirect:/";
         }
 
@@ -182,8 +182,8 @@ public class ManageStaffController {
     @PostMapping("/{shopId}/staff/{staffId}/update")
     public String doStaffDetailUpdate(StaffDto.UpdateRequest updateRequest, @PathVariable("shopId") Long shopId, @PathVariable("staffId") Long staffId, Model model, RedirectAttributes redirectAttributes) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (managerOptional.isEmpty()) {
+        Manager manager = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (manager == null) {
             return "redirect:/";
         }
 
@@ -201,8 +201,8 @@ public class ManageStaffController {
     @ResponseBody
     public ManagerDto.AddByStaffResponse addManager(StaffDto.UpdateRequest updateRequest, @PathVariable("shopId") Long shopId, @PathVariable("staffId") Long staffId, Model model) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (managerOptional.isEmpty()) {
+        Manager manager = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (manager == null) {
             throw new IllegalStateException("해당 매장의 매니저가 아닙니다.");
         }
 

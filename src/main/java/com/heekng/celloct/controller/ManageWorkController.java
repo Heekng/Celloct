@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -40,8 +39,8 @@ public class ManageWorkController {
     @GetMapping("/workTimes")
     public String workTimes(@PathVariable("shopId") Long shopId, Model model) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (managerOptional.isEmpty()) {
+        Manager manager = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (manager == null) {
             return "redirect:/";
         }
 
@@ -65,8 +64,8 @@ public class ManageWorkController {
     ) {
         log.info("in findWork");
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (managerOptional.isEmpty()) {
+        Manager manager = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (manager == null) {
             throw new IllegalStateException("해당 매장의 매니저가 아닙니다.");
         }
         WorkDto.FindWorkRequest findWorkRequest = WorkDto.FindWorkRequest.builder()
@@ -88,8 +87,8 @@ public class ManageWorkController {
             @RequestParam("workId") Long workId
     ) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (managerOptional.isEmpty()) {
+        Manager manager = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (manager == null) {
             throw new IllegalStateException("해당 매장의 매니저가 아닙니다.");
         }
         Staff staff = staffRepository.findByShopIdAndId(shopId, staffId)
@@ -107,8 +106,8 @@ public class ManageWorkController {
             @RequestBody WorkDto.UpdateRequest updateRequest
     ) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (managerOptional.isEmpty()) {
+        Manager manager = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (manager == null) {
             throw new IllegalStateException("해당 매장의 매니저가 아닙니다.");
         }
         staffRepository.findByShopIdAndId(shopId, staffId).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
@@ -126,8 +125,8 @@ public class ManageWorkController {
             @RequestBody WorkDto.DeleteRequest deleteRequest
     ) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Manager> managerOptional = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (managerOptional.isEmpty()) {
+        Manager manager = managerRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (manager == null) {
             throw new IllegalStateException("해당 매장의 매니저가 아닙니다.");
         }
         staffRepository.findByShopIdAndId(shopId, staffId).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));

@@ -48,7 +48,10 @@ public class StaffService {
 
     @Transactional
     public void deleteStaff(StaffDto.DeleteRequest deleteRequest) {
-        Manager manager = managerRepository.findByMemberIdAndShopId(deleteRequest.getMemberId(), deleteRequest.getShopId()).orElseThrow(() -> new IllegalStateException("해당 매장의 관리자가 아닙니다."));
+        Manager manager = managerRepository.findByMemberIdAndShopId(deleteRequest.getMemberId(), deleteRequest.getShopId());
+        if (manager == null) {
+            throw new IllegalStateException("해당 매장의 관리자가 아닙니다.");
+        }
         Staff staff = staffRepository.findById(deleteRequest.getStaffId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
         staffRepository.delete(staff);
     }

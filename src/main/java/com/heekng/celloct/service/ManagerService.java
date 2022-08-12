@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -38,8 +37,10 @@ public class ManagerService {
 
     @Transactional
     public void deleteManager(ManagerDto.DeleteRequest deleteRequest) {
-        Manager manager = managerRepository.findByShopIdAndId(deleteRequest.getShopId(), deleteRequest.getManagerId())
-                .orElseThrow(() -> new IllegalStateException("존재하지 않는 관리자입니다."));
+        Manager manager = managerRepository.findByShopIdAndId(deleteRequest.getShopId(), deleteRequest.getManagerId());
+        if (manager == null) {
+            throw new IllegalStateException("존재하지 않는 관리자입니다.");
+        }
         if (Objects.equals(manager.getMember().getId(), deleteRequest.getMemberId())) {
             throw new IllegalStateException("본인을 삭제할 수 없습니다.");
         }
@@ -57,8 +58,8 @@ public class ManagerService {
     }
 
     private void validateExistManager(Long shopId, Long memberId) {
-        Optional<Manager> managers = managerRepository.findByMemberIdAndShopId(memberId, shopId);
-        if (managers.isPresent()) {
+        Manager manager = managerRepository.findByMemberIdAndShopId(memberId, shopId);
+        if (manager != null) {
             throw new IllegalStateException("이미 존재하는 관리자입니다.");
         }
     }
