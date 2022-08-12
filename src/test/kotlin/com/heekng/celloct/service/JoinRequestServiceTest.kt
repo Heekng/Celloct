@@ -58,7 +58,7 @@ class JoinRequestServiceTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        joinRequestService.cancel(joinRequest.id)
+        joinRequestService.cancel(joinRequest.id!!)
         val findJoinRequestOrNull = joinRequestRepository.findByIdOrNull(joinRequest.id)
         //then
         assertThat(findJoinRequestOrNull).isNull()
