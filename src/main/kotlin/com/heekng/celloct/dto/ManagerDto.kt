@@ -35,7 +35,7 @@ class ManagerDto {
         }
     }
 
-    data class UpdateRequest (var id: Long, val name: String)
+    data class UpdateRequest (var id: Long?, val name: String)
 
     class DeleteRequest (
         val managerId: Long,
