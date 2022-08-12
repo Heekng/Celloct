@@ -131,7 +131,7 @@ class WorkUpdateRequestServiceTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        workUpdateRequestService.deleteWorkUpdateRequest(workUpdateRequest.id)
+        workUpdateRequestService.deleteWorkUpdateRequest(workUpdateRequest.id!!)
         val findWorkUpdateRequestOrNull = workUpdateRequestRepository.findByIdOrNull(workUpdateRequest.id)
         //then
         assertThat(findWorkUpdateRequestOrNull).isNull()
