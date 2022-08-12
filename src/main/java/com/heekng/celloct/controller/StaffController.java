@@ -33,15 +33,18 @@ public class StaffController {
     @GetMapping("/{shopId}")
     public String shopHome(@PathVariable("shopId") Long shopId, Model model) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Staff> staffOptional = staffRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (staffOptional.isEmpty()) {
+        Staff staff = staffRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (staff == null) {
             return "redirect:/";
         }
 
         Shop shop = shopService.findShop(shopId);
         model.addAttribute("shop", new ShopDto.ShopDetailResponse(shop));
 
-        Staff findStaff = staffRepository.findByMemberIdAndShopId(member.getId(), shopId).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
+        Staff findStaff = staffRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (findStaff == null) {
+            throw new IllegalStateException("존재하지 않는 직원입니다.");
+        }
         model.addAttribute("staff", new StaffDto.StaffDetailResponse(findStaff));
         return "staff/shopHome";
     }
@@ -49,15 +52,18 @@ public class StaffController {
     @GetMapping("/{shopId}/update")
     public String updateStaff(@PathVariable("shopId") Long shopId, Model model) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Staff> staffOptional = staffRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (staffOptional.isEmpty()) {
+        Staff staff = staffRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (staff == null) {
             return "redirect:/";
         }
 
         Shop shop = shopService.findShop(shopId);
         model.addAttribute("shop", new ShopDto.ShopDetailResponse(shop));
 
-        Staff findStaff = staffRepository.findByMemberIdAndShopId(member.getId(), shopId).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
+        Staff findStaff = staffRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (findStaff == null) {
+            throw new IllegalStateException("존재하지 않는 직원입니다.");
+        }
         model.addAttribute("staff", new StaffDto.StaffDetailResponse(findStaff));
         return "staff/shopHomeUpdate";
     }
@@ -65,8 +71,8 @@ public class StaffController {
     @PostMapping("/{shopId}/update")
     public String doUpdateStaff(@PathVariable("shopId") Long shopId, StaffDto.UpdateRequest updateRequest, Model model, RedirectAttributes redirectAttributes) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Staff> staffOptional = staffRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (staffOptional.isEmpty()) {
+        Staff staff = staffRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (staff == null) {
             return "redirect:/";
         }
 

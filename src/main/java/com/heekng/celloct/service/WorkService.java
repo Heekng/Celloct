@@ -24,7 +24,10 @@ public class WorkService {
 
     @Transactional
     public Long addWork(WorkDto.AddRequest addRequest) {
-        Staff staff = staffRepository.findByMemberIdAndShopId(addRequest.getMemberId(), addRequest.getShopId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
+        Staff staff = staffRepository.findByMemberIdAndShopId(addRequest.getMemberId(), addRequest.getShopId());
+        if (staff == null) {
+            throw new IllegalStateException("존재하지 않는 직원입니다.");
+        }
         validateDuplicateWork(addRequest.getWorkDate(), staff.getId());
         Work work = new Work(null, new WorkTime(addRequest.getWorkDate(), addRequest.getStartDate(), addRequest.getEndDate()), addRequest.getNote(), staff, null);
         workRepository.save(work);
@@ -39,14 +42,20 @@ public class WorkService {
     }
 
     public List<Work> findWorkByFindWorkRequest(WorkDto.FindWorkRequest findWorkRequest) {
-        Staff staff = staffRepository.findByShopIdAndId(findWorkRequest.getShopId(), findWorkRequest.getStaffId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
+        Staff staff = staffRepository.findByShopIdAndId(findWorkRequest.getShopId(), findWorkRequest.getStaffId());
+        if (staff == null) {
+            throw new IllegalStateException("존재하지 않는 직원입니다.");
+        }
         LocalDate startDate = LocalDate.of(findWorkRequest.getYear(), findWorkRequest.getMonth(), 1);
         LocalDate endDate = startDate.plusMonths(1).minusDays(1);
         return workRepository.findByWorkTimeWorkDateBetweenAndStaffId(startDate, endDate, staff.getId());
     }
 
     public Boolean validateExist(WorkDto.CheckExistRequest checkExistRequest) {
-        Staff staff = staffRepository.findByMemberIdAndShopId(checkExistRequest.getMemberId(), checkExistRequest.getShopId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
+        Staff staff = staffRepository.findByMemberIdAndShopId(checkExistRequest.getMemberId(), checkExistRequest.getShopId());
+        if (staff == null) {
+            throw new IllegalStateException("존재하지 않는 직원입니다.");
+        }
         try {
             validateDuplicateWork(checkExistRequest.getWorkDate(), staff.getId());
         } catch (Exception e) {

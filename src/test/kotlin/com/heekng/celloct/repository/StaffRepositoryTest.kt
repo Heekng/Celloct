@@ -76,9 +76,9 @@ class StaffRepositoryTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val findStaff = staffRepository.findByMemberIdAndShopId(staffMember.id, shop.id).get()
+        val findStaff = staffRepository.findByMemberIdAndShopId(staffMember.id!!, shop.id!!)
         //then
-        assertThat(findStaff.id).isEqualTo(staff.id)
+        assertThat(findStaff!!.id).isEqualTo(staff.id)
     }
 
     @Test
@@ -95,7 +95,7 @@ class StaffRepositoryTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val staffs = staffRepository.findByShopId(shop.id)
+        val staffs = staffRepository.findByShopId(shop.id!!)
         //then
         assertThat(staffs).hasSize(1)
         assertThat(staffs[0].id).isEqualTo(staff.id)
@@ -115,7 +115,7 @@ class StaffRepositoryTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val staffs = staffRepository.findByMemberId(staffMember.id)
+        val staffs = staffRepository.findByMemberId(staffMember.id!!)
         //then
         assertThat(staffs).hasSize(1)
         assertThat(staffs[0].id).isEqualTo(staff.id)
@@ -135,7 +135,7 @@ class StaffRepositoryTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val findStaff = staffRepository.findWithMemberById(staff.id)
+        val findStaff = staffRepository.findWithMemberById(staff.id!!)
         em.flush()
         em.clear()
         //then
@@ -156,9 +156,9 @@ class StaffRepositoryTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val findStaff = staffRepository.findByShopIdAndId(shop.id, staff.id).get()
+        val findStaff = staffRepository.findByShopIdAndId(shop.id!!, staff.id!!)
         //then
-        assertThat(findStaff.id).isEqualTo(staff.id)
+        assertThat(findStaff!!.id).isEqualTo(staff.id)
     }
 
     @Test
@@ -175,7 +175,7 @@ class StaffRepositoryTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val staffs = staffRepository.findWithShopByMemberId(staffMember.id)
+        val staffs = staffRepository.findWithShopByMemberId(staffMember.id!!)
         em.flush()
         em.clear()
         //then

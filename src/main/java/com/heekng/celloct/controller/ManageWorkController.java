@@ -91,8 +91,10 @@ public class ManageWorkController {
         if (manager == null) {
             throw new IllegalStateException("해당 매장의 매니저가 아닙니다.");
         }
-        Staff staff = staffRepository.findByShopIdAndId(shopId, staffId)
-                .orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
+        Staff staff = staffRepository.findByShopIdAndId(shopId, staffId);
+        if (staff == null) {
+            throw new IllegalStateException("존재하지 않는 직원입니다.");
+        }
 
         Work work = workRepository.findById(workId).orElseThrow(() -> new IllegalStateException("존재하지 않는 근무입니다"));
         return new WorkDto.WorkDetailResponse(work);
@@ -110,7 +112,10 @@ public class ManageWorkController {
         if (manager == null) {
             throw new IllegalStateException("해당 매장의 매니저가 아닙니다.");
         }
-        staffRepository.findByShopIdAndId(shopId, staffId).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
+        Staff staff = staffRepository.findByShopIdAndId(shopId, staffId);
+        if (staff == null) {
+            throw new IllegalStateException("존재하지 않는 직원입니다.");
+        }
         updateRequest.setStaffId(staffId);
 
         workService.updateWork(updateRequest);
@@ -129,7 +134,10 @@ public class ManageWorkController {
         if (manager == null) {
             throw new IllegalStateException("해당 매장의 매니저가 아닙니다.");
         }
-        staffRepository.findByShopIdAndId(shopId, staffId).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
+        Staff staff = staffRepository.findByShopIdAndId(shopId, staffId);
+        if (staff == null) {
+            throw new IllegalStateException("존재하지 않는 직원입니다.");
+        }
         deleteRequest.setStaffId(staffId);
         workService.deleteWork(deleteRequest);
         return true;

@@ -46,8 +46,8 @@ public class JoinRequestService {
     }
 
     private void validateDuplicateStaff(Long memberId, Long shopId) {
-        Optional<Staff> byMemberIdAndShopId = staffRepository.findByMemberIdAndShopId(memberId, shopId);
-        if(byMemberIdAndShopId.isPresent()) {
+        Staff byMemberIdAndShopId = staffRepository.findByMemberIdAndShopId(memberId, shopId);
+        if(byMemberIdAndShopId != null) {
             throw new IllegalStateException("이미 가입된 회원입니다.");
         }
     }

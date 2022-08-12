@@ -57,15 +57,18 @@ public class StaffService {
     }
 
     private void validateExistStaff(Long shopId, Long staffMemberId) {
-        Optional<Staff> staffList = staffRepository.findByMemberIdAndShopId(staffMemberId, shopId);
-        if (staffList.isPresent()) {
+        Staff staff = staffRepository.findByMemberIdAndShopId(staffMemberId, shopId);
+        if (staff != null) {
             throw new IllegalStateException("이미 존재하는 직원입니다.");
         }
     }
 
     @Transactional
     public void updateStaff(StaffDto.UpdateRequest updateRequest) {
-        Staff findStaff = staffRepository.findByShopIdAndId(updateRequest.getShopId(), updateRequest.getStaffId()).orElseThrow(() -> new IllegalStateException("해당 매장에 등록된 직원이 아닙니다."));
+        Staff findStaff = staffRepository.findByShopIdAndId(updateRequest.getShopId(), updateRequest.getStaffId());
+        if (findStaff == null) {
+            throw new IllegalStateException("해당 매장에 등록된 직원이 아닙니다.");
+        }
         findStaff.updateInfo(updateRequest.getName());
     }
 }

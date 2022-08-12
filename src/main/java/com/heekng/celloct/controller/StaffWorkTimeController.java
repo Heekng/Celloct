@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -40,8 +39,8 @@ public class StaffWorkTimeController {
     @GetMapping("/workTime/insert")
     public String insertWorkTime(@PathVariable("shopId") Long shopId, Model model) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Staff> staffOptional = staffRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (staffOptional.isEmpty()) {
+        Staff staff = staffRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (staff == null) {
             return "redirect:/";
         }
 
@@ -55,8 +54,8 @@ public class StaffWorkTimeController {
     @ResponseBody
     public Boolean checkExist(@PathVariable("shopId") Long shopId, WorkDto.CheckExistRequest checkExistRequest) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Staff> staffOptional = staffRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (staffOptional.isEmpty()) {
+        Staff staff = staffRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (staff == null) {
             return false;
         }
 
@@ -68,8 +67,8 @@ public class StaffWorkTimeController {
     @PostMapping("/workTime/insert")
     public String doInsertWorkTime(@PathVariable("shopId") Long shopId, WorkDto.AddRequest addRequest, Model model) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Staff> staffOptional = staffRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (staffOptional.isEmpty()) {
+        Staff staff = staffRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (staff == null) {
             return "redirect:/";
         }
 
@@ -83,8 +82,8 @@ public class StaffWorkTimeController {
     @GetMapping("/workTimes")
     public String workTimes(@PathVariable("shopId") Long shopId, Model model) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Staff> staffOptional = staffRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (staffOptional.isEmpty()) {
+        Staff staff = staffRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (staff == null) {
             return "redirect:/";
         }
 
@@ -102,12 +101,10 @@ public class StaffWorkTimeController {
             @RequestParam("month") Integer month
     ) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Staff> staffOptional = staffRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (staffOptional.isEmpty()) {
-            throw new IllegalStateException("해당 매장의 직원이 아닙니다.");
+        Staff staff = staffRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (staff == null) {
+            throw new IllegalStateException("존재하지 않는 직원입니다.");
         }
-
-        Staff staff = staffRepository.findByMemberIdAndShopId(member.getId(), shopId).orElseThrow(() -> new IllegalStateException("존재하지 않는 직원입니다."));
 
         WorkDto.FindWorkRequest findWorkRequest = WorkDto.FindWorkRequest.builder()
                 .staffId(staff.getId())
@@ -127,12 +124,11 @@ public class StaffWorkTimeController {
             @PathVariable("workId") Long workId
     ) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Staff> staffOptional = staffRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (staffOptional.isEmpty()) {
+        Staff staff = staffRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (staff == null) {
             throw new IllegalStateException("해당 매장의 직원이 아닙니다.");
         }
 
-        Staff staff = staffRepository.findByMemberIdAndShopId(member.getId(), shopId).orElseThrow(() -> new IllegalStateException("해당 직원의 근무가 아닙니다."));
         Work work = workRepository.findByIdAndStaffId(workId, staff.getId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 근무입니다"));
         return new WorkDto.WorkDetailResponse(work);
     }
@@ -146,12 +142,10 @@ public class StaffWorkTimeController {
             @RequestBody WorkUpdateRequestDto.AddRequest addRequest
     ) {
         SessionMember member = (SessionMember) httpSession.getAttribute("member");
-        Optional<Staff> staffOptional = staffRepository.findByMemberIdAndShopId(member.getId(), shopId);
-        if (staffOptional.isEmpty()) {
+        Staff staff = staffRepository.findByMemberIdAndShopId(member.getId(), shopId);
+        if (staff == null) {
             throw new IllegalStateException("해당 매장의 직원이 아닙니다.");
         }
-
-        Staff staff = staffRepository.findByMemberIdAndShopId(member.getId(), shopId).orElseThrow(() -> new IllegalStateException("해당 매장의 직원이 아닙니다."));
 
         addRequest.setWorkId(workId);
         addRequest.setStaffId(staff.getId());

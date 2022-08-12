@@ -21,7 +21,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -206,7 +205,10 @@ public class ManageStaffController {
             throw new IllegalStateException("해당 매장의 매니저가 아닙니다.");
         }
 
-        Staff staff = staffRepository.findByShopIdAndId(shopId, staffId).orElseThrow(() -> new IllegalStateException("해당 매장의 직원이 아닙니다."));
+        Staff staff = staffRepository.findByShopIdAndId(shopId, staffId);
+        if (staff == null) {
+            throw new IllegalStateException("해당 매장의 직원이 아닙니다.");
+        }
 
         ManagerDto.AddByStaffRequest addByStaffRequest = ManagerDto.AddByStaffRequest.builder()
                 .staffId(staffId)
