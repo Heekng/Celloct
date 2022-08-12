@@ -146,7 +146,7 @@ class WorkRepositoryTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val works = workRepository.findByWorkTimeWorkDateAndStaffId(work.workTime.workDate, staff.id)
+        val works = workRepository.findByWorkTimeWorkDateAndStaffId(work.workTime.workDate, staff.id!!)
         //then
         assertThat(works).hasSize(1)
         assertThat(works[0].id).isEqualTo(work.id)
@@ -179,7 +179,7 @@ class WorkRepositoryTest @Autowired constructor(
         val works = workRepository.findByWorkTimeWorkDateBetweenAndStaffId(
             work.workTime.workDate,
             work.workTime.workDate,
-            staff.id
+            staff.id!!
         )
         //then
         assertThat(works).hasSize(1)
@@ -210,8 +210,8 @@ class WorkRepositoryTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val findWork = workRepository.findByIdAndStaffId(work.id, staff.id).get()
+        val findWork = workRepository.findByIdAndStaffId(work.id!!, staff.id!!)
         //then
-        assertThat(findWork.id).isEqualTo(work.id)
+        assertThat(findWork!!.id).isEqualTo(work.id)
     }
 }

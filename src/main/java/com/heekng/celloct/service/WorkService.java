@@ -66,13 +66,19 @@ public class WorkService {
 
     @Transactional
     public void updateWork(WorkDto.UpdateRequest updateRequest) {
-        Work work = workRepository.findByIdAndStaffId(updateRequest.getWorkId(), updateRequest.getStaffId()).orElseThrow(() -> new IllegalStateException("해당 직원의 근무가 아닙니다."));
+        Work work = workRepository.findByIdAndStaffId(updateRequest.getWorkId(), updateRequest.getStaffId());
+        if (work == null) {
+            throw new IllegalStateException("해당 직원의 근무가 아닙니다.");
+        }
         work.updateWork(updateRequest.getStartDate(), updateRequest.getEndDate(), updateRequest.getNote());
     }
 
     @Transactional
     public void deleteWork(WorkDto.DeleteRequest deleteRequest) {
-        Work work = workRepository.findByIdAndStaffId(deleteRequest.getWorkId(), deleteRequest.getStaffId()).orElseThrow(() -> new IllegalStateException("해당 직원의 근무가 아닙니다."));
+        Work work = workRepository.findByIdAndStaffId(deleteRequest.getWorkId(), deleteRequest.getStaffId());
+        if (work == null) {
+            throw new IllegalStateException("해당 직원의 근무가 아닙니다.");
+        }
         workRepository.delete(work);
     }
 

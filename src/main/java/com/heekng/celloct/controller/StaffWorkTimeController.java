@@ -129,7 +129,10 @@ public class StaffWorkTimeController {
             throw new IllegalStateException("해당 매장의 직원이 아닙니다.");
         }
 
-        Work work = workRepository.findByIdAndStaffId(workId, staff.getId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 근무입니다"));
+        Work work = workRepository.findByIdAndStaffId(workId, staff.getId());
+        if (work == null) {
+            throw new IllegalStateException("존재하지 않는 근무입니다");
+        }
         return new WorkDto.WorkDetailResponse(work);
     }
 
