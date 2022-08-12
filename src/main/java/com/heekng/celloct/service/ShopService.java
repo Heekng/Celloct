@@ -45,8 +45,8 @@ public class ShopService {
      * @return true(중복되지 않음), false(중복)
      */
     public boolean existName(String shopName) {
-        Optional<Shop> shops = shopRepository.findByName(shopName);
-        return shops.isPresent();
+        Shop shop = shopRepository.findByName(shopName);
+        return shop != null;
     }
 
     /**
@@ -84,8 +84,8 @@ public class ShopService {
     }
 
     private void validateDuplicateShop(Shop shop) {
-        Optional<Shop> shops = shopRepository.findByName(shop.getName());
-        if (shops.isPresent()) {
+        Shop findShop = shopRepository.findByName(shop.getName());
+        if (findShop != null) {
             throw new IllegalStateException("이미 존재하는 매장입니다.");
         }
     }
