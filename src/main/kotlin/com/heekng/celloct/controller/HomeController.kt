@@ -27,14 +27,14 @@ class HomeController(
             val managerShops = managerRepository.findWithShopByMemberId(sessionMember.id)
                 .map(Manager::shop)
                 .map { shop -> ShopDto.HomeShopManagerResponse(shop) }
-            model.addAttribute("managerShops", managerShops)
+            model.addAttribute("manageShops", managerShops)
 
             val staffShops = staffRepository.findWithShopByMemberId(sessionMember.id)
                 .map(Staff::shop)
                 .map { shop -> ShopDto.HomeShopStaffResponse(shop) }
             model.addAttribute("staffShops", staffShops)
         } else {
-            model.addAttribute("managerShops", null)
+            model.addAttribute("manageShops", null)
             model.addAttribute("staffShops", null)
         }
 
