@@ -23,7 +23,7 @@ class ShopDto {
         }
     }
 
-    data class UpdateRequest (var id: Long, val phone: String, val info: String)
+    data class UpdateRequest (var id: Long?, val phone: String, val info: String)
 
     data class ListResponse (val shop: Shop) {
         val id: Long?
