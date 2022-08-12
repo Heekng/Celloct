@@ -52,7 +52,7 @@ class WorkUpdateRequestRepositoryTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val workUpdateRequests = workUpdateRequestRepository.findByWorkId(work.id)
+        val workUpdateRequests = workUpdateRequestRepository.findByWorkId(work.id!!)
         //then
         assertThat(workUpdateRequests).hasSize(1)
         assertThat(workUpdateRequests[0].id).isEqualTo(workUpdateRequest.id)
