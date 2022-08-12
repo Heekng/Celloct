@@ -35,7 +35,7 @@ class ShopServiceTest @Autowired constructor(
         em.clear()
         //when
         val createRequest = ShopDto.CreateRequest("shop", "010-1234-1234", null, "manager")
-        val shopId = shopService.makeShop(createRequest, member.id)
+        val shopId = shopService.makeShop(createRequest, member.id!!)
         val shop = shopRepository.findByIdOrThrow(shopId)
         //then
         assertThat(createRequest.name).isEqualTo(shop.name)
@@ -110,7 +110,7 @@ class ShopServiceTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        shopService.delete(shop.id)
+        shopService.delete(shop.id!!)
         val shopOrNull = shopRepository.findByIdOrNull(shop.id)
         //then
         assertThat(shopOrNull).isNull()
