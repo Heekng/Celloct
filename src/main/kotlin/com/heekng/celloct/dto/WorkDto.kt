@@ -1,21 +1,17 @@
 package com.heekng.celloct.dto
 
 import com.heekng.celloct.entity.Work
-import lombok.Builder
-import lombok.Getter
-import lombok.NoArgsConstructor
-import lombok.Setter
 import org.springframework.format.annotation.DateTimeFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 
 class WorkDto {
     data class AddRequest (
-        @field:DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
         val workDate: LocalDate,
-        @field:DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
         val startDate: LocalDateTime,
-        @field:DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
         val endDate: LocalDateTime,
         val note: String? = null,
         var memberId: Long,
@@ -23,11 +19,11 @@ class WorkDto {
     )
 
     data class ChangeWorkTimeRequest (
-        @field:DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
         val workId: Long,
-        @field:DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
         val changeStartDate: LocalDateTime,
-        @field:DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
         val changeEndDate: LocalDateTime
     )
 

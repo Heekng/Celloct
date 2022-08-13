@@ -1,7 +1,6 @@
 package com.heekng.celloct.dto
 
 import com.heekng.celloct.entity.Manager
-import lombok.Builder
 
 class ManagerDto {
     data class AddRequest (

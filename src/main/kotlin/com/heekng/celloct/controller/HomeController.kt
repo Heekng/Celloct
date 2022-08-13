@@ -6,13 +6,11 @@ import com.heekng.celloct.entity.Manager
 import com.heekng.celloct.entity.Staff
 import com.heekng.celloct.repository.ManagerRepository
 import com.heekng.celloct.repository.StaffRepository
-import lombok.extern.slf4j.Slf4j
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import javax.servlet.http.HttpSession
 
-@Slf4j
 @Controller
 class HomeController(
     private val httpSession: HttpSession,

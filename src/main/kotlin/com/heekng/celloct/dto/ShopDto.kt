@@ -2,10 +2,6 @@ package com.heekng.celloct.dto
 
 import com.heekng.celloct.entity.Shop
 import com.heekng.celloct.entity.Shop.Companion.fixture
-import lombok.Builder
-import lombok.Getter
-import lombok.NoArgsConstructor
-import lombok.Setter
 
 class ShopDto {
     data class CreateRequest (

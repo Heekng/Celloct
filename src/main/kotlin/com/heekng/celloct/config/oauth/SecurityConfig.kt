@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 
 @EnableWebSecurity
-class SecurityConfig @Autowired constructor(
+class SecurityConfig (
     private val customOAuth2UserService: CustomOAuth2UserService
 ) : WebSecurityConfigurerAdapter() {
 

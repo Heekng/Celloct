@@ -2,7 +2,9 @@ package com.heekng.celloct.controller
 
 import com.heekng.celloct.config.oauth.dto.SessionMember
 import com.heekng.celloct.dto.ShopDto
+import com.heekng.celloct.repository.ShopRepository
 import com.heekng.celloct.service.ShopService
+import com.heekng.celloct.util.findByIdOrThrow
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
@@ -18,6 +20,7 @@ import javax.servlet.http.HttpSession
 @RequestMapping("/shop")
 class ShopController(
     private val shopService: ShopService,
+    private val shopRepository: ShopRepository,
     private val httpSession: HttpSession,
 ) {
 
@@ -64,7 +67,7 @@ class ShopController(
         @PathVariable shopId: Long,
         model: Model,
     ): String {
-        val shop = shopService.findShop(shopId)
+        val shop = shopRepository.findByIdOrThrow(shopId)
         model.addAttribute("shop", ShopDto.ShopDetailResponse(shop))
         return "shop/shopDtail"
     }

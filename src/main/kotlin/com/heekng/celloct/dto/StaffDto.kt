@@ -1,10 +1,6 @@
 package com.heekng.celloct.dto
 
 import com.heekng.celloct.entity.Staff
-import lombok.Builder
-import lombok.Getter
-import lombok.NoArgsConstructor
-import lombok.Setter
 import java.time.LocalDate
 
 class StaffDto {

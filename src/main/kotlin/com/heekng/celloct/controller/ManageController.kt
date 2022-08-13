@@ -4,7 +4,6 @@ import com.heekng.celloct.config.oauth.dto.SessionMember
 import com.heekng.celloct.dto.ShopDto
 import com.heekng.celloct.repository.ManagerRepository
 import com.heekng.celloct.service.ShopService
-import lombok.extern.slf4j.Slf4j
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpSession
 import kotlin.math.log
 
 @Controller
-@Slf4j
 @RequestMapping("/manage")
 class ManageController(
     private val httpSession: HttpSession,

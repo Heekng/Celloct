@@ -8,11 +8,11 @@ class WorkUpdateRequestDto {
     data class AddRequest (
         var workId: Long,
         var staffId: Long,
-        @field:DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
         val workDate: LocalDate,
-        @field:DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
         val startDate: LocalDateTime,
-        @field:DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
         val endDate: LocalDateTime,
         val note: String? = null
     )
