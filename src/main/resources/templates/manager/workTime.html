@@ -51,6 +51,20 @@
                 </thead>
                 <tbody id="tbody-work">
                 </tbody>
+                <tfoot>
+                <tr>
+                    <th>시급계산기</th>
+                    <td colspan="2">
+                        <input type="text" id="input-hourlyWage" class="form-control" onkeyup="hourlyWageKeyUp()">
+                    </td>
+                    <td colspan="2">
+                        원 X
+                        <span id="span-hour"></span>시간
+                        <span id="span-minute"></span>분 =
+                        <span id="span-sumHourlyWage"></span>
+                    </td>
+                </tr>
+                </tfoot>
             </table>
         </div>
     </div>
@@ -111,12 +125,31 @@
             keyboard: false
         }),
         lastSearchStaffId: -1,
-        lastSelectWorkId: -1
+        lastSelectWorkId: -1,
+        hourSum: 0,
+        minuteSum: 0
     }
 
     window.onload = () => {
         document.querySelector("#a-workTime").classList.add("active");
         setSelectYearMonth();
+    }
+
+    function hourlyWageKeyUp() {
+        let inputHourlyWage = document.querySelector("#input-hourlyWage");
+        let hourlyWage = inputHourlyWage.value;
+        let regex = /[^0-9]/g;
+        inputHourlyWage.value = hourlyWage.replace(regex, "")
+        calcHourlyWage()
+    }
+
+    function calcHourlyWage() {
+        let hourlyWage = document.querySelector("#input-hourlyWage").value;
+        document.querySelector("#span-hour").textContent = workTime.hourSum;
+        document.querySelector("#span-minute").textContent = workTime.minuteSum;
+        let sumValue = (hourlyWage * workTime.hourSum) + (hourlyWage * (workTime.minuteSum / 60));
+        document.querySelector("#span-sumHourlyWage").textContent = sumValue.toLocaleString() + '원';
+
     }
 
     function setSelectYearMonth() {
@@ -138,11 +171,6 @@
     async function searchWorks() {
         let shopId = [[${shop.id}]];
         let staffId = document.querySelector("#select_staff").value;
-        // let today = new Date();
-        // const year = today.getFullYear();
-        // const month = ('0' + (today.getMonth() + 1)).slice(-2);
-        // const day = ('0' + today.getDate()).slice(-2);
-        // const dateString = year + "-" + month + "-" + day;
         let yearMonth = document.querySelector("#select-yearMonth").value;
         let year = yearMonth.split("-")[0];
         let month = yearMonth.split("-")[1];
@@ -201,6 +229,9 @@
         }
         hourSum += parseInt(minuteSum / 60);
         minuteSum = minuteSum % 60;
+        workTime.hourSum = hourSum;
+        workTime.minuteSum = minuteSum;
+
         let tr = document.createElement("tr");
         let td = document.createElement("td");
         td.colSpan = 5;
@@ -212,6 +243,7 @@
         tbodyWork.innerHTML = '';
         tbodyWork.append(df);
 
+        calcHourlyWage()
     }
 
     function getDateList(year, month) {
