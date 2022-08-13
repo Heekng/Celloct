@@ -4,10 +4,7 @@
 
 - `Celloct`는 직원 근무시간 관리 및 재고관리 시스템이 없는 소상공인을 위한 프로젝트입니다.
 - 현재 [CELLOCT](https://celloct.heekng.com) 에서 서비스하고있습니다.
-- 계획
-  1. Springboot + data Jpa 를 이용한 기본 기능 설계
-  2. QueryDSL 도입과 함께 공지사항 기능 추가
-  3. API 재설계 + 앱 출시
+- 기존 Java로 만들어진 서비스를 Kotlin 으로 수정중입니다!
 
 ## 구성
 
