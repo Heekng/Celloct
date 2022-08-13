@@ -21,51 +21,51 @@ class ShopDto {
 
     data class UpdateRequest (var id: Long?, val phone: String, val info: String)
 
-    data class ListResponse (val shop: Shop) {
-        val id: Long?
-        val name: String
-        val info: String?
-        val staffCount: Int
-
-        init {
-            id = shop.id
-            name = shop.name
-            info = shop.info
-            staffCount = shop.staffList.size
-        }
+    data class ListResponse (
+        val id: Long?,
+        val name: String,
+        val info: String?,
+        val staffCount: Int,
+    ) {
+        constructor(shop: Shop): this(
+            id = shop.id,
+            name = shop.name,
+            info = shop.info,
+            staffCount = shop.staffList.size,
+        )
     }
 
-    data class ShopDetailResponse (val shop: Shop) {
-        val id: Long?
-        val phone: String?
-        val name: String
-        val info: String?
-
-        init {
-            id = shop.id
-            phone = shop.phone
-            name = shop.name
-            info = shop.info
-        }
+    data class ShopDetailResponse (
+        val id: Long?,
+        val phone: String?,
+        val name: String,
+        val info: String?,
+    ) {
+        constructor(shop: Shop): this(
+            id = shop.id,
+            phone = shop.phone,
+            name = shop.name,
+            info = shop.info,
+        )
     }
 
-    data class HomeShopManagerResponse (val shop: Shop) {
-        val id: Long?
-        val name: String
-
-        init {
-            id = shop.id
-            name = shop.name
-        }
+    data class HomeShopManagerResponse (
+        val id: Long?,
+        val name: String,
+    ) {
+        constructor(shop: Shop): this(
+            id = shop.id,
+            name = shop.name,
+        )
     }
 
-    data class HomeShopStaffResponse (val shop: Shop) {
-        val id: Long?
-        val name: String
-
-        init {
-            id = shop.id
-            name = shop.name
-        }
+    data class HomeShopStaffResponse (
+        val id: Long?,
+        val name: String,
+    ) {
+        constructor(shop: Shop): this(
+            id = shop.id,
+            name = shop.name,
+        )
     }
 }

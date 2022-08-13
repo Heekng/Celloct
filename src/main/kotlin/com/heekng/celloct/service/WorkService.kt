@@ -21,7 +21,7 @@ class WorkService(
 
     @Transactional
     fun addWork(addRequest: WorkDto.AddRequest): Long {
-        val staff = staffRepository.findByMemberIdAndShopId(addRequest.memberId, addRequest.shopId) ?: fail()
+        val staff = staffRepository.findByMemberIdAndShopId(addRequest.memberId!!, addRequest.shopId!!) ?: fail()
         validateDuplicateWork(addRequest.workDate, staff.id!!)
         val work = Work(
             workTime = WorkTime(

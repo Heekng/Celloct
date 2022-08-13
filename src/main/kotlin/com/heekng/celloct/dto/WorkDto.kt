@@ -14,8 +14,8 @@ class WorkDto {
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
         val endDate: LocalDateTime,
         val note: String? = null,
-        var memberId: Long,
-        var shopId: Long
+        var memberId: Long?,
+        var shopId: Long?
     )
 
     data class ChangeWorkTimeRequest (
@@ -41,42 +41,42 @@ class WorkDto {
         val month: Int
     )
 
-    data class WorkResponse (val work: Work) {
-        val workId: Long?
-        val workDate: LocalDate
-        val startDate: LocalDateTime
-        val endDate: LocalDateTime
-        val note: String?
-        val hour: Long
-        val minute: Long
-
-        init {
-            workId = work.id
-            workDate = work.workTime.workDate
-            startDate = work.workTime.startDate
-            endDate = work.workTime.endDate
-            note = work.note
-            hour = work.workTime.workTimeHour()
-            minute = work.workTime.workTimeMinute()
-        }
+    data class WorkResponse (
+        val workId: Long?,
+        val workDate: LocalDate,
+        val startDate: LocalDateTime,
+        val endDate: LocalDateTime,
+        val note: String?,
+        val hour: Long,
+        val minute: Long,
+    ) {
+        constructor(work: Work): this(
+            workId = work.id,
+            workDate = work.workTime.workDate,
+            startDate = work.workTime.startDate,
+            endDate = work.workTime.endDate,
+            note = work.note,
+            hour = work.workTime.workTimeHour(),
+            minute = work.workTime.workTimeMinute(),
+        )
     }
 
-    data class WorkDetailResponse (val work: Work) {
-        val workId: Long?
-        val workDate: LocalDate
-        val startDate: LocalDateTime
-        val endDate: LocalDateTime
-        val note: String?
-        val lastModifiedDate: LocalDateTime?
-
-        init {
-            workId = work.id
-            workDate = work.workTime.workDate
-            startDate = work.workTime.startDate
-            endDate = work.workTime.endDate
-            note = work.note
-            lastModifiedDate = work.lastModifiedDate
-        }
+    data class WorkDetailResponse (
+        val workId: Long?,
+        val workDate: LocalDate,
+        val startDate: LocalDateTime,
+        val endDate: LocalDateTime,
+        val note: String?,
+        val lastModifiedDate: LocalDateTime?,
+    ) {
+        constructor(work: Work): this(
+            workId = work.id,
+            workDate = work.workTime.workDate,
+            startDate = work.workTime.startDate,
+            endDate = work.workTime.endDate,
+            note = work.note,
+            lastModifiedDate = work.lastModifiedDate,
+        )
     }
 
     data class UpdateRequest(

@@ -11,30 +11,30 @@ class StaffDto {
         val changeEmploymentDate: LocalDate
     )
 
-    data class StaffResponse (val staff: Staff) {
-        val id: Long?
-        val name: String
-
-        init {
-            id = staff.id
-            name = staff.name
-        }
+    data class StaffResponse (
+        val id: Long?,
+        val name: String,
+    ) {
+        constructor(staff: Staff): this(
+            id = staff.id,
+            name = staff.name,
+        )
     }
 
-    data class WithMemberResponse (val staff: Staff) {
-        val staffId: Long?
-        val staffName: String
-        val memberId: Long?
-        val memberName: String
-        val email: String
-
-        init {
-            staffId = staff.id
-            staffName = staff.name
-            memberId = staff.member.id
-            memberName = staff.member.name
-            email = staff.member.email
-        }
+    data class WithMemberResponse (
+        val staffId: Long?,
+        val staffName: String,
+        val memberId: Long?,
+        val memberName: String,
+        val email: String,
+    ) {
+        constructor(staff: Staff): this(
+            staffId = staff.id,
+            staffName = staff.name,
+            memberId = staff.member.id,
+            memberName = staff.member.name,
+            email = staff.member.email,
+        )
     }
 
     data class DeleteRequest (
@@ -51,15 +51,15 @@ class StaffDto {
         val staffEmploymentDate: String? = null,
     )
 
-    data class StaffDetailResponse (val staff: Staff) {
-        val id: Long?
-        val name: String
-        val employmentDate: LocalDate
-
-        init {
-            id = staff.id
-            name = staff.name
-            employmentDate = staff.employmentDate
-        }
+    data class StaffDetailResponse (
+        val id: Long?,
+        val name: String,
+        val employmentDate: LocalDate,
+    ) {
+        constructor(staff: Staff): this(
+            id = staff.id,
+            name = staff.name,
+            employmentDate = staff.employmentDate,
+        )
     }
 }

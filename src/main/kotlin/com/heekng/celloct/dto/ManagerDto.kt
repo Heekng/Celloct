@@ -8,30 +8,30 @@ class ManagerDto {
         val memberId: Long
     )
 
-    data class ManagerResponse (val manager: Manager) {
-        val id: Long?
-        val name: String
-
-        init {
-            id = manager.id
-            name = manager.name
-        }
+    data class ManagerResponse (
+        val id: Long?,
+        val name: String,
+    ) {
+        constructor(manager: Manager): this(
+            id = manager.id,
+            name = manager.name,
+        )
     }
 
-    data class WithMemberResponse (val manager: Manager) {
-        val managerId: Long?
-        val managerName: String
-        val memberId: Long?
-        val memberName: String
-        val email: String
-
-        init {
-            managerId = manager.id
-            managerName = manager.name
-            memberId = manager.member.id
-            memberName = manager.member.name
-            email = manager.member.email
-        }
+    data class WithMemberResponse (
+        val managerId: Long?,
+        val managerName: String,
+        val memberId: Long?,
+        val memberName: String,
+        val email: String,
+    ) {
+        constructor(manager: Manager): this(
+            managerId = manager.id,
+            managerName = manager.name,
+            memberId = manager.member.id,
+            memberName = manager.member.name,
+            email = manager.member.email,
+        )
     }
 
     data class UpdateRequest (var id: Long?, val name: String)
