@@ -54,6 +54,6 @@ class CheckUserTypeAspect(
     }
 
     private fun returnTypeIsBoolean(signature: Signature): Boolean {
-        return (signature as MethodSignature).returnType.name.equals("java.lang.Boolean")
+        return (signature as MethodSignature).returnType.equals(Boolean::class)
     }
 }
