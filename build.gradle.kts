@@ -28,6 +28,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-aop")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0") //쿼리 파라미터를 더 깔끔하게 확인할 수 있게 도와주는 라이브러리
 	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity5")

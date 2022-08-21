@@ -1,5 +1,7 @@
 package com.heekng.celloct.controller
 
+import com.heekng.celloct.annotation.RoleCheck
+import com.heekng.celloct.annotation.enum.UserType
 import com.heekng.celloct.config.oauth.dto.SessionMember
 import com.heekng.celloct.dto.ManagerDto
 import com.heekng.celloct.dto.ShopDto
@@ -26,17 +28,9 @@ class ManageStaffController(
     private val managerService: ManagerService,
 ) {
 
-    @ModelAttribute
-    fun preRequest(
-        @PathVariable("shopId") shopId: Long,
-    ): String? {
-        val sessionMember = httpSession.getAttribute("member") as SessionMember?
-        managerRepository.findByMemberIdAndShopId(sessionMember!!.id, shopId)
-            ?: return "redirect:/"
-        return null
-    }
 
     @GetMapping("/{shopId}/staff")
+    @RoleCheck(UserType.MANAGER)
     fun staffList(
         @PathVariable("shopId") shopId: Long,
         model: Model,
@@ -56,6 +50,7 @@ class ManageStaffController(
     }
 
     @GetMapping("/{shopId}/manager/{managerId}")
+    @RoleCheck(UserType.MANAGER)
     fun managerDetail(
         @PathVariable("shopId") shopId: Long,
         @PathVariable("managerId") managerId: Long,
@@ -71,6 +66,7 @@ class ManageStaffController(
     }
 
     @GetMapping("/{shopId}/manager/{managerId}/update")
+    @RoleCheck(UserType.MANAGER)
     fun managerDetailUpdate(
         @PathVariable("shopId") shopId: Long,
         @PathVariable("managerId") managerId: Long,
@@ -86,10 +82,11 @@ class ManageStaffController(
     }
 
     @PostMapping("/{shopId}/manager/{managerId}/update")
-    fun doManagerDetailUdpate(
-        updateRequest: ManagerDto.UpdateRequest,
+    @RoleCheck(UserType.MANAGER)
+    fun doManagerDetailUpdate(
         @PathVariable("shopId") shopId: Long,
         @PathVariable("managerId") managerId: Long,
+        updateRequest: ManagerDto.UpdateRequest,
         model: Model,
         redirectAttributes: RedirectAttributes,
     ): String {
@@ -104,6 +101,7 @@ class ManageStaffController(
 
     @PostMapping("/{shopId}/manager/{managerId}/delete")
     @ResponseBody
+    @RoleCheck(UserType.MANAGER, true)
     fun managerDelete(
         @PathVariable("shopId") shopId: Long,
         @PathVariable("managerId") managerId: Long,
@@ -121,6 +119,7 @@ class ManageStaffController(
     }
 
     @GetMapping("/{shopId}/staff/{staffId}")
+    @RoleCheck(UserType.MANAGER)
     fun staffDetail(
         @PathVariable("shopId") shopId: Long,
         @PathVariable("staffId") staffId: Long,
@@ -137,6 +136,7 @@ class ManageStaffController(
 
     @PostMapping("/{shopId}/staff/{staffId}/delete")
     @ResponseBody
+    @RoleCheck(UserType.MANAGER, true)
     fun staffDelete(
         @PathVariable("shopId") shopId: Long,
         @PathVariable("staffId") staffId: Long,
@@ -153,7 +153,8 @@ class ManageStaffController(
     }
 
     @GetMapping("/{shopId}/staff/{staffId}/update")
-    fun staffDetailupdate(
+    @RoleCheck(UserType.MANAGER)
+    fun staffDetailUpdate(
         @PathVariable("shopId") shopId: Long,
         @PathVariable("staffId") staffId: Long,
         model: Model,
@@ -168,6 +169,7 @@ class ManageStaffController(
     }
 
     @PostMapping("/{shopId}/staff/{staffId}/update")
+    @RoleCheck(UserType.MANAGER)
     fun doStaffDetailUpdate(
         updateRequest: StaffDto.UpdateRequest,
         @PathVariable("shopId") shopId: Long,
@@ -186,6 +188,7 @@ class ManageStaffController(
 
     @PostMapping("/{shopId}/staff/{staffId}/addManager")
     @ResponseBody
+    @RoleCheck(UserType.MANAGER, true)
     fun addManager(
         @PathVariable("shopId") shopId: Long,
         @PathVariable("staffId") staffId: Long,

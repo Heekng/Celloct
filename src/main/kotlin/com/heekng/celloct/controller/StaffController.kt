@@ -1,5 +1,7 @@
 package com.heekng.celloct.controller
 
+import com.heekng.celloct.annotation.RoleCheck
+import com.heekng.celloct.annotation.enum.UserType
 import com.heekng.celloct.config.oauth.dto.SessionMember
 import com.heekng.celloct.dto.ShopDto
 import com.heekng.celloct.dto.StaffDto
@@ -9,7 +11,6 @@ import com.heekng.celloct.service.StaffService
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -25,17 +26,9 @@ class StaffController(
     private val staffService: StaffService,
 ) {
 
-    @ModelAttribute
-    fun preRequest(
-        @PathVariable("shopId") shopId: Long,
-    ): String? {
-        val sessionMember = httpSession.getAttribute("member") as SessionMember?
-        staffRepository.findByMemberIdAndShopId(sessionMember!!.id, shopId)
-            ?: return "redirect:/"
-        return null
-    }
 
     @GetMapping("/{shopId}")
+    @RoleCheck(UserType.STAFF)
     fun shopHome(
         @PathVariable("shopId") shopId: Long,
         model: Model,
@@ -52,6 +45,7 @@ class StaffController(
     }
 
     @GetMapping("/{shopId}/update")
+    @RoleCheck(UserType.STAFF)
     fun updateStaff(
         @PathVariable("shopId") shopId: Long,
         model: Model,
@@ -68,6 +62,7 @@ class StaffController(
     }
 
     @PostMapping("/{shopId}/update")
+    @RoleCheck(UserType.STAFF)
     fun doUpdateStaff(
         @PathVariable("shopId") shopId: Long,
         updateRequest: StaffDto.UpdateRequest,
