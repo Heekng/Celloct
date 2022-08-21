@@ -6,6 +6,7 @@ import com.heekng.celloct.config.oauth.dto.SessionMember
 import com.heekng.celloct.repository.ManagerRepository
 import com.heekng.celloct.repository.StaffRepository
 import org.aspectj.lang.ProceedingJoinPoint
+import org.aspectj.lang.Signature
 import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.annotation.Aspect
 import org.aspectj.lang.reflect.MethodSignature
@@ -40,15 +41,19 @@ class CheckUserTypeAspect(
             return joinPoint.proceed()
         } else {
             if (roleCheck.isRest) {
-                if ((joinPoint.signature as MethodSignature).returnType.name == "Boolean") {
+                if (returnTypeIsBoolean(joinPoint.signature)) {
                     return false
                 } else {
-                    return null
+                    throw IllegalStateException("정상적인 요청이 아닙니다.")
                 }
             } else {
                 return "redirect:/"
             }
         }
 
+    }
+
+    private fun returnTypeIsBoolean(signature: Signature): Boolean {
+        return (signature as MethodSignature).returnType.name.equals("java.lang.Boolean")
     }
 }

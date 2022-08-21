@@ -1,5 +1,7 @@
 package com.heekng.celloct.controller
 
+import com.heekng.celloct.annotation.RoleCheck
+import com.heekng.celloct.annotation.enum.UserType
 import com.heekng.celloct.config.oauth.dto.SessionMember
 import com.heekng.celloct.dto.ShopDto
 import com.heekng.celloct.dto.WorkDto
@@ -7,21 +9,13 @@ import com.heekng.celloct.dto.WorkUpdateRequestDto
 import com.heekng.celloct.repository.ShopRepository
 import com.heekng.celloct.repository.StaffRepository
 import com.heekng.celloct.repository.WorkRepository
-import com.heekng.celloct.service.ShopService
 import com.heekng.celloct.service.WorkService
 import com.heekng.celloct.service.WorkUpdateRequestService
 import com.heekng.celloct.util.findByIdOrThrow
 import org.springframework.stereotype.Controller
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpSession
 
 @Controller
@@ -35,18 +29,8 @@ class StaffWorkTimeController(
     private val workUpdateRequestService: WorkUpdateRequestService,
 ) {
 
-
-    @ModelAttribute
-    fun preRequest(
-        @PathVariable("shopId") shopId: Long,
-    ): String? {
-        val sessionMember = httpSession.getAttribute("member") as SessionMember?
-        staffRepository.findByMemberIdAndShopId(sessionMember!!.id, shopId)
-            ?: return "redirect:/"
-        return null
-    }
-
     @GetMapping("/workTime/insert")
+    @RoleCheck(UserType.STAFF)
     fun insertWorkTime(
         @PathVariable("shopId") shopId: Long,
         model: Model,
@@ -59,6 +43,7 @@ class StaffWorkTimeController(
 
     @GetMapping("/workTime/validateExist")
     @ResponseBody
+    @RoleCheck(UserType.STAFF, true)
     fun checkExist(
         @PathVariable("shopId") shopId: Long,
         checkExistRequest: WorkDto.CheckExistRequest,
@@ -72,6 +57,7 @@ class StaffWorkTimeController(
     }
 
     @PostMapping("/workTime/insert")
+    @RoleCheck(UserType.STAFF)
     fun doInsertWorkTime(
         @PathVariable("shopId") shopId: Long,
         addRequest: WorkDto.AddRequest,
@@ -85,6 +71,7 @@ class StaffWorkTimeController(
     }
 
     @GetMapping("/workTimes")
+    @RoleCheck(UserType.STAFF)
     fun workTimes(
         @PathVariable("shopId") shopId: Long,
         model: Model,
@@ -97,6 +84,7 @@ class StaffWorkTimeController(
 
     @GetMapping("/workTimes/search")
     @ResponseBody
+    @RoleCheck(UserType.STAFF, true)
     fun findWorks(
         @PathVariable("shopId") shopId: Long,
         @RequestParam("year") year: Int,
@@ -117,6 +105,7 @@ class StaffWorkTimeController(
 
     @GetMapping("/workTimes/{workId}")
     @ResponseBody
+    @RoleCheck(UserType.STAFF, true)
     fun workDetail(
         @PathVariable("shopId") shopId: Long,
         @PathVariable("workId") workId: Long,
@@ -132,6 +121,7 @@ class StaffWorkTimeController(
     @Transactional
     @PostMapping("/workTimes/{workId}/update")
     @ResponseBody
+    @RoleCheck(UserType.STAFF, true)
     fun updateRequest(
         @PathVariable("shopId") shopId: Long,
         @PathVariable("workId") workId: Long,

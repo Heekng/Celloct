@@ -1,6 +1,7 @@
 package com.heekng.celloct.controller
 
-import com.heekng.celloct.config.oauth.dto.SessionMember
+import com.heekng.celloct.annotation.RoleCheck
+import com.heekng.celloct.annotation.enum.UserType
 import com.heekng.celloct.dto.ShopDto
 import com.heekng.celloct.dto.StaffDto
 import com.heekng.celloct.dto.WorkDto
@@ -26,17 +27,9 @@ class ManageWorkController(
     private val workRepository: WorkRepository,
 ) {
 
-    @ModelAttribute
-    fun preRequest(
-        @PathVariable("shopId") shopId: Long,
-    ): String? {
-        val sessionMember = httpSession.getAttribute("member") as SessionMember?
-        managerRepository.findByMemberIdAndShopId(sessionMember!!.id, shopId)
-            ?: return "redirect:/"
-        return null
-    }
 
     @GetMapping("/workTimes")
+    @RoleCheck(UserType.MANAGER)
     fun workTimes(
         @PathVariable("shopId") shopId: Long,
         model: Model,
@@ -53,6 +46,7 @@ class ManageWorkController(
 
     @GetMapping("/workTimes/{staffId}/{year}/{month}")
     @ResponseBody
+    @RoleCheck(UserType.MANAGER, true)
     fun findWork(
         @PathVariable("shopId") shopId: Long,
         @PathVariable("staffId") staffId: Long,
@@ -71,6 +65,7 @@ class ManageWorkController(
 
     @GetMapping("/workTimes/{staffId}")
     @ResponseBody
+    @RoleCheck(UserType.MANAGER, true)
     fun workDetail(
         @PathVariable("shopId") shopId: Long,
         @PathVariable("staffId") staffId: Long,
@@ -85,6 +80,7 @@ class ManageWorkController(
 
     @PostMapping("/workTimes/{staffId}/update")
     @ResponseBody
+    @RoleCheck(UserType.MANAGER, true)
     fun workUpdate(
         @PathVariable("shopId") shopId: Long,
         @PathVariable("staffId") staffId: Long,
@@ -100,6 +96,7 @@ class ManageWorkController(
 
     @PostMapping("/workTimes/{staffId}/delete")
     @ResponseBody
+    @RoleCheck(UserType.MANAGER, true)
     fun workUpdate(
         @PathVariable("shopId") shopId: Long,
         @PathVariable("staffId") staffId: Long,

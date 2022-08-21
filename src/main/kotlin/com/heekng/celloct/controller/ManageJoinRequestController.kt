@@ -1,6 +1,7 @@
 package com.heekng.celloct.controller
 
-import com.heekng.celloct.config.oauth.dto.SessionMember
+import com.heekng.celloct.annotation.RoleCheck
+import com.heekng.celloct.annotation.enum.UserType
 import com.heekng.celloct.dto.JoinRequestDto
 import com.heekng.celloct.dto.ShopDto
 import com.heekng.celloct.repository.JoinRequestRepository
@@ -23,17 +24,9 @@ class ManageJoinRequestController(
     private val shopRepository: ShopRepository,
 ) {
 
-    @ModelAttribute
-    fun preRequest(
-        @PathVariable("shopId") shopId: Long,
-    ): String? {
-        val sessionMember = httpSession.getAttribute("member") as SessionMember?
-        managerRepository.findByMemberIdAndShopId(sessionMember!!.id, shopId)
-            ?: return "redirect:/"
-        return null
-    }
 
     @GetMapping("/{shopId}/joinRequest")
+    @RoleCheck(UserType.MANAGER)
     fun joinRequest(
         @PathVariable("shopId") shopId: Long,
         model: Model,
@@ -49,9 +42,10 @@ class ManageJoinRequestController(
 
     @PostMapping("/{shopId}/joinRequest/approval")
     @ResponseBody
+    @RoleCheck(UserType.MANAGER, true)
     fun approval(
-        @RequestBody approvalRequest: JoinRequestDto.ApprovalRefusalRequest,
         @PathVariable("shopId") shopId: Long,
+        @RequestBody approvalRequest: JoinRequestDto.ApprovalRefusalRequest,
     ): Boolean {
         joinRequestService.approval(approvalRequest)
         return true
@@ -59,9 +53,10 @@ class ManageJoinRequestController(
 
     @PostMapping("/{shopId}/joinRequest/refusal")
     @ResponseBody
+    @RoleCheck(UserType.MANAGER, true)
     fun refusal(
-        @RequestBody approvalRequest: JoinRequestDto.ApprovalRefusalRequest,
         @PathVariable("shopId") shopId: Long,
+        @RequestBody approvalRequest: JoinRequestDto.ApprovalRefusalRequest,
     ): Boolean {
         joinRequestService.refusal(approvalRequest)
         return true
