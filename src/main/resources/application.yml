@@ -9,6 +9,7 @@ spring:
     properties:
       hibernate:
         format_sql: true # 보기좋게 쿼리 남김
+    open-in-view: false
 #        show_sql: true # 한줄로 쿼리 보여준다.
 
 logging:
