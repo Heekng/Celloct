@@ -1,4 +1,4 @@
-package com.heekng.celloct.annotation.enum
+package com.heekng.celloct.annotation.enums
 
 enum class UserType {
     STAFF,

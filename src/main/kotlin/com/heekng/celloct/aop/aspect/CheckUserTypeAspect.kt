@@ -1,7 +1,7 @@
 package com.heekng.celloct.aop.aspect
 
 import com.heekng.celloct.annotation.RoleCheck
-import com.heekng.celloct.annotation.enum.UserType
+import com.heekng.celloct.annotation.enums.UserType
 import com.heekng.celloct.config.oauth.dto.SessionMember
 import com.heekng.celloct.repository.ManagerRepository
 import com.heekng.celloct.repository.StaffRepository

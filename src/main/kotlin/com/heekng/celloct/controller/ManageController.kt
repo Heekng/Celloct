@@ -1,7 +1,7 @@
 package com.heekng.celloct.controller
 
 import com.heekng.celloct.annotation.RoleCheck
-import com.heekng.celloct.annotation.enum.UserType
+import com.heekng.celloct.annotation.enums.UserType
 import com.heekng.celloct.dto.ShopDto
 import com.heekng.celloct.repository.ManagerRepository
 import com.heekng.celloct.service.ShopService
