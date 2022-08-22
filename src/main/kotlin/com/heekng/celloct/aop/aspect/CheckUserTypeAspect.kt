@@ -33,7 +33,10 @@ class CheckUserTypeAspect(
             if (roleCheck.userType == UserType.STAFF) {
                 isRightMember = staffRepository.findByMemberIdAndShopId(sessionMember.id, shopId) != null
             } else {
-                isRightMember = managerRepository.findByMemberIdAndShopId(sessionMember.id, shopId) != null
+                isRightMember = managerRepository.find(
+                    memberId = sessionMember.id,
+                    shopId = shopId,
+                ).isNotEmpty()
             }
         }
 

@@ -73,9 +73,13 @@ class ManagerRepositoryTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val findManager = managerRepository.findByMemberIdAndShopId(member.id!!, shop.id!!)
+//        val findManager = managerRepository.findByMemberIdAndShopId(member.id!!, shop.id!!)
+        val findManager = managerRepository.find(
+            memberId = member.id,
+            shopId = shop.id
+        )[0]
         //then
-        assertThat(findManager!!.id).isEqualTo(manager.id)
+        assertThat(findManager.id).isEqualTo(manager.id)
     }
 
     @Test
@@ -90,7 +94,7 @@ class ManagerRepositoryTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val findManagers = managerRepository.findByMemberId(member.id!!)
+        val findManagers = managerRepository.find(memberId = member.id)
         //then
         assertThat(findManagers).hasSize(1)
         assertThat(findManagers[0].id).isEqualTo(manager.id)
@@ -128,7 +132,7 @@ class ManagerRepositoryTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val managers = managerRepository.findListByShopId(shop.id!!)
+        val managers = managerRepository.find(shopId = shop.id)
         //then
         assertThat(managers).hasSize(1)
         assertThat(managers[0].id).isEqualTo(manager.id)

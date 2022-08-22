@@ -35,7 +35,7 @@ class ManageStaffController(
         @PathVariable("shopId") shopId: Long,
         model: Model,
     ): String {
-        val managers = managerRepository.findListByShopId(shopId)
+        val managers = managerRepository.find(shopId = shopId)
             .map { manager -> ManagerDto.ManagerResponse(manager) }
         model.addAttribute("managers", managers)
 

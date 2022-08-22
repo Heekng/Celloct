@@ -8,6 +8,7 @@ import com.heekng.celloct.repository.ShopRepository
 import com.heekng.celloct.repository.StaffRepository
 import com.heekng.celloct.util.fail
 import com.heekng.celloct.util.findByIdOrThrow
+import com.heekng.celloct.util.whenEmpty
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -46,8 +47,10 @@ class StaffService(
 
     @Transactional
     fun deleteStaff(deleteRequest: StaffDto.DeleteRequest) {
-        val manager =
-            managerRepository.findByMemberIdAndShopId(deleteRequest.memberId, deleteRequest.shopId) ?: fail()
+        managerRepository.find(
+            memberId = deleteRequest.memberId,
+            shopId = deleteRequest.shopId,
+        ).whenEmpty { fail() }
         val staff = staffRepository.findByIdOrThrow(deleteRequest.staffId)
         staffRepository.delete(staff)
     }
