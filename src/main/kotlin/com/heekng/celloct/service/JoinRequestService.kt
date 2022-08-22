@@ -63,7 +63,10 @@ class JoinRequestService(
     }
 
     private fun validateDuplicateJoinRequest(memberId: Long, shopId: Long) {
-        val findJoinRequests = joinRequestRepository.findByMemberIdAndShopId(memberId, shopId)
+        val findJoinRequests = joinRequestRepository.find(
+            memberId = memberId,
+            shopId = shopId,
+        )
         if (findJoinRequests.isNotEmpty()) {
             throw IllegalStateException("이미 가입신청한 매장입니다.")
         }

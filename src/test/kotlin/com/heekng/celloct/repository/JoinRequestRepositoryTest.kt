@@ -52,7 +52,7 @@ class JoinRequestRepositoryTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val findJoinRequests = joinRequestRepository.findByMemberId(member.id!!)
+        val findJoinRequests = joinRequestRepository.find(memberId = member.id)
         //then
         assertThat(findJoinRequests).extracting("member").extracting("id").containsExactlyInAnyOrder(member.id)
     }
@@ -69,7 +69,8 @@ class JoinRequestRepositoryTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val findJoinRequests = joinRequestRepository.findByShopId(shop.id!!)
+//        val findJoinRequests = joinRequestRepository.findByShopId(shop.id!!)
+        val findJoinRequests = joinRequestRepository.find(shopId = shop.id)
         //then
         assertThat(findJoinRequests).extracting("shop").extracting("id").containsExactlyInAnyOrder(shop.id)
     }
@@ -105,7 +106,10 @@ class JoinRequestRepositoryTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val findJoinRequests = joinRequestRepository.findByMemberIdAndShopId(member.id!!, shop.id!!)
+        val findJoinRequests = joinRequestRepository.find(
+            memberId = member.id,
+            shopId = shop.id,
+        )
         //then
         assertThat(findJoinRequests).hasSize(1)
         assertThat(findJoinRequests[0].member.id).isEqualTo(member.id)
