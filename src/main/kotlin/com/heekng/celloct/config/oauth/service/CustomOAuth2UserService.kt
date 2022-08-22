@@ -40,7 +40,14 @@ class CustomOAuth2UserService @Autowired constructor(
     }
 
     private fun saveOrUpdate(attributes: OAuthAttributes): Member {
-        val member = memberRepository.findByEmail(attributes.email)?.updatePicture(attributes.picture) ?: attributes.toEntity()
+        val memberList = memberRepository.find(email = attributes.email)
+        var member: Member? = null
+        if (memberList.isNotEmpty()) {
+            memberList[0].updatePicture(attributes.picture)
+            member = memberList[0]
+        } else {
+            member = attributes.toEntity()
+        }
         return memberRepository.save(member)
     }
 

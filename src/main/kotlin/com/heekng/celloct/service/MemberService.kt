@@ -4,6 +4,7 @@ import com.heekng.celloct.entity.Member
 import com.heekng.celloct.repository.MemberRepository
 import com.heekng.celloct.util.fail
 import com.heekng.celloct.util.findByIdOrThrow
+import com.heekng.celloct.util.whenEmpty
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -24,6 +25,6 @@ class MemberService(
     }
 
     private fun validateExist(email: String) {
-        val member = memberRepository.findByEmail(email) ?: fail()
+        memberRepository.find(email = email).whenEmpty { fail() }
     }
 }
