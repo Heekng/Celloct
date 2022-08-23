@@ -39,8 +39,9 @@ class ManageStaffController(
             .map { manager -> ManagerDto.ManagerResponse(manager) }
         model.addAttribute("managers", managers)
 
-        val staffs = staffRepository.findByShopId(shopId)
+        val staffs = staffRepository.find(shopId = shopId)
             .map { staff -> StaffDto.StaffResponse(staff) }
+
         model.addAttribute("staffs", staffs)
 
         val shop = shopService.findShop(shopId)

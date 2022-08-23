@@ -73,7 +73,10 @@ class JoinRequestService(
     }
 
     private fun validateDuplicateStaff(memberId: Long, shopId: Long) {
-        val staff = staffRepository.findByMemberIdAndShopId(memberId, shopId)
+        val staff = staffRepository.findOneQ(
+            memberId = memberId,
+            shopId = shopId,
+        )
         if (staff != null) {
             throw IllegalStateException("이미 가입된 회원입니다.")
         }

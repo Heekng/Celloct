@@ -21,10 +21,6 @@ class StaffService(
     private val managerRepository: ManagerRepository,
 ) {
 
-    fun findByMemberId(memberId: Long): List<Staff> {
-        return staffRepository.findByMemberId(memberId)
-    }
-
     @Transactional
     fun addStaff(addRequestDto: StaffDto.AddRequest): Long {
         val shop = shopRepository.findByIdOrThrow(addRequestDto.shopId)
@@ -62,7 +58,10 @@ class StaffService(
     }
 
     private fun validateExistStaff(shopId: Long, staffMemberId: Long) {
-        val staff = staffRepository.findByMemberIdAndShopId(staffMemberId, shopId)
+        val staff = staffRepository.findOneQ(
+            memberId = staffMemberId,
+            shopId = shopId,
+        )
         if (staff != null) fail()
     }
 

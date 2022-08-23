@@ -21,7 +21,10 @@ class WorkService(
 
     @Transactional
     fun addWork(addRequest: WorkDto.AddRequest): Long {
-        val staff = staffRepository.findByMemberIdAndShopId(addRequest.memberId!!, addRequest.shopId!!) ?: fail()
+        val staff = staffRepository.findOneQ(
+            memberId = addRequest.memberId!!,
+            shopId = addRequest.shopId,
+        ) ?: fail()
         validateDuplicateWork(addRequest.workDate, staff.id!!)
         val work = Work(
             workTime = WorkTime(
@@ -52,7 +55,10 @@ class WorkService(
 
     fun validateExist(checkExistRequest: WorkDto.CheckExistRequest): Boolean {
         val staff =
-            staffRepository.findByMemberIdAndShopId(checkExistRequest.memberId, checkExistRequest.shopId) ?: fail()
+            staffRepository.findOneQ(
+                memberId = checkExistRequest.memberId,
+                shopId = checkExistRequest.shopId,
+            ) ?: fail()
         try {
             validateDuplicateWork(checkExistRequest.workDate, staff.id!!)
         } catch (e: Exception) {

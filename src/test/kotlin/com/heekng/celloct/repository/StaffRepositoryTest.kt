@@ -76,7 +76,10 @@ class StaffRepositoryTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val findStaff = staffRepository.findByMemberIdAndShopId(staffMember.id!!, shop.id!!)
+        val findStaff = staffRepository.findOneQ(
+            memberId = staffMember.id,
+            shopId = shop.id
+        )
         //then
         assertThat(findStaff!!.id).isEqualTo(staff.id)
     }
@@ -95,7 +98,7 @@ class StaffRepositoryTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val staffs = staffRepository.findByShopId(shop.id!!)
+        val staffs = staffRepository.find(shopId = shop.id)
         //then
         assertThat(staffs).hasSize(1)
         assertThat(staffs[0].id).isEqualTo(staff.id)
@@ -115,7 +118,7 @@ class StaffRepositoryTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val staffs = staffRepository.findByMemberId(staffMember.id!!)
+        val staffs = staffRepository.find(memberId = staffMember.id)
         //then
         assertThat(staffs).hasSize(1)
         assertThat(staffs[0].id).isEqualTo(staff.id)

@@ -31,7 +31,10 @@ class CheckUserTypeAspect(
         if (sessionMember != null) {
             val shopId: Long = joinPoint.args[0] as Long
             if (roleCheck.userType == UserType.STAFF) {
-                isRightMember = staffRepository.findByMemberIdAndShopId(sessionMember.id, shopId) != null
+                isRightMember = staffRepository.findOneQ(
+                    memberId = sessionMember.id,
+                    shopId = shopId,
+                ) != null
             } else {
                 isRightMember = managerRepository.find(
                     memberId = sessionMember.id,

@@ -34,7 +34,7 @@ class ManageWorkController(
         @PathVariable("shopId") shopId: Long,
         model: Model,
     ): String {
-        val staffs = staffRepository.findByShopId(shopId)
+        val staffs = staffRepository.find(shopId = shopId)
             .map { staff -> StaffDto.StaffResponse(staff) }
         model.addAttribute("staffs", staffs)
 

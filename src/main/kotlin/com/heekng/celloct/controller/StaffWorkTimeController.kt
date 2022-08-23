@@ -91,7 +91,10 @@ class StaffWorkTimeController(
         @RequestParam("month") month: Int,
     ): List<WorkDto.WorkResponse> {
         val sessionMember = httpSession.getAttribute("member") as SessionMember?
-        val staff = staffRepository.findByMemberIdAndShopId(sessionMember!!.id, shopId)
+        val staff = staffRepository.findOneQ(
+            memberId = sessionMember!!.id,
+            shopId = shopId,
+        )
 
         val findWorkRequest = WorkDto.FindWorkRequest(
             staffId = staff!!.id!!,
@@ -111,9 +114,12 @@ class StaffWorkTimeController(
         @PathVariable("workId") workId: Long,
     ): WorkDto.WorkDetailResponse {
         val sessionMember = httpSession.getAttribute("member") as SessionMember?
-        val staff = staffRepository.findByMemberIdAndShopId(sessionMember!!.id, shopId)!!
+        val staff = staffRepository.findOneQ(
+            memberId = sessionMember!!.id,
+            shopId = shopId,
+        )
 
-        val work = workRepository.findByIdAndStaffId(workId, staff.id!!)
+        val work = workRepository.findByIdAndStaffId(workId, staff!!.id!!)
             ?: throw IllegalStateException("존재하지 않는 근무입니다.")
         return WorkDto.WorkDetailResponse(work)
     }
@@ -128,10 +134,13 @@ class StaffWorkTimeController(
         @RequestBody addRequest: WorkUpdateRequestDto.AddRequest,
     ): Boolean {
         val sessionMember = httpSession.getAttribute("member") as SessionMember?
-        val staff = staffRepository.findByMemberIdAndShopId(sessionMember!!.id, shopId)!!
+        val staff = staffRepository.findOneQ(
+            memberId = sessionMember!!.id,
+            shopId = shopId
+        )
 
         addRequest.workId = workId
-        addRequest.staffId = staff.id!!
+        addRequest.staffId = staff!!.id!!
         workUpdateRequestService.addWorkUpdateRequest(addRequest)
         return true
     }
