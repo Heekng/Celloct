@@ -7,6 +7,7 @@ import com.heekng.celloct.repository.StaffRepository
 import com.heekng.celloct.repository.WorkRepository
 import com.heekng.celloct.util.fail
 import com.heekng.celloct.util.findByIdOrThrow
+import com.heekng.celloct.util.whenNotEmpty
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
@@ -80,8 +81,10 @@ class WorkService(
     }
 
     private fun validateDuplicateWork(workDate: LocalDate, staffId: Long) {
-        val findWorks = workRepository.findByWorkTimeWorkDateAndStaffId(workDate, staffId)
-        if (findWorks.isNotEmpty()) fail()
+        workRepository.find(
+            workDate = workDate,
+            staffId = staffId,
+        ).whenNotEmpty { fail() }
     }
 
     private fun validateTime(changeStartDate: LocalDateTime, changeEndDate: LocalDateTime) {

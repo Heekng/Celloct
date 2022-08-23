@@ -146,7 +146,7 @@ class WorkRepositoryTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val works = workRepository.findByWorkTimeWorkDateAndStaffId(work.workTime.workDate, staff.id!!)
+        val works = workRepository.find(workDate = work.workTime.workDate, staffId = staff.id!!)
         //then
         assertThat(works).hasSize(1)
         assertThat(works[0].id).isEqualTo(work.id)
