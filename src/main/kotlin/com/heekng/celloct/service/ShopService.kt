@@ -7,6 +7,7 @@ import com.heekng.celloct.repository.MemberRepository
 import com.heekng.celloct.repository.ShopRepository
 import com.heekng.celloct.util.fail
 import com.heekng.celloct.util.findByIdOrThrow
+import com.heekng.celloct.util.whenNotEmpty
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -35,8 +36,7 @@ class ShopService(
     }
 
     fun existName(shopName: String): Boolean {
-        val shop = shopRepository.findByName(shopName)
-        return shop != null
+        return shopRepository.find(name = shopName).isNotEmpty()
     }
 
     @Transactional
@@ -61,7 +61,7 @@ class ShopService(
     }
 
     private fun validateDuplicateShop(shop: Shop) {
-        val findShop = shopRepository.findByName(shop.name)
-        if (findShop != null) fail()
+        shopRepository.find(name = shop.name)
+            .whenNotEmpty { fail() }
     }
 }
