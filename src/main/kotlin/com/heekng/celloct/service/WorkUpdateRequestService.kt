@@ -7,6 +7,7 @@ import com.heekng.celloct.repository.WorkRepository
 import com.heekng.celloct.repository.WorkUpdateRequestRepository
 import com.heekng.celloct.util.fail
 import com.heekng.celloct.util.findByIdOrThrow
+import com.heekng.celloct.util.whenNotEmpty
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -50,10 +51,8 @@ class WorkUpdateRequestService(
     }
 
     private fun validateWorkUpdateRequest(workId: Long) {
-        val findWorkUpdateRequests = workUpdateRequestRepository.findByWorkId(workId)
-        if (findWorkUpdateRequests.isNotEmpty()) {
-            throw IllegalStateException("이미 근무시간 변경 요청이 존재합니다.")
-        }
+        workUpdateRequestRepository.find(workId = workId)
+            .whenNotEmpty { throw IllegalStateException("이미 근무시간 변경 요청이 존재합니다.") }
     }
 
     private fun validateTime(changeStartDate: LocalDateTime, changeEndDate: LocalDateTime) {
