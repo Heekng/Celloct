@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import javax.servlet.http.HttpSession
 
 @Controller
@@ -61,13 +62,15 @@ class StaffWorkTimeController(
     fun doInsertWorkTime(
         @PathVariable("shopId") shopId: Long,
         addRequest: WorkDto.AddRequest,
+        redirectAttributes: RedirectAttributes,
     ): String {
         val sessionMember = httpSession.getAttribute("member") as SessionMember?
 
         addRequest.memberId = sessionMember!!.id
         addRequest.shopId = shopId
         workService.addWork(addRequest)
-        return "redirect:/"
+        redirectAttributes.addAttribute("shopId", shopId)
+        return "redirect:/staff/{shopId}/workTimes"
     }
 
     @GetMapping("/workTimes")
