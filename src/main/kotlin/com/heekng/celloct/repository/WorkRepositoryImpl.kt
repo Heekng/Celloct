@@ -1,6 +1,9 @@
 package com.heekng.celloct.repository
 
+import com.heekng.celloct.entity.QShop.shop
+import com.heekng.celloct.entity.QStaff.staff
 import com.heekng.celloct.entity.QWork.work
+import com.heekng.celloct.entity.QWorkUpdateRequest.workUpdateRequest
 import com.heekng.celloct.entity.Work
 import com.querydsl.jpa.impl.JPAQueryFactory
 import java.time.LocalDate
@@ -50,5 +53,17 @@ class WorkRepositoryImpl(
                 endDate?.let { work.workTime.endDate.eq(endDate) },
             )
             .fetchOne()
+    }
+
+    override fun findByShopId(shopId: Long): List<Work> {
+        return queryFactory.select(work)
+            .from(shop)
+            .leftJoin(shop.staffList, staff)
+            .leftJoin(staff.works, work)
+            .leftJoin(work.workUpdateRequest, workUpdateRequest)
+            .fetchJoin()
+            .where(shop.id.eq(shopId))
+            .orderBy(work.workUpdateRequest.createDate.desc())
+            .fetch()
     }
 }

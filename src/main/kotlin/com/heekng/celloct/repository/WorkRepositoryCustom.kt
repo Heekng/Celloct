@@ -24,4 +24,5 @@ interface WorkRepositoryCustom {
         endDate: LocalDateTime? = null,
     ): Work?
 
+    fun findByShopId(shopId: Long): List<Work>
 }

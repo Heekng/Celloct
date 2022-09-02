@@ -5,11 +5,13 @@ import com.heekng.celloct.annotation.enums.UserType
 import com.heekng.celloct.dto.ShopDto
 import com.heekng.celloct.dto.StaffDto
 import com.heekng.celloct.dto.WorkDto
+import com.heekng.celloct.dto.WorkUpdateRequestDto
 import com.heekng.celloct.repository.ManagerRepository
 import com.heekng.celloct.repository.StaffRepository
 import com.heekng.celloct.repository.WorkRepository
 import com.heekng.celloct.service.ShopService
 import com.heekng.celloct.service.WorkService
+import com.heekng.celloct.service.WorkUpdateRequestService
 import com.heekng.celloct.util.findByIdOrThrow
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -25,6 +27,7 @@ class ManageWorkController(
     private val staffRepository: StaffRepository,
     private val workService: WorkService,
     private val workRepository: WorkRepository,
+    private val workUpdateRequestService: WorkUpdateRequestService,
 ) {
 
 
@@ -110,4 +113,25 @@ class ManageWorkController(
         return true;
     }
 
+    @GetMapping("/updateWorkTime")
+    @RoleCheck(UserType.MANAGER, false)
+    fun updateWorkTime(
+        @PathVariable("shopId") shopId: Long,
+        model: Model,
+    ): String {
+        val shop = shopService.findShop(shopId)
+        model.addAttribute("shop", ShopDto.ShopDetailResponse(shop))
+        return "manager/workUpdate"
+    }
+
+    @GetMapping("/updateWorkTimes")
+    @RoleCheck(UserType.MANAGER, isRest = true)
+    @ResponseBody
+    fun updateWorkTimes(
+        @PathVariable("shopId") shopId: Long,
+    ): List<WorkUpdateRequestDto.WorkUpdateRequestListResponse> {
+        return workUpdateRequestService.findByShopId(shopId).map {
+            WorkUpdateRequestDto.WorkUpdateRequestListResponse(it)
+        }
+    }
 }

@@ -136,4 +136,36 @@ class WorkUpdateRequestServiceTest @Autowired constructor(
         //then
         assertThat(findWorkUpdateRequestOrNull).isNull()
     }
+
+    @Test
+    fun findByShopIdTest() {
+        //given
+        val shop = Shop.fixture(null, "shop", null)
+        shopRepository.save(shop)
+        val member = Member.fixture("member", "test@gmail.com")
+        memberRepository.save(member)
+        val staff = Staff.fixture(member, shop, "staff")
+        staffRepository.save(staff)
+        val workDate = LocalDate.of(2022, 10, 10)
+        val startDate = LocalDateTime.of(2022, 10, 10, 5, 10)
+        val endDate = LocalDateTime.of(2022, 10, 10, 6, 10)
+        val work = Work(
+            workTime = WorkTime(
+                workDate = workDate,
+                startDate = startDate,
+                endDate = endDate,
+            ) ,
+            staff = staff,
+        )
+        workRepository.save(work)
+        val workUpdateRequest = WorkUpdateRequest.fixture(workDate, startDate.minusHours(1), endDate.plusHours(1), work, null)
+        workUpdateRequestRepository.save(workUpdateRequest)
+        em.flush()
+        em.clear()
+        //when
+        val findWorkUpdateRequests = workUpdateRequestService.findByShopId(shop.id!!)
+        //then
+        assertThat(findWorkUpdateRequests).isNotEmpty
+        assertThat(findWorkUpdateRequests).hasSize(1)
+    }
 }

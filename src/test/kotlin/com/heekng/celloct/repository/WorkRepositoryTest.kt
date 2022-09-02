@@ -214,4 +214,33 @@ class WorkRepositoryTest @Autowired constructor(
         //then
         assertThat(findWork!!.id).isEqualTo(work.id)
     }
+
+    @Test
+    fun findByShopIdTest() {
+        val shopMember = Member.fixture("shopMember", "shopMember@gmail.com")
+        memberRepository.save(shopMember)
+        val staffMember = Member.fixture("staffMember", "staffMember@gmail.com")
+        memberRepository.save(staffMember)
+        val shop = Shop.fixture(null, "shop", null)
+        shopRepository.save(shop)
+        val staff = Staff.fixture(staffMember, shop, "staff")
+        staffRepository.save(staff)
+        val work = Work(
+            workTime = WorkTime(
+                workDate = LocalDate.now(),
+                startDate = LocalDateTime.now(),
+                endDate = LocalDateTime.now().plusHours(1),
+            ) ,
+            staff = staff,
+            workUpdateRequest = null,
+        )
+        workRepository.save(work)
+        em.flush()
+        em.clear()
+        //when
+        val findWorks = workRepository.findByShopId(shop.id!!)
+        //then
+        assertThat(findWorks).isNotEmpty
+        assertThat(findWorks).hasSize(1)
+    }
 }
