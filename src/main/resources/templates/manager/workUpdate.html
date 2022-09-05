@@ -53,34 +53,45 @@
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label for="startDate" class="col-sm-3 col-form-label">시작일시</label>
+                    <label for="before-startDate" class="col-sm-3 col-form-label">시작일시(전)</label>
                     <div class="col-sm-9">
-                        <input id="startDate" name="startDate" type="datetime-local" readonly class="form-control">
+                        <input id="before-startDate" name="startDate" type="datetime-local" readonly class="form-control">
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label for="endDate" class="col-sm-3 col-form-label">종료일시</label>
+                    <label for="after-startDate" class="col-sm-3 col-form-label">시작일시(후)</label>
                     <div class="col-sm-9">
-                        <input id="endDate" name="endDate" type="datetime-local" readonly class="form-control">
+                        <input id="after-startDate" name="startDate" type="datetime-local" readonly class="form-control">
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label for="note" class="col-sm-3 col-form-label">메모</label>
+                    <label for="before-endDate" class="col-sm-3 col-form-label">종료일시(전)</label>
                     <div class="col-sm-9">
-                        <input id="note" name="note" type="text" readonly class="form-control">
+                        <input id="before-endDate" name="endDate" type="datetime-local" readonly class="form-control">
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label for="lastModifiedDate" class="col-sm-3 col-form-label">최근 수정일</label>
+                    <label for="after-endDate" class="col-sm-3 col-form-label">종료일시(후)</label>
                     <div class="col-sm-9">
-                        <input id="lastModifiedDate" name="lastModifiedDate" type="datetime-local" readonly class="form-control">
+                        <input id="after-endDate" name="endDate" type="datetime-local" readonly class="form-control">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="before-note" class="col-sm-3 col-form-label">메모(전)</label>
+                    <div class="col-sm-9">
+                        <input id="before-note" name="note" type="text" readonly class="form-control">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="after-note" class="col-sm-3 col-form-label">메모(후)</label>
+                    <div class="col-sm-9">
+                        <input id="after-note" name="note" type="text" readonly class="form-control">
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="button-update" type="button" class="btn btn-primary" onclick="workDetailUpdate()">수정</button>
-                <button id="button-do-delete" type="button" class="btn btn-primary" onclick="deleteWork()">삭제</button>
-                <button id="button-do-update" type="button" class="btn btn-primary" onclick="workDetailUpdateRequest()">수정완료</button>
+                <button id="button-ok" type="button" class="btn btn-primary" onclick="">승인</button>
+                <button id="button-not-ok" type="button" class="btn btn-primary" onclick="">거부</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
             </div>
         </div>
