@@ -66,4 +66,13 @@ class WorkRepositoryImpl(
             .orderBy(work.workUpdateRequest.createDate.desc())
             .fetch()
     }
+
+    override fun findOneWithWorkUpdateRequestById(id: Long): Work? {
+        return queryFactory.select(work)
+            .from(work)
+            .leftJoin(work.workUpdateRequest, workUpdateRequest)
+            .fetchJoin()
+            .where(work.id.eq(id))
+            .fetchOne()
+    }
 }

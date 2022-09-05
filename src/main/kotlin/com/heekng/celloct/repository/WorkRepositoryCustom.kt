@@ -25,4 +25,6 @@ interface WorkRepositoryCustom {
     ): Work?
 
     fun findByShopId(shopId: Long): List<Work>
+
+    fun findOneWithWorkUpdateRequestById(id: Long): Work?
 }

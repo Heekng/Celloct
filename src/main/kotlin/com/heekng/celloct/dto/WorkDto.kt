@@ -92,4 +92,25 @@ class WorkDto {
     )
 
     data class DeleteRequest (var staffId: Long, val workId: Long)
+
+    data class WorkWithWorkUpdateRequestResponse(
+        val workId: Long,
+        val workUpdateRequestId: Long,
+        val workDate: LocalDate,
+        val beforeStartDate: LocalDateTime,
+        val afterStartDate: LocalDateTime,
+        val beforeEndDate: LocalDateTime,
+        val afterEndDate: LocalDateTime,
+    ) {
+        constructor(work: Work): this(
+            workId = work.id!!,
+            workUpdateRequestId = work.workUpdateRequest!!.id!!,
+            workDate = work.workTime.workDate,
+            beforeStartDate = work.workTime.startDate,
+            afterStartDate = work.workUpdateRequest!!.workTime.startDate,
+            beforeEndDate = work.workTime.endDate,
+            afterEndDate = work.workUpdateRequest!!.workTime.endDate,
+        )
+    }
+
 }

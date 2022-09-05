@@ -6,12 +6,14 @@ import com.heekng.celloct.dto.ShopDto
 import com.heekng.celloct.dto.StaffDto
 import com.heekng.celloct.dto.WorkDto
 import com.heekng.celloct.dto.WorkUpdateRequestDto
+import com.heekng.celloct.entity.Work
 import com.heekng.celloct.repository.ManagerRepository
 import com.heekng.celloct.repository.StaffRepository
 import com.heekng.celloct.repository.WorkRepository
 import com.heekng.celloct.service.ShopService
 import com.heekng.celloct.service.WorkService
 import com.heekng.celloct.service.WorkUpdateRequestService
+import com.heekng.celloct.util.fail
 import com.heekng.celloct.util.findByIdOrThrow
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -134,4 +136,16 @@ class ManageWorkController(
             WorkUpdateRequestDto.WorkUpdateRequestListResponse(it)
         }
     }
+
+    @GetMapping("/updateWorkTimes/{workId}")
+    @RoleCheck(UserType.MANAGER, isRest = true)
+    @ResponseBody
+    fun updateWorkTimeDetail(
+        @PathVariable("shopId") shopId: Long,
+        @PathVariable("workId") workId: Long,
+    ): WorkDto.WorkWithWorkUpdateRequestResponse {
+        val findWork = workRepository.findOneWithWorkUpdateRequestById(workId) ?: fail()
+        return WorkDto.WorkWithWorkUpdateRequestResponse(findWork)
+    }
+
 }
