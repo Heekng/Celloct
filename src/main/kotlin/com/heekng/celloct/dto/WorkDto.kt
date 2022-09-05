@@ -101,6 +101,8 @@ class WorkDto {
         val afterStartDate: LocalDateTime,
         val beforeEndDate: LocalDateTime,
         val afterEndDate: LocalDateTime,
+        val beforeNote: String?,
+        val afterNote: String?,
     ) {
         constructor(work: Work): this(
             workId = work.id!!,
@@ -110,6 +112,8 @@ class WorkDto {
             afterStartDate = work.workUpdateRequest!!.workTime.startDate,
             beforeEndDate = work.workTime.endDate,
             afterEndDate = work.workUpdateRequest!!.workTime.endDate,
+            beforeNote = work.note,
+            afterNote = work.workUpdateRequest!!.note,
         )
     }
 
