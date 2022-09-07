@@ -103,7 +103,7 @@
         detailModal: new bootstrap.Modal(document.getElementById('modal-workDetail'), {
             keyboard: false
         }),
-        lastSearchStaffId: -1,
+        lastSelectWorkUpdateRequestId: -1,
         lastSelectWorkId: -1,
         hourSum: 0,
         minuteSum: 0
@@ -143,6 +143,7 @@
             btn_detail.classList.add("btn-primary");
             btn_detail.classList.add("btn-sm");
             btn_detail.onclick = function () {
+                viewDetail(workUpdateRequest.workId)
             }
             btn_detail.innerText = "상세보기";
             td_button.append(btn_detail)
@@ -159,16 +160,12 @@
 
     async function viewDetail(workId) {
 
-        const url = "/manage/" + [[${shop.id}]] + "/workTimes/" + workTime.lastSearchStaffId + "?";
+        const url = "/manage/" + [[${shop.id}]] + "/updateWorkTimes/" + workId;
         const option = {
             method: "get"
         }
-        const params = {
-            workId: workId
-        }
-        let query = Object.keys(params).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key])).join('&');
 
-        await fetch(url + query, option)
+        await fetch(url, option)
             .then((result) => {
                 return result.json();
             }).then((result) => {
@@ -176,7 +173,26 @@
                 workTime.lastSelectWorkId = workId;
                 workTime.detailModal.toggle();
             });
+    }
 
+    function setWorkDetail(workDetail) {
+        const offset = new Date().getTimezoneOffset() * 60000;
+
+        let workDate = document.querySelector("#workDate");
+        let beforeStartDate = document.querySelector("#before-startDate");
+        let beforeEndDate = document.querySelector("#before-endDate");
+        let afterStartDate = document.querySelector("#after-startDate");
+        let afterEndDate = document.querySelector("#after-endDate");
+        let beforeNote = document.querySelector("#before-note");
+        let afterNote = document.querySelector("#after-note");
+
+        workDate.valueAsDate = new Date(workDetail.workDate);
+        beforeStartDate.value = new Date(new Date(workDetail.beforeStartDate) - offset).toISOString().slice(0,16);
+        beforeEndDate.value = new Date(new Date(workDetail.beforeEndDate) - offset).toISOString().slice(0,16);
+        afterStartDate.value = new Date(new Date(workDetail.afterStartDate) - offset).toISOString().slice(0,16);
+        afterEndDate.value = new Date(new Date(workDetail.afterEndDate) - offset).toISOString().slice(0,16);
+        beforeNote.value = workDetail.beforeNote;
+        afterNote.value = workDetail.afterNote;
     }
 
 
