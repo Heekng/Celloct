@@ -1,6 +1,6 @@
 package com.heekng.celloct.annotation
 
-import com.heekng.celloct.annotation.enum.UserType
+import com.heekng.celloct.annotation.enums.UserType
 
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)

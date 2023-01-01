@@ -6,6 +6,7 @@ spring:
     properties:
       hibernate:
         format_sql: true # 쿼리 확인
+        default_batch_fetch_size: 1000
 
   security:
     oauth2:

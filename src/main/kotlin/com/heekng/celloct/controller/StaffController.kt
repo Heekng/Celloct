@@ -1,7 +1,7 @@
 package com.heekng.celloct.controller
 
 import com.heekng.celloct.annotation.RoleCheck
-import com.heekng.celloct.annotation.enum.UserType
+import com.heekng.celloct.annotation.enums.UserType
 import com.heekng.celloct.config.oauth.dto.SessionMember
 import com.heekng.celloct.dto.ShopDto
 import com.heekng.celloct.dto.StaffDto
@@ -37,8 +37,10 @@ class StaffController(
         val shop = shopService.findShop(shopId)
         model.addAttribute("shop", ShopDto.ShopDetailResponse(shop))
 
-        val findStaff = (staffRepository.findByMemberIdAndShopId(sessionMember!!.id, shopId)
-            ?: throw IllegalStateException("존재하지 않는 직원입니다."))
+        val findStaff = staffRepository.findOneQ(
+            memberId = sessionMember!!.id,
+            shopId = shopId
+        ) ?: throw IllegalStateException("존재하지 않는 직원입니다.")
         model.addAttribute("staff", StaffDto.StaffDetailResponse(findStaff))
 
         return "staff/shopHome"
@@ -54,8 +56,11 @@ class StaffController(
         val shop = shopService.findShop(shopId)
         model.addAttribute("shop", ShopDto.ShopDetailResponse(shop))
 
-        val findStaff = (staffRepository.findByMemberIdAndShopId(sessionMember!!.id, shopId)
-            ?: throw IllegalStateException("존재하지 않는 직원입니다."))
+        val findStaff = staffRepository.findOneQ(
+            memberId = sessionMember!!.id,
+            shopId = shopId,
+        ) ?: throw IllegalStateException("존재하지 않는 직원입니다.")
+
         model.addAttribute("staff", StaffDto.StaffDetailResponse(findStaff))
 
         return "staff/shopHomeUpdate"

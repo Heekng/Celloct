@@ -71,8 +71,8 @@ class MemberRepositoryTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val findMember = memberRepository.findByEmail(member.email)
+        val findMembers = memberRepository.find(email = member.email)
         //then
-        assertThat(findMember!!.id).isEqualTo(member.id)
+        assertThat(findMembers[0].id).isEqualTo(member.id)
     }
 }

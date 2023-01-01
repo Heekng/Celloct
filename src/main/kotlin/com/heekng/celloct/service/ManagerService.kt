@@ -11,6 +11,7 @@ import com.heekng.celloct.repository.ShopRepository
 import com.heekng.celloct.repository.StaffRepository
 import com.heekng.celloct.util.fail
 import com.heekng.celloct.util.findByIdOrThrow
+import com.heekng.celloct.util.whenNotEmpty
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -50,7 +51,7 @@ class ManagerService(
     }
 
     fun findByMemberId(memberId: Long): List<Manager> {
-        return managerRepository.findByMemberId(memberId)
+        return managerRepository.find(memberId = memberId)
     }
 
     fun addByStaff(addByStaffRequest: AddByStaffRequest): Manager {
@@ -67,8 +68,7 @@ class ManagerService(
     }
 
     private fun validateExistManager(shopId: Long, memberId: Long) {
-        val manager = managerRepository.findByMemberIdAndShopId(shopId, memberId)
-        if (manager != null) fail()
+        managerRepository.find(shopId = shopId, memberId = memberId,).whenNotEmpty { fail() }
     }
 
 }

@@ -23,9 +23,10 @@ class ShopRepositoryTest @Autowired constructor(
         em.flush()
         em.clear()
         //when
-        val findShop = shopRepository.findByName(shop.name)
+        val findShops = shopRepository.find(name = shop.name)
         //then
-        assertThat(findShop!!.id).isEqualTo(shop.id)
+        assertThat(findShops).isNotEmpty
+        assertThat(findShops[0].id).isEqualTo(shop.id)
     }
 
     @Test

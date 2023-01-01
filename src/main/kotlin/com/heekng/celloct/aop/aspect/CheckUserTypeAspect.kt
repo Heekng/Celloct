@@ -1,7 +1,7 @@
 package com.heekng.celloct.aop.aspect
 
 import com.heekng.celloct.annotation.RoleCheck
-import com.heekng.celloct.annotation.enum.UserType
+import com.heekng.celloct.annotation.enums.UserType
 import com.heekng.celloct.config.oauth.dto.SessionMember
 import com.heekng.celloct.repository.ManagerRepository
 import com.heekng.celloct.repository.StaffRepository
@@ -31,9 +31,15 @@ class CheckUserTypeAspect(
         if (sessionMember != null) {
             val shopId: Long = joinPoint.args[0] as Long
             if (roleCheck.userType == UserType.STAFF) {
-                isRightMember = staffRepository.findByMemberIdAndShopId(sessionMember.id, shopId) != null
+                isRightMember = staffRepository.findOneQ(
+                    memberId = sessionMember.id,
+                    shopId = shopId,
+                ) != null
             } else {
-                isRightMember = managerRepository.findByMemberIdAndShopId(sessionMember.id, shopId) != null
+                isRightMember = managerRepository.find(
+                    memberId = sessionMember.id,
+                    shopId = shopId,
+                ).isNotEmpty()
             }
         }
 

@@ -1,7 +1,7 @@
 package com.heekng.celloct.controller
 
 import com.heekng.celloct.annotation.RoleCheck
-import com.heekng.celloct.annotation.enum.UserType
+import com.heekng.celloct.annotation.enums.UserType
 import com.heekng.celloct.config.oauth.dto.SessionMember
 import com.heekng.celloct.dto.ManagerDto
 import com.heekng.celloct.dto.ShopDto
@@ -35,12 +35,13 @@ class ManageStaffController(
         @PathVariable("shopId") shopId: Long,
         model: Model,
     ): String {
-        val managers = managerRepository.findListByShopId(shopId)
+        val managers = managerRepository.find(shopId = shopId)
             .map { manager -> ManagerDto.ManagerResponse(manager) }
         model.addAttribute("managers", managers)
 
-        val staffs = staffRepository.findByShopId(shopId)
+        val staffs = staffRepository.find(shopId = shopId)
             .map { staff -> StaffDto.StaffResponse(staff) }
+
         model.addAttribute("staffs", staffs)
 
         val shop = shopService.findShop(shopId)

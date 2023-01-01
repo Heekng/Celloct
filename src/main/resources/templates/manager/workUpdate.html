@@ -1,0 +1,201 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:replace="fragments/header :: header">
+    <title>Hello</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader"></div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 py-4 text-center">
+            <p class="display-4">직원 근무시간</p>
+            <h3>
+                <small class="text-muted">직원 근무시간을 관리합니다.</small>
+            </h3>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-xl-6 col-lg-8 py-2">
+            <ul th:replace="fragments/managerNav :: ulNav"></ul>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-xl-6 col-lg-8 py-2">
+            <table class="table table-striped table-hover table-bordered text-center">
+                <thead>
+                <tr>
+                    <th>직원명</th>
+                    <th>근무일</th>
+                    <th>수정 신청일</th>
+                    <th>상세보기</th>
+                </tr>
+                </thead>
+                <tbody id="tbody-workUpdateRequest">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div> <!-- /container -->
+<!-- Modal -->
+<div class="modal fade" id="modal-workDetail" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">근무 상세</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3 row">
+                    <label for="workDate" class="col-sm-3 col-form-label">근무일</label>
+                    <div class="col-sm-9">
+                        <input id="workDate" name="workDate" type="date" readonly class="form-control">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="before-startDate" class="col-sm-3 col-form-label">시작일시(전)</label>
+                    <div class="col-sm-9">
+                        <input id="before-startDate" name="startDate" type="datetime-local" readonly class="form-control">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="after-startDate" class="col-sm-3 col-form-label">시작일시(후)</label>
+                    <div class="col-sm-9">
+                        <input id="after-startDate" name="startDate" type="datetime-local" readonly class="form-control">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="before-endDate" class="col-sm-3 col-form-label">종료일시(전)</label>
+                    <div class="col-sm-9">
+                        <input id="before-endDate" name="endDate" type="datetime-local" readonly class="form-control">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="after-endDate" class="col-sm-3 col-form-label">종료일시(후)</label>
+                    <div class="col-sm-9">
+                        <input id="after-endDate" name="endDate" type="datetime-local" readonly class="form-control">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="before-note" class="col-sm-3 col-form-label">메모(전)</label>
+                    <div class="col-sm-9">
+                        <input id="before-note" name="note" type="text" readonly class="form-control">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label for="after-note" class="col-sm-3 col-form-label">메모(후)</label>
+                    <div class="col-sm-9">
+                        <input id="after-note" name="note" type="text" readonly class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="button-ok" type="button" class="btn btn-primary" onclick="">승인</button>
+                <button id="button-not-ok" type="button" class="btn btn-primary" onclick="">거부</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:inline="javascript">
+    const workTime = {
+        weekday: ['일', '월', '화', '수', '목', '금', '토'],
+        detailModal: new bootstrap.Modal(document.getElementById('modal-workDetail'), {
+            keyboard: false
+        }),
+        lastSelectWorkUpdateRequestId: -1,
+        lastSelectWorkId: -1,
+        hourSum: 0,
+        minuteSum: 0
+    }
+
+    window.onload = () => {
+        document.querySelector("#a-updateWorkTime").classList.add("active");
+        findWorkUpdateRequests()
+    }
+
+    async function findWorkUpdateRequests() {
+        const url = "/manage/" + [[${shop.id}]] + "/updateWorkTimes";
+        const option = {
+            method: "get"
+        }
+        await fetch(url, option)
+            .then((result) => {
+                return result.json();
+            }).then((result) => {
+                setWorkUpdateTable(result)
+            });
+    }
+
+    function setWorkUpdateTable(workUpdateRequests) {
+        let df = document.createDocumentFragment();
+        for (const workUpdateRequest of workUpdateRequests) {
+            let tr = document.createElement("tr");
+            let td_name = document.createElement("td");
+            td_name.innerText = workUpdateRequest.staffName;
+            let td_workDate = document.createElement("td");
+            td_workDate.innerText = workUpdateRequest.workDate;
+            let td_updateRequestDate = document.createElement("td");
+            td_updateRequestDate.innerText = workUpdateRequest.createDate;
+            let td_button = document.createElement("td");
+            let btn_detail = document.createElement("button");
+            btn_detail.classList.add("btn");
+            btn_detail.classList.add("btn-primary");
+            btn_detail.classList.add("btn-sm");
+            btn_detail.onclick = function () {
+                viewDetail(workUpdateRequest.workId)
+            }
+            btn_detail.innerText = "상세보기";
+            td_button.append(btn_detail)
+
+            tr.append(td_name)
+            tr.append(td_workDate)
+            tr.append(td_updateRequestDate)
+            tr.append(td_button)
+            df.append(tr)
+        }
+        let tbodyWorkUpdateRequest = document.querySelector("#tbody-workUpdateRequest");
+        tbodyWorkUpdateRequest.append(df);
+    }
+
+    async function viewDetail(workId) {
+
+        const url = "/manage/" + [[${shop.id}]] + "/updateWorkTimes/" + workId;
+        const option = {
+            method: "get"
+        }
+
+        await fetch(url, option)
+            .then((result) => {
+                return result.json();
+            }).then((result) => {
+                setWorkDetail(result);
+                workTime.lastSelectWorkId = workId;
+                workTime.detailModal.toggle();
+            });
+    }
+
+    function setWorkDetail(workDetail) {
+        const offset = new Date().getTimezoneOffset() * 60000;
+
+        let workDate = document.querySelector("#workDate");
+        let beforeStartDate = document.querySelector("#before-startDate");
+        let beforeEndDate = document.querySelector("#before-endDate");
+        let afterStartDate = document.querySelector("#after-startDate");
+        let afterEndDate = document.querySelector("#after-endDate");
+        let beforeNote = document.querySelector("#before-note");
+        let afterNote = document.querySelector("#after-note");
+
+        workDate.valueAsDate = new Date(workDetail.workDate);
+        beforeStartDate.value = new Date(new Date(workDetail.beforeStartDate) - offset).toISOString().slice(0,16);
+        beforeEndDate.value = new Date(new Date(workDetail.beforeEndDate) - offset).toISOString().slice(0,16);
+        afterStartDate.value = new Date(new Date(workDetail.afterStartDate) - offset).toISOString().slice(0,16);
+        afterEndDate.value = new Date(new Date(workDetail.afterEndDate) - offset).toISOString().slice(0,16);
+        beforeNote.value = workDetail.beforeNote;
+        afterNote.value = workDetail.afterNote;
+    }
+
+
+</script>
+</body>
+</html>

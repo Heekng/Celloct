@@ -1,12 +1,16 @@
 package com.heekng.celloct.service
 
 import com.heekng.celloct.dto.WorkUpdateRequestDto
+import com.heekng.celloct.entity.Work
 import com.heekng.celloct.entity.WorkTime
 import com.heekng.celloct.entity.WorkUpdateRequest
+import com.heekng.celloct.repository.StaffRepository
 import com.heekng.celloct.repository.WorkRepository
 import com.heekng.celloct.repository.WorkUpdateRequestRepository
 import com.heekng.celloct.util.fail
 import com.heekng.celloct.util.findByIdOrThrow
+import com.heekng.celloct.util.whenNotEmpty
+import org.hibernate.Hibernate
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -16,6 +20,7 @@ import java.time.LocalDateTime
 class WorkUpdateRequestService(
     private val workUpdateRequestRepository: WorkUpdateRequestRepository,
     private val workRepository: WorkRepository,
+    private val staffRepository: StaffRepository,
 ) {
 
     fun addWorkUpdateRequest(addRequest: WorkUpdateRequestDto.AddRequest): Long {
@@ -49,11 +54,16 @@ class WorkUpdateRequestService(
         workUpdateRequest.workTime.changeWorkTime(updateRequest.updateStartDate, updateRequest.updateEndDate)
     }
 
+    fun findByShopId(shopId: Long): List<WorkUpdateRequest> {
+        val findWorks = workRepository.findByShopId(shopId = shopId)
+        findWorks.forEach { Hibernate.initialize(it.staff) }
+        val workUpdateRequestExistWorks = findWorks.filter { it.workUpdateRequest != null }
+        return workUpdateRequestExistWorks.map { it.workUpdateRequest!! }
+    }
+
     private fun validateWorkUpdateRequest(workId: Long) {
-        val findWorkUpdateRequests = workUpdateRequestRepository.findByWorkId(workId)
-        if (findWorkUpdateRequests.isNotEmpty()) {
-            throw IllegalStateException("이미 근무시간 변경 요청이 존재합니다.")
-        }
+        workUpdateRequestRepository.find(workId = workId)
+            .whenNotEmpty { throw IllegalStateException("이미 근무시간 변경 요청이 존재합니다.") }
     }
 
     private fun validateTime(changeStartDate: LocalDateTime, changeEndDate: LocalDateTime) {

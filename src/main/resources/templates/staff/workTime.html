@@ -107,15 +107,20 @@
     window.onload = () => {
         document.querySelector("#a-viewWorkTime").classList.add("active");
         setSelectYearMonth();
+
+        searchWorks();
     }
 
     function setSelectYearMonth() {
         let selectYearMonth = document.querySelector("#select-yearMonth");
-        let countDate = new Date(2022, 0, 1);
+        let countDate = new Date(2022, 0, 1, 0, 0, 0);
         let today = new Date();
+        today.setHours(0);
+        today.setMinutes(0);
+        today.setSeconds(0);
 
         let df = document.createDocumentFragment();
-        while (parseInt('' + today.getFullYear() + today.getMonth()) >= parseInt('' + countDate.getFullYear() + countDate.getMonth())) {
+        while (today >= countDate) {
             let option = document.createElement("option");
             option.innerText = countDate.getFullYear() + "년 " + (countDate.getMonth() + 1) + "월";
             option.value = convertYyyyMmDd(countDate);

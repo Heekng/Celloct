@@ -1,7 +1,7 @@
 package com.heekng.celloct.controller
 
 import com.heekng.celloct.annotation.RoleCheck
-import com.heekng.celloct.annotation.enum.UserType
+import com.heekng.celloct.annotation.enums.UserType
 import com.heekng.celloct.config.oauth.dto.SessionMember
 import com.heekng.celloct.dto.ShopDto
 import com.heekng.celloct.dto.WorkDto
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import javax.servlet.http.HttpSession
 
 @Controller
@@ -61,13 +62,15 @@ class StaffWorkTimeController(
     fun doInsertWorkTime(
         @PathVariable("shopId") shopId: Long,
         addRequest: WorkDto.AddRequest,
+        redirectAttributes: RedirectAttributes,
     ): String {
         val sessionMember = httpSession.getAttribute("member") as SessionMember?
 
         addRequest.memberId = sessionMember!!.id
         addRequest.shopId = shopId
         workService.addWork(addRequest)
-        return "redirect:/"
+        redirectAttributes.addAttribute("shopId", shopId)
+        return "redirect:/staff/{shopId}/workTimes"
     }
 
     @GetMapping("/workTimes")
@@ -91,7 +94,10 @@ class StaffWorkTimeController(
         @RequestParam("month") month: Int,
     ): List<WorkDto.WorkResponse> {
         val sessionMember = httpSession.getAttribute("member") as SessionMember?
-        val staff = staffRepository.findByMemberIdAndShopId(sessionMember!!.id, shopId)
+        val staff = staffRepository.findOneQ(
+            memberId = sessionMember!!.id,
+            shopId = shopId,
+        )
 
         val findWorkRequest = WorkDto.FindWorkRequest(
             staffId = staff!!.id!!,
@@ -111,9 +117,12 @@ class StaffWorkTimeController(
         @PathVariable("workId") workId: Long,
     ): WorkDto.WorkDetailResponse {
         val sessionMember = httpSession.getAttribute("member") as SessionMember?
-        val staff = staffRepository.findByMemberIdAndShopId(sessionMember!!.id, shopId)!!
+        val staff = staffRepository.findOneQ(
+            memberId = sessionMember!!.id,
+            shopId = shopId,
+        )
 
-        val work = workRepository.findByIdAndStaffId(workId, staff.id!!)
+        val work = workRepository.findByIdAndStaffId(workId, staff!!.id!!)
             ?: throw IllegalStateException("존재하지 않는 근무입니다.")
         return WorkDto.WorkDetailResponse(work)
     }
@@ -128,10 +137,13 @@ class StaffWorkTimeController(
         @RequestBody addRequest: WorkUpdateRequestDto.AddRequest,
     ): Boolean {
         val sessionMember = httpSession.getAttribute("member") as SessionMember?
-        val staff = staffRepository.findByMemberIdAndShopId(sessionMember!!.id, shopId)!!
+        val staff = staffRepository.findOneQ(
+            memberId = sessionMember!!.id,
+            shopId = shopId
+        )
 
         addRequest.workId = workId
-        addRequest.staffId = staff.id!!
+        addRequest.staffId = staff!!.id!!
         workUpdateRequestService.addWorkUpdateRequest(addRequest)
         return true
     }

@@ -1,5 +1,6 @@
 package com.heekng.celloct.dto
 
+import com.heekng.celloct.entity.WorkUpdateRequest
 import org.springframework.format.annotation.DateTimeFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -23,4 +24,20 @@ class WorkUpdateRequestDto {
         val updateStartDate: LocalDateTime,
         val updateEndDate: LocalDateTime
     )
+
+    data class WorkUpdateRequestListResponse (
+        val staffName: String,
+        val workUpdateRequestId: Long,
+        val workId: Long,
+        val createDate: LocalDateTime,
+        val workDate: LocalDate,
+    ) {
+        constructor(workUpdateRequest: WorkUpdateRequest): this(
+            staffName = workUpdateRequest.work.staff.name,
+            workUpdateRequestId = workUpdateRequest.id!!,
+            workId = workUpdateRequest.work.id!!,
+            createDate = workUpdateRequest.createDate!!,
+            workDate = workUpdateRequest.work.workTime.workDate,
+        )
+    }
 }

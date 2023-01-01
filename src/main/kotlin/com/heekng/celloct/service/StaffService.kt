@@ -8,6 +8,7 @@ import com.heekng.celloct.repository.ShopRepository
 import com.heekng.celloct.repository.StaffRepository
 import com.heekng.celloct.util.fail
 import com.heekng.celloct.util.findByIdOrThrow
+import com.heekng.celloct.util.whenEmpty
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -19,10 +20,6 @@ class StaffService(
     private val memberRepository: MemberRepository,
     private val managerRepository: ManagerRepository,
 ) {
-
-    fun findByMemberId(memberId: Long): List<Staff> {
-        return staffRepository.findByMemberId(memberId)
-    }
 
     @Transactional
     fun addStaff(addRequestDto: StaffDto.AddRequest): Long {
@@ -46,8 +43,10 @@ class StaffService(
 
     @Transactional
     fun deleteStaff(deleteRequest: StaffDto.DeleteRequest) {
-        val manager =
-            managerRepository.findByMemberIdAndShopId(deleteRequest.memberId, deleteRequest.shopId) ?: fail()
+        managerRepository.find(
+            memberId = deleteRequest.memberId,
+            shopId = deleteRequest.shopId,
+        ).whenEmpty { fail() }
         val staff = staffRepository.findByIdOrThrow(deleteRequest.staffId)
         staffRepository.delete(staff)
     }
@@ -59,7 +58,10 @@ class StaffService(
     }
 
     private fun validateExistStaff(shopId: Long, staffMemberId: Long) {
-        val staff = staffRepository.findByMemberIdAndShopId(staffMemberId, shopId)
+        val staff = staffRepository.findOneQ(
+            memberId = staffMemberId,
+            shopId = shopId,
+        )
         if (staff != null) fail()
     }
 
