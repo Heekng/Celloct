@@ -148,4 +148,13 @@ class ManageWorkController(
         return WorkDto.WorkWithWorkUpdateRequestResponse(findWork)
     }
 
+    @PostMapping("/updateWorkTimes/{workId}")
+    @RoleCheck(UserType.MANAGER, isRest = true)
+    @ResponseBody
+    fun approveRequest(
+        @PathVariable("shopId") shopId: Long,
+    ) {
+
+    }
+
 }
