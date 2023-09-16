@@ -5,7 +5,7 @@ import javax.persistence.*
 @Entity
 class Member(
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     val id: Long? = null,
 

@@ -11,7 +11,7 @@ import javax.persistence.*
     )]
 )
 class Staff(
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "staff_id")
     val id: Long? = null,
 
