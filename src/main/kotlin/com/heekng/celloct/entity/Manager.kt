@@ -10,7 +10,7 @@ import javax.persistence.*
     )]
 )
 class Manager(
-    @Id @GeneratedValue @Column(name = "manager_id")
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "manager_id")
     val id: Long? = null,
 
     @Column(name = "name", nullable = false)

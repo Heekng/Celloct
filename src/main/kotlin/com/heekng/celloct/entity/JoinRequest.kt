@@ -10,7 +10,7 @@ import javax.persistence.*
     )]
 )
 class JoinRequest(
-    @Id @GeneratedValue @Column(name = "join_request_id")
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "join_request_id")
     val id: Long? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)

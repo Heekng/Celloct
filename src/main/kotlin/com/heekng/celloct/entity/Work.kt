@@ -11,7 +11,7 @@ import javax.persistence.*
     )]
 )
 class Work(
-    @Id @GeneratedValue @Column(name = "work_id")
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "work_id")
     val id: Long? = null,
 
     @Embedded

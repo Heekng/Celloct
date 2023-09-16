@@ -6,7 +6,7 @@ import javax.persistence.*
 
 @Entity
 class WorkUpdateRequest(
-    @Id @GeneratedValue @Column(name = "work_update_request_id")
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "work_update_request_id")
     val id: Long? = null,
 
     @Embedded
